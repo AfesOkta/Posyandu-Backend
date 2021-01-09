@@ -8,8 +8,42 @@
   lead="Change information about yourself on this page." />
 
 <div class="row mt-sm-4">
+  <div class="col-12 col-md-12 col-lg-7">
+    @if (session('status'))
+    <div class="alert alert-primary alert-dismissible show fade">
+      <div class="alert-body">
+        <button class="close" data-dismiss="alert">
+          <span>&times;</span>
+        </button>
+        @if (session('status')=='profile-information-updated')
+        Profile has been updated.
+        @endif
+        @if (session('status')=='password-updated')
+        Password has been updated.
+        @endif
+        @if (session('status')=='two-factor-authentication-disabled')
+        Two factor authentication disabled.
+        @endif
+        @if (session('status')=='two-factor-authentication-enabled')
+        Two factor authentication enabled.
+        @endif
+        @if (session('status')=='recovery-codes-generated')
+        Recovery codes generated.
+        @endif
+      </div>
+    </div>
+    @endif
+
+    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updateProfileInformation()))
+    @include('profile.update-profile-information-form')
+    @endif
+
+    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
+    @include('profile.update-password-form')
+    @endif
+  </div>
   <div class="col-12 col-md-12 col-lg-5">
-    <div class="card profile-widget">
+    {{-- <div class="card profile-widget">
       <div class="profile-widget-header">
         <img alt="image" src="{{ auth()->user()->avatar_url }}" class="rounded-circle profile-widget-picture">
         <div class="profile-widget-items">
@@ -51,48 +85,15 @@
           <i class="fab fa-instagram"></i>
         </a>
       </div>
-    </div>
+    </div> --}}
     @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::twoFactorAuthentication()))
     @include('profile.two-factor-authentication-form')
     @endif
   </div>
-  <div class="col-12 col-md-12 col-lg-7">
-    @if (session('status'))
-    <div class="alert alert-primary alert-dismissible show fade">
-      <div class="alert-body">
-        <button class="close" data-dismiss="alert">
-          <span>&times;</span>
-        </button>
-        @if (session('status')=='profile-information-updated')
-        Profile has been updated.
-        @endif
-        @if (session('status')=='password-updated')
-        Password has been updated.
-        @endif
-        @if (session('status')=='two-factor-authentication-disabled')
-        Two factor authentication disabled.
-        @endif
-        @if (session('status')=='two-factor-authentication-enabled')
-        Two factor authentication enabled.
-        @endif
-        @if (session('status')=='recovery-codes-generated')
-        Recovery codes generated.
-        @endif
-      </div>
-    </div>
-    @endif
 
-    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updateProfileInformation()))
-    @include('profile.update-profile-information-form')
-    @endif
-
-    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
-    @include('profile.update-password-form')
-    @endif
-  </div>
 </div>
 
-<div class="row">
+{{-- <div class="row">
   @include('test')
-</div>
+</div> --}}
 @endsection
