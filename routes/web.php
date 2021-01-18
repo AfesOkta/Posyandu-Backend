@@ -12,11 +12,50 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::view('/', 'welcome')->name('welcome');
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('/', [\App\Http\Controllers\HomeController::class, 'doLogin'])->name('doLogin');
+    // Route::view('/', 'welcome')->name('welcome');
+});
 
 Route::middleware('auth', 'verified')->group(function () {
 	Route::view('dashboard', 'dashboard')->name('dashboard');
 	Route::view('profile', 'profile')->name('profile');
-	Route::view('testing', 'testing')->name('testing');
+    Route::view('testing', 'testing')->name('testing');
+
+});
+
+Route::group([
+
+    'prefix' => 'puskesmas',
+
+    'middleware' => 'auth'
+
+    ], function () {
+
+    Route::get('/', [App\Http\Controllers\MstPosyanduController::class, 'index'])->name('puskesmas');
+
+});
+
+Route::group([
+
+    'prefix' => 'kader',
+
+    'middleware' => 'auth'
+
+    ], function () {
+
+    Route::get('/', [App\Http\Controllers\KaderPosyanduController::class, 'index'])->name('kader');
+
+});
+
+Route::group([
+
+    'prefix' => 'anggota',
+
+    'middleware' => 'auth'
+
+    ], function () {
+
+    Route::get('/', [App\Http\Controllers\LansiaPosyanduController::class, 'index'])->name('anggota');
+
 });

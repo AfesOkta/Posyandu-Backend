@@ -5,7 +5,7 @@
         <aside id="sidebar-wrapper">
             <!-- sidebar brand -->
             <div class="sidebar-brand">
-                <a href="{{ route('welcome') }}">{{ config('app.name', 'Laravel') }}</a>
+                <a href="#">{{ config('app.name', 'Laravel') }}</a>
             </div>
             <!-- sidebar menu -->
             <ul class="sidebar-menu">
@@ -24,6 +24,30 @@
                         <span>Profile</span>
                     </a>
                 </li>
+                <li class="{{ Route::is('puskesmas') ? 'active' : '' }}">
+                    <a href="{{ route('puskesmas') }}">
+                        <i class="fas fa-account_balance"></i>
+                        <span>Puskesmas</span>
+                    </a>
+                </li>
+                <li class="{{ Route::is('kader') ? 'active' : '' }}">
+                    <a href="{{ route('kader') }}">
+                        <i class="fas fa-contacts"></i>
+                        <span>Kader Puskesmas</span>
+                    </a>
+                </li>
+                <li class="{{ Route::is('anggota') ? 'active' : '' }}">
+                    <a href="{{ route('anggota') }}">
+                        <i class="fas fa-contacts"></i>
+                        <span>Anggota Kader</span>
+                    </a>
+                </li>
+                {{-- <li class="{{ Route::is('absensi') ? 'active' : '' }}">
+                    <a href="{{ route('absensi') }}">
+                        <i class="fas fa-documents"></i>
+                        <span>Absen Anggota</span>
+                    </a>
+                </li> --}}
             </ul>
         </aside>
     </div>
