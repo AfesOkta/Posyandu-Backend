@@ -51,4 +51,9 @@ class User extends Authenticatable
             return 'https://ui-avatars.com/api/?name=' . str_replace(' ', '+', $this->name) . '&background=fff&color=6777ef&size=100';
         endif;
     }
+
+    public function posyandu()
+    {
+        return $this->hasMany(KaderPosyandu::class);
+    }
 }

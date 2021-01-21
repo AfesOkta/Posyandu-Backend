@@ -15,6 +15,35 @@ class LansiaPosyandu extends Model
     const KADER_ALAMAT = 'kader_alamat';
     const KADER_TELP = 'kader_telp';
     const USER_ID = 'user_id';
+    const ID            = 'id';
+    const CREATED_AT    = 'created_at';
+    const UPDATED_AT    = 'updated_at';
 
-    protected
+    protected $table = 'lansia_posyandu';
+    protected $primarykey = 'id';
+
+    protected $timestamp = false;
+
+    protected $fillable = [
+        self::POSYANDU_ID,
+        self::KADER_KODE,
+        self::KADER_NIK,
+        self::KADER_TELP,
+        self::KADER_KK,
+        self::KADER_ALAMAT,
+        self::USER_ID
+    ];
+
+    protected $hidden = [
+        self::CREATED_AT, self::UPDATED_AT, self::ID
+    ];
+
+    public function posyanduId() {
+        return $this->belongsTo(MstPosyandu::class);
+    }
+
+    public function userId()
+    {
+        return $this->belongsTo(User::class, 'id', 'user_id');
+    }
 }

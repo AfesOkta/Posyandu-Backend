@@ -26,19 +26,19 @@
                 </li>
                 <li class="{{ Route::is('puskesmas') ? 'active' : '' }}">
                     <a href="{{ route('puskesmas') }}">
-                        <i class="fas fa-account_balance"></i>
+                        <i class="fas fa-ambulance"></i>
                         <span>Puskesmas</span>
                     </a>
                 </li>
                 <li class="{{ Route::is('kader') ? 'active' : '' }}">
                     <a href="{{ route('kader') }}">
-                        <i class="fas fa-contacts"></i>
+                        <i class="fas fa-address-card"></i>
                         <span>Kader Puskesmas</span>
                     </a>
                 </li>
                 <li class="{{ Route::is('anggota') ? 'active' : '' }}">
                     <a href="{{ route('anggota') }}">
-                        <i class="fas fa-contacts"></i>
+                        <i class="fas fa-address-book"></i>
                         <span>Anggota Kader</span>
                     </a>
                 </li>
