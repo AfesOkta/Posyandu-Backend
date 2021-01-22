@@ -24,16 +24,16 @@
                         <span>Profile</span>
                     </a>
                 </li>
-                <li class="{{ Route::is('puskesmas') ? 'active' : '' }}">
-                    <a href="{{ route('puskesmas') }}">
+                <li class="{{ Route::is('posyandu') ? 'active' : '' }}">
+                    <a href="{{ route('posyandu') }}">
                         <i class="fas fa-ambulance"></i>
-                        <span>Puskesmas</span>
+                        <span>Posyandu</span>
                     </a>
                 </li>
                 <li class="{{ Route::is('kader') ? 'active' : '' }}">
                     <a href="{{ route('kader') }}">
                         <i class="fas fa-address-card"></i>
-                        <span>Kader Puskesmas</span>
+                        <span>Kader Posyandu</span>
                     </a>
                 </li>
                 <li class="{{ Route::is('anggota') ? 'active' : '' }}">

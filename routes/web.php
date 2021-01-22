@@ -26,14 +26,14 @@ Route::middleware('auth', 'verified')->group(function () {
 
 Route::group([
 
-    'prefix' => 'puskesmas',
+    'prefix' => 'posyandu',
 
     'middleware' => 'auth'
 
     ], function () {
 
-    Route::get('/', [App\Http\Controllers\MstPosyanduController::class, 'index'])->name('puskesmas');
-
+    Route::get('/', [App\Http\Controllers\MstPosyanduController::class, 'index'])->name('posyandu');
+    Route::get('/json', [App\Http\Controllers\MstPosyanduController::class, 'json_list'])->name('posyandu.json');
 });
 
 Route::group([
