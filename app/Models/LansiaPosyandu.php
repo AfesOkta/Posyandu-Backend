@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class LansiaPosyandu extends Model
 {
     use HasFactory;
-    const POSYANDU_ID = 'posyandu_id';
-    const KADER_KODE = 'kader_kode';
-    const KADER_NIK = 'kader_nik';
-    const KADER_KK = 'kader_kk';
-    const KADER_ALAMAT = 'kader_alamat';
-    const KADER_TELP = 'kader_telp';
-    const USER_ID = 'user_id';
+    const POSYANDU_ID   = 'posyandu_id';
+    const LANSIA_KODE   = 'lansia_kode';
+    const LANSIA_NIK    = 'lansia_nik';
+    const LANSIA_KK     = 'lansia_kk';
+    const LANSIA_ALAMAT = 'lansia_alamat';
+    const LANSIA_TELP   = 'lansia_telp';
+    const LANSIA_NAMA   = 'lansia_nama';
+    const USER_ID       = 'user_id';
     const ID            = 'id';
     const CREATED_AT    = 'created_at';
     const UPDATED_AT    = 'updated_at';
@@ -26,11 +27,11 @@ class LansiaPosyandu extends Model
 
     protected $fillable = [
         self::POSYANDU_ID,
-        self::KADER_KODE,
-        self::KADER_NIK,
-        self::KADER_TELP,
-        self::KADER_KK,
-        self::KADER_ALAMAT,
+        self::LANSIA_KODE,
+        self::LANSIA_NIK,
+        self::LANSIA_TELP,
+        self::LANSIA_KK,
+        self::LANSIA_ALAMAT,
         self::USER_ID
     ];
 
@@ -39,7 +40,7 @@ class LansiaPosyandu extends Model
     ];
 
     public function posyanduId() {
-        return $this->belongsTo(MstPosyandu::class);
+        return $this->belongsTo(MstPosyandu::class,'id','posyandu_id');
     }
 
     public function userId()

@@ -12,7 +12,7 @@ class PosyanduRepository {
         }
 
         public function getAll() {
-            return $this->posyandu->all();
+            return $this->posyandu->all()->sortByDesc('created_at');
         }
 
         public function findFirst($id)
@@ -23,5 +23,14 @@ class PosyanduRepository {
         public function findByColumn($column, $value)
         {
             return $this->posyandu->where($column, $value)->get();
+        }
+
+        public function create($validateData)
+        {
+            $data = [
+                MstPosyandu::POSYANDU_KODE => $validateData['posyandu_kode'],
+                MstPosyandu::POSYANDU_NAMA => $validateData['posyandu_nama'],
+            ];
+            return $this->posyandu->create($data);
         }
     }

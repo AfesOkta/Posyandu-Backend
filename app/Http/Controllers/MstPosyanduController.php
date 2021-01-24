@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PosyanduRequest;
 use App\Repositories\PosyanduRepository;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class MstPosyanduController extends Controller
@@ -28,12 +32,32 @@ class MstPosyanduController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function($row){
                 return '<a href="javascript:void(0)" onclick="edit('.$row->id.')"
-                    title="Edit '.$row->posyandu_nama.'" class="btn btn-success btn-xs btn_skpd" data-dismiss="modal"><i class="material-icons">edit</i></a>
+                    title="Edit '.$row->posyandu_nama.'" class="btn btn-info btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-edit">&nbsp;edit</i></a>
                     <a href="javascript:void(0)" onclick="delete('.$row->id.')"
-                    title="Delete '.$row->posyandu_nama.'" class="btn btn-success btn-xs btn_skpd" data-dismiss="modal"><i class="material-icons">delete</i></a>
+                    title="Delete '.$row->posyandu_nama.'" class="btn btn-danger btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-trash">&nbsp;delete</i></a>
                              <meta name="csrf-token" content="{{ csrf_token() }}">';
             })
             ->rawColumns(['action'])
             ->make(true);
+    }
+
+    public function store(PosyanduRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $validatedData = $request->validated();
+            $data = $request->all();
+            $this->posyanduRepo->create($data);
+            DB::commit();
+            $message = "Tambah data posyandu berhasil disimpan";
+            $status  = True;
+        }catch(Exception $ex) {
+            Log::debug($ex->getMessage());
+            DB::rollback();
+            $message = "Tambah data posyandu tidak berhasil disimpan";
+            $status  = False;
+        }
+
+        return response()->json(["status" => $status, "message" => $message]);
     }
 }

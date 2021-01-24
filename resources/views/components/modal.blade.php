@@ -11,7 +11,7 @@
             <div class="modal-body" id="modal-body">
             </div>
             <div class="modal-footer" id="modal-footer">
-                <button type="button" class="btn btn-primary">Save <i class="fab fa-telegram-plane ml-1"></i></button>
+                <button type="button" class="btn btn-primary save">Save <i class="fab fa-telegram-plane ml-1"></i></button>
             </div>
         </div>
     </div>

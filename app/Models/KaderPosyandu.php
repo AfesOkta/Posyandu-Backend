@@ -14,6 +14,7 @@ class KaderPosyandu extends Model
     const KADER_KK      = 'kader_kk';
     const KADER_ALAMAT  = 'kader_alamat';
     const KADER_TELP    = 'kader_telp';
+    const KADER_NAMA    = 'kader_nama';
     const USER_ID       = 'user_id';
     const ID            = 'id';
     const CREATED_AT    = 'created_at';
@@ -32,6 +33,7 @@ class KaderPosyandu extends Model
         self::KADER_KK,
         self::KADER_ALAMAT,
         self::USER_ID,
+        self::KADER_NAMA
     ];
 
     protected $hidden = [
@@ -39,7 +41,7 @@ class KaderPosyandu extends Model
     ];
 
     public function posyanduId() {
-        return $this->belongsTo(MstPosyandu::class);
+        return $this->belongsTo(MstPosyandu::class,'id','posyandu_id');
     }
 
     public function userId()

@@ -4,6 +4,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('stisla/modules/datatables/datatables.css') }}">
+<link rel="stylesheet" href="{{ asset('stisla/modules/jquery-toast/jquery.toast.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/custome.css') }}">
 @endsection
 
@@ -51,11 +52,16 @@
 
 @section('plugin')
     <script src="{{asset('stisla/modules/datatables/datatables.js')}}"></script>
+    <script src="{{asset('stisla/modules/jquery-toast/jquery.toast.min.js')}}"></script>
+
+    <script src="{{asset('assets/js/jquery-key-restrictions.js')}}"></script>
 @endsection
 
 @section('js')
     <script>
         $(function () {
+            $('body .kode_posyandu').alphaNumericOnly();
+
             var table = $('#table-1').DataTable({
                 //dom: '<"col-md-6"l><"col-md-6"f>rt<"col-md-6"i><"col-md-6"p>',
                 processing: true,
@@ -69,6 +75,56 @@
                     {data: 'action', className: 'tdCenter', searchable: false, orderable: false}
                 ],
             });
+            $('body #composemodal').on('click','.save',function(e){
+                e.preventDefault();
+                let kode = $('.kode_posyandu').val();
+                let nama = $('.nama_posyandu').val();
+                if (kode == '' || kode == null || kode == undefined) {
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Kode Posyandu harus diisi !!!',
+                        showHideTransition: 'plain',
+                        icon: 'warning'
+                    })
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            posyandu_kode: kode,
+                            posyandu_nama: nama,
+                        },
+                        url: "{{route('posyandu.store')}}",
+                        success: function (data) {
+                            if (data.status) {
+                                $.toast({
+                                    heading: 'Success',
+                                    text: data.message,
+                                    showHideTransition: 'slide',
+                                    icon: 'success'
+                                }),
+                                location.reload();
+                            } else {
+                                $.toast({
+                                    heading: 'Error',
+                                    text: data.message,
+                                    showHideTransition: 'plain',
+                                    icon: 'error'
+                                })
+                            }
+                        },
+                        error: function (data) {
+                            $.toast({
+                                heading: 'Error',
+                                text: data.message,
+                                showHideTransition: 'plain',
+                                icon: 'error'
+                            })
+                        }
+                    });
+                }
+            });
         });
 
         function open_container()
@@ -77,11 +133,11 @@
             var content = '<form role="form">'+
                             '<div class="form-group">'+
                                 '<label for="form-input-kode">Kode Posyandu</label>'+
-                                '<input type="text" class="form-control" id="form-input-kode" placeholder="Kode Posyandu">'+
+                                '<input type="text" class="form-control kode_posyandu" maxlength="5" id="form-input-kode" placeholder="Kode Posyandu">'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="form-input-nama">Nama Posyandu</label>'+
-                                '<input type="text" class="form-control" id="form-input-nama" placeholder="Nama Posyandu">'+
+                                '<input type="text" class="form-control nama_posyandu" id="form-input-nama" placeholder="Nama Posyandu">'+
                             '</div></form>';
             var title   = 'New Posyandu';
             // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
@@ -92,25 +148,9 @@
         {
             document.getElementById('modal-body').innerHTML=content;
             document.getElementById('composemodalTitle').innerHTML=title;
-            //document.getElementById('modal-footer').innerHTML=footer;
-            // if($size == 'large')
-            // {
-            //     $('#composemodal').attr('class', 'modal fade bs-example-modal-lg')
-            //         .attr('aria-labelledby','myLargeModalLabel');
-            //     $('.modal-dialog').attr('class','modal-dialog modal-lg');
-            // }
-            // if($size == 'standart')
-            // {
-                $('#composemodal').attr('class', 'modal fade')
-                    .attr('aria-labelledby','myModalLabel');
-                $('.modal-dialog').attr('class','modal-dialog');
-            // }
-            // if($size == 'small')
-            // {
-            //     $('#composemodal').attr('class', 'modal fade bs-example-modal-sm')
-            //         .attr('aria-labelledby','mySmallModalLabel');
-            //     $('.modal-dialog').attr('class','modal-dialog modal-sm');
-            // }
+            $('#composemodal').attr('class', 'modal fade')
+                .attr('aria-labelledby','myModalLabel');
+            $('.modal-dialog').attr('class','modal-dialog');
         }
     </script>
 @endsection

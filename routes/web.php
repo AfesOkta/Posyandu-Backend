@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +35,8 @@ Route::group([
 
     Route::get('/', [App\Http\Controllers\MstPosyanduController::class, 'index'])->name('posyandu');
     Route::get('/json', [App\Http\Controllers\MstPosyanduController::class, 'json_list'])->name('posyandu.json');
+
+    Route::post('/store', [App\Http\Controllers\MstPosyanduController::class, 'store'])->name('posyandu.store');
 });
 
 Route::group([
@@ -45,7 +48,7 @@ Route::group([
     ], function () {
 
     Route::get('/', [App\Http\Controllers\KaderPosyanduController::class, 'index'])->name('kader');
-
+    Route::get('/json', [App\Http\Controllers\KaderPosyanduController::class, 'json_list'])->name('kader.json');
 });
 
 Route::group([
@@ -57,5 +60,27 @@ Route::group([
     ], function () {
 
     Route::get('/', [App\Http\Controllers\LansiaPosyanduController::class, 'index'])->name('anggota');
+    Route::get('/json', [App\Http\Controllers\LansiaPosyanduController::class, 'json_list'])->name('anggota.json');
+});
 
+// Clear application cache:
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('cache:clear');
+    return 'Application cache cleared';
+});
+
+Route::get('/config-clear', function() {
+    $exitCode = Artisan::call('config:clear');
+    return 'Application config cleared';
+});
+
+// Clear view cache:
+Route::get('/view-clear', function() {
+    $exitCode = Artisan::call('view:clear');
+    return 'View cache cleared';
+});
+
+Route::get('/optimize', function() {
+    $exitCode = Artisan::call('optimize');
+    return  'Configuration clear successfully!';
 });
