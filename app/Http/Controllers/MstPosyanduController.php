@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PosyanduRequest;
+use App\Models\MstPosyandu;
 use App\Repositories\PosyanduRepository;
 use Exception;
 use Illuminate\Http\Request;
@@ -59,5 +60,35 @@ class MstPosyanduController extends Controller
         }
 
         return response()->json(["status" => $status, "message" => $message]);
+    }
+
+    public function update(PosyanduRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $validatedData = $request->validated();
+            $dataAll = $request->all();
+            $data = [
+                MstPosyandu::POSYANDU_KODE => $dataAll['posyandu_kode'],
+                MstPosyandu::POSYANDU_NAMA => $dataAll['posyandu_nama']
+            ];
+            $this->posyanduRepo->findFirst($dataAll['posyandu_id'])->update($data);
+            DB::commit();
+            $message = "update data posyandu berhasil disimpan";
+            $status  = True;
+        }catch(Exception $ex) {
+            Log::debug($ex->getMessage());
+            DB::rollback();
+            $message = "Update data posyandu tidak berhasil disimpan";
+            $status  = False;
+        }
+
+        return response()->json(["status" => $status, "message" => $message]);
+    }
+
+    public function getPosyandu(Request $request)
+    {
+        $data = $this->posyanduRepo->findFirst($request->id);
+        return response()->json($data);
     }
 }

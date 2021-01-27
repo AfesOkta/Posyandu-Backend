@@ -75,18 +75,27 @@
                     {data: 'action', className: 'tdCenter', searchable: false, orderable: false}
                 ],
             });
+
             $('body #composemodal').on('click','.save',function(e){
                 e.preventDefault();
                 let kode = $('.kode_posyandu').val();
                 let nama = $('.nama_posyandu').val();
+                let id = $('#form-input-id').val();
+                $('.save').attr("disabled","disabled");
                 if (kode == '' || kode == null || kode == undefined) {
                     $.toast({
                         heading: 'Warning',
                         text: 'Kode Posyandu harus diisi !!!',
                         showHideTransition: 'plain',
                         icon: 'warning'
-                    })
+                    });
+                    $('.save').removeAttr("disabled");
                 }else{
+                    if (id == null || id == "" || id == undefined) {
+                        url = "{{route('posyandu.store')}}";
+                    }else{
+                        url = "{{route('posyandu.update')}}";
+                    }
                     $.ajax({
                         type: "POST",
                         dataType: "json",
@@ -94,8 +103,9 @@
                             _token: '{{ csrf_token() }}',
                             posyandu_kode: kode,
                             posyandu_nama: nama,
+                            posyandu_id  : id,
                         },
-                        url: "{{route('posyandu.store')}}",
+                        url: url,
                         success: function (data) {
                             if (data.status) {
                                 $.toast({
@@ -111,7 +121,8 @@
                                     text: data.message,
                                     showHideTransition: 'plain',
                                     icon: 'error'
-                                })
+                                });
+                                $('.save').removeAttr("disabled");
                             }
                         },
                         error: function (data) {
@@ -120,7 +131,8 @@
                                 text: data.message,
                                 showHideTransition: 'plain',
                                 icon: 'error'
-                            })
+                            });
+                            $('.save').removeAttr("disabled");
                         }
                     });
                 }
@@ -134,6 +146,8 @@
                             '<div class="form-group">'+
                                 '<label for="form-input-kode">Kode Posyandu</label>'+
                                 '<input type="text" class="form-control kode_posyandu" maxlength="5" id="form-input-kode" placeholder="Kode Posyandu">'+
+                                '<input type="text" class="form-control id_posyandu" maxlength="5" '+
+                                    'id="form-input-id" placeholder="Id Posyandu" style="display:none">'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="form-input-nama">Nama Posyandu</label>'+
@@ -151,6 +165,41 @@
             $('#composemodal').attr('class', 'modal fade')
                 .attr('aria-labelledby','myModalLabel');
             $('.modal-dialog').attr('class','modal-dialog');
+        }
+
+        var edit = function(id){
+            $.ajax({
+                type: "get",
+                url: "{{ url('posyandu/get') }}/"+id,
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                    var content = '<div class="form-group">'+
+                                '<label for="form-input-kode">Kode Posyandu</label>'+
+                                '<input type="text" class="form-control kode_posyandu" maxlength="5" '+
+                                    'id="form-input-kode" placeholder="Kode Posyandu" value="'+data.posyandu_kode+'" disabled="disabled">'+
+                                '<input type="text" class="form-control id_posyandu" maxlength="5" '+
+                                    'id="form-input-id" placeholder="Id Posyandu" value="'+data.id+'" style="display:none">'+
+                            '</div>'+
+                            '<div class="form-group">'+
+                                '<label for="form-input-nama">Nama Posyandu</label>'+
+                                '<input type="text" class="form-control nama_posyandu" '+
+                                    'id="form-input-nama" placeholder="Nama Posyandu" value="'+data.posyandu_nama+'">'+
+                            '</div>';
+                    var title   = 'Edit Posyandu';
+                    // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
+                    setModalBox(content, title);
+                    $('#composemodal').modal('show');
+                },
+                error: function() {
+                    $.toast({
+                        heading: 'Error',
+                        text: "Posyandu tidak ditemukan",
+                        showHideTransition: 'plain',
+                        icon: 'error'
+                    })
+                }
+            })
         }
     </script>
 @endsection
