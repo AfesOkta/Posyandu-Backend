@@ -38,6 +38,7 @@ Route::group([
 
     Route::post('/store', [App\Http\Controllers\MstPosyanduController::class, 'store'])->name('posyandu.store');
     Route::post('/update', [App\Http\Controllers\MstPosyanduController::class, 'update'])->name('posyandu.update');
+    Route::post('/delete', [App\Http\Controllers\MstPosyanduController::class, 'delete'])->name('posyandu.delete');
 
     Route::get('/get/{id}', [App\Http\Controllers\MstPosyanduController::class, 'getPosyandu'])->name('posyandu.get');
 });

@@ -91,4 +91,27 @@ class MstPosyanduController extends Controller
         $data = $this->posyanduRepo->findFirst($request->id);
         return response()->json($data);
     }
+
+    public function destroy(Request $request)
+    {
+        # code...
+        try{
+            DB::beginTransaction();
+            $delete = $this->posyanduRepo->findFirst($request->id)->delete();
+            if ($delete) {
+                $message = "update data posyandu berhasil disimpan";
+                $status  = True;
+            }else{
+                $message = "Data posyandu tidak berhasil dihapus";
+                $status  = False;
+            }
+            DB::commit();
+        }catch(Exception $ex) {
+            DB::rollBack();
+            $message = "Data posyandu tidak ditemukan";
+            $status  = false;
+        }
+
+        return response()->json(["status" => $status, "message" => $message]);
+    }
 }
