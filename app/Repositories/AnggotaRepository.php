@@ -6,9 +6,10 @@ use App\Models\LansiaPosyandu;
 class AnggotaRepository
 {
     protected $lansiaPosyandu;
+    protected $posyanduRepo;
     public function __construct(LansiaPosyandu $lansiaPosyandu)
     {
-        $this->$lansiaPosyandu = $lansiaPosyandu;
+        $this->lansiaPosyandu = $lansiaPosyandu;
     }
 
     public function getAll() {

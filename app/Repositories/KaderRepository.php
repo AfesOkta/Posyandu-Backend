@@ -24,4 +24,18 @@ class KaderRepository
     {
         return $this->kaderPosyandu->where($column, $value)->get();
     }
+
+    public function create($validateData)
+    {
+        $data = [
+            KaderPosyandu::POSYANDU_ID => $validateData['posyandu_id'],
+            KaderPosyandu::KADER_KODE => $validateData['kader_kode'],
+            KaderPosyandu::KADER_NAMA => $validateData['kader_nama'],
+            KaderPosyandu::KADER_ALAMAT => $validateData['kader_alamat'],
+            KaderPosyandu::KADER_NIK => $validateData['kader_nik'],
+            KaderPosyandu::KADER_TELP => $validateData['kader_telp'],
+            KaderPosyandu::KADER_KK => $validateData['kader_kk'],
+        ];
+        return $this->kaderPosyandu->create($data);
+    }
 }

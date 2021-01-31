@@ -38,7 +38,7 @@ Route::group([
 
     Route::post('/store', [App\Http\Controllers\MstPosyanduController::class, 'store'])->name('posyandu.store');
     Route::post('/update', [App\Http\Controllers\MstPosyanduController::class, 'update'])->name('posyandu.update');
-    Route::post('/delete', [App\Http\Controllers\MstPosyanduController::class, 'delete'])->name('posyandu.delete');
+    Route::post('/delete', [App\Http\Controllers\MstPosyanduController::class, 'destroy'])->name('posyandu.delete');
 
     Route::get('/get/{id}', [App\Http\Controllers\MstPosyanduController::class, 'getPosyandu'])->name('posyandu.get');
 });
@@ -65,6 +65,17 @@ Route::group([
 
     Route::get('/', [App\Http\Controllers\LansiaPosyanduController::class, 'index'])->name('anggota');
     Route::get('/json', [App\Http\Controllers\LansiaPosyanduController::class, 'json_list'])->name('anggota.json');
+});
+
+Route::group([
+
+    'prefix' => 'ajax',
+
+    'middleware' => 'auth'
+
+    ], function () {
+
+    Route::get('/json-posyandu', [App\Http\Controllers\MstPosyanduController::class, 'json_select'])->name('list.posyandu.select');
 });
 
 // Clear application cache:

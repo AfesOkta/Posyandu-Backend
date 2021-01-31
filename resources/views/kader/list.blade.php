@@ -4,6 +4,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('stisla/modules/datatables/datatables.css') }}">
+<link rel="stylesheet" href="{{ asset('stisla/modules/select2/dist/css/select2.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/custome.css') }}">
 @endsection
 
@@ -52,6 +53,7 @@
 
 @section('plugin')
     <script src="{{asset('stisla/modules/datatables/datatables.js')}}"></script>
+    <script src="{{asset('stisla/modules/select2/dist/js/select2.js')}}"></script>
 @endsection
 
 @section('js')
@@ -71,40 +73,111 @@
                     {data: 'action', className: 'tdCenter', searchable: false, orderable: false}
                 ],
             });
+
+            $('body #composemodal').on('click','.save',function(e){
+                e.preventDefault();
+                let posyandu_id = $('.posyandu_id').val();
+                let kader_kode = $('.kader_kode').val();
+                let kader_nama = $('.kader_nama').val();
+                let kader_alamat = $('.kader_alamat').val();
+                let kader_kk = $('.kader_kk').val();
+                let kader_nik = $('.kader_nik').val();
+                let kader_telp = $('.kader_telp').val();
+                let id = $('#form-input-id').val();
+                $('.save').attr("disabled","disabled");
+                if (kode == '' || kode == null || kode == undefined) {
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Kode kader harus diisi !!!',
+                        showHideTransition: 'plain',
+                        icon: 'warning'
+                    });
+                    $('.save').removeAttr("disabled");
+                }else{
+                    if (id == null || id == "" || id == undefined) {
+                        url = "{{route('posyandu.store')}}";
+                    }else{
+                        url = "{{route('posyandu.update')}}";
+                    }
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            posyandu_kode: kode,
+                            posyandu_nama: nama,
+                            posyandu_id  : id,
+                        },
+                        url: url,
+                        success: function (data) {
+                            if (data.status) {
+                                $.toast({
+                                    heading: 'Success',
+                                    text: data.message,
+                                    showHideTransition: 'slide',
+                                    icon: 'success'
+                                }),
+                                location.reload();
+                            } else {
+                                $.toast({
+                                    heading: 'Error',
+                                    text: data.message,
+                                    showHideTransition: 'plain',
+                                    icon: 'error'
+                                });
+                                $('.save').removeAttr("disabled");
+                            }
+                        },
+                        error: function (data) {
+                            $.toast({
+                                heading: 'Error',
+                                text: data.message,
+                                showHideTransition: 'plain',
+                                icon: 'error'
+                            });
+                            $('.save').removeAttr("disabled");
+                        }
+                    });
+                }
+            });
         });
 
         function open_container()
         {
             // var size='standard';
-            var content = '<form role="form">'+
-                            '<div class="form-group">'+
+            var content = '<div class="form-group">'+
                                 '<label for="form-input-posyandu">Kode Posyandu</label>'+
-                                '<input type="text" class="form-control" id="form-input-posyandu" placeholder="Kode Posyandu">'+
+                                '<select id="posyandu_id" name="posyandu_id" class="form-control posyandu_id">'+
+                                    '<option value="">Silahkan pilih Posyandu</option>'+
+                                    @foreach($posyandus as $posyandu)
+                                    '<option value="{{ $posyandu->id }}" data-name="{{$posyandu->posyandu_nama}}">{{ $posyandu->posyandu_nama }}</option>'+
+                                    @endforeach
+                                '</select>'+
                             '</div>'+
                             '<div class="form-group">'+
-                                '<label for="form-input-kode">Kode Kader</label>'+
-                                '<input type="text" class="form-control" id="form-input-kode" placeholder="Kode Kader">'+
+                                '<label for="kader_kode">Kode Kader</label>'+
+                                '<input type="text" class="form-control kader_kode" id="kader_kode" placeholder="Kode Kader">'+
                             '</div>'+
                             '<div class="form-group">'+
-                                '<label for="form-input-nama">Nama Kader</label>'+
-                                '<input type="text" class="form-control" id="form-input-nama" placeholder="Nama Kader">'+
+                                '<label for="kader_nama">Nama Kader</label>'+
+                                '<input type="text" class="form-control kader_nama" id="kader_nama" placeholder="Nama Kader">'+
                             '</div>'+
                             '<div class="form-group">'+
-                                '<label for="form-input-nik">NIK Kader</label>'+
-                                '<input type="text" class="form-control" id="form-input-nik" placeholder="NIK Kader">'+
+                                '<label for="kader_nik">NIK Kader</label>'+
+                                '<input type="text" class="form-control kader_nik" id="kader_nik" placeholder="NIK Kader">'+
                             '</div>'+
                             '<div class="form-group">'+
-                                '<label for="form-input-kk">KK Kader</label>'+
-                                '<input type="text" class="form-control" id="form-input-kk" placeholder="KK Kader">'+
+                                '<label for="kader_kk">KK Kader</label>'+
+                                '<input type="text" class="form-control kader_kk" id="kader_kk" placeholder="KK Kader">'+
                             '</div>'+
                             '<div class="form-group">'+
-                                '<label for="form-input-alamat">Alamat Kader</label>'+
-                                '<input type="text" class="form-control" id="form-input-alamat" placeholder="Alamat Kader">'+
+                                '<label for="kader_alamat">Alamat Kader</label>'+
+                                '<input type="text" class="form-control kader_alamat" id="kader_alamat" placeholder="Alamat Kader">'+
                             '</div>'+
                             '<div class="form-group">'+
-                                '<label for="form-input-no-telp">No. Telp</label>'+
-                                '<input type="text" class="form-control" id="form-input-no-telp" placeholder="No. Telp">'+
-                            '</div></form>';
+                                '<label for="kader_telp">No. Telp</label>'+
+                                '<input type="text" class="form-control kader_telp" id="kader_telp" placeholder="No. Telp">'+
+                            '</div>';
             var title   = 'New Kader Posyandu';
             // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
             setModalBox(content, title);
@@ -114,25 +187,10 @@
         {
             document.getElementById('modal-body').innerHTML=content;
             document.getElementById('composemodalTitle').innerHTML=title;
-            //document.getElementById('modal-footer').innerHTML=footer;
-            // if($size == 'large')
-            // {
-            //     $('#composemodal').attr('class', 'modal fade bs-example-modal-lg')
-            //         .attr('aria-labelledby','myLargeModalLabel');
-            //     $('.modal-dialog').attr('class','modal-dialog modal-lg');
-            // }
-            // if($size == 'standart')
-            // {
-                $('#composemodal').attr('class', 'modal fade')
-                    .attr('aria-labelledby','myModalLabel');
-                $('.modal-dialog').attr('class','modal-dialog');
-            // }
-            // if($size == 'small')
-            // {
-            //     $('#composemodal').attr('class', 'modal fade bs-example-modal-sm')
-            //         .attr('aria-labelledby','mySmallModalLabel');
-            //     $('.modal-dialog').attr('class','modal-dialog modal-sm');
-            // }
+            $('#composemodal').attr('class', 'modal fade')
+                .attr('aria-labelledby','myModalLabel');
+            $('.modal-dialog').attr('class','modal-dialog');
         }
+
     </script>
 @endsection

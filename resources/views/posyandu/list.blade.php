@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{{ asset('stisla/modules/datatables/datatables.css') }}">
 <link rel="stylesheet" href="{{ asset('stisla/modules/jquery-toast/jquery.toast.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/custome.css') }}">
+<link rel="stylesheet" href="{{ asset('stisla/modules/sweetalert/sweetalert.css') }}">
 @endsection
 
 @section('content')
@@ -137,51 +138,6 @@
                     });
                 }
             });
-
-            // function delete(id) {
-            //     swal({
-            //         title: "Yakin?",
-            //         text: "Posyandu mau dihapus?",
-            //         type: "warning",
-            //         showCancelButton: true,
-            //         confirmButtonColor: "#DD6B55",
-            //         confirmButtonText: "Ya, hapus saja!",
-            //         closeOnConfirm: false
-            //     }, function () {
-            //         $.ajax({
-            //             type: "POST",
-            //             dataType: 'json',
-            //             data: {_token: '{{ csrf_token() }}', id: id},
-            //             url: "{{ route('posyandu.delete') }}",
-            //             success: function (data) {
-            //                 if (data.status) {
-            //                     $.toast({
-            //                             heading: 'Success',
-            //                             text: data.message,
-            //                             showHideTransition: 'slide',
-            //                             icon: 'success'
-            //                         }),
-            //                     location.reload();
-            //                 } else {
-            //                     $.toast({
-            //                         heading: 'Error',
-            //                         text: "Posyandu tidak dapat dihapus",
-            //                         showHideTransition: 'plain',
-            //                         icon: 'error'
-            //                     })
-            //                 }
-            //             },
-            //             error: function (data) {
-            //                 $.toast({
-            //                     heading: 'Error',
-            //                     text: "Posyandu tidak ditemukan",
-            //                     showHideTransition: 'plain',
-            //                     icon: 'error'
-            //                 })
-            //             }
-            //         });
-            //     });
-            // }
         });
 
         function open_container()
@@ -247,6 +203,49 @@
             })
         };
 
-
+        var hapus = function(id){
+            swal({
+                title: "Yakin?",
+                text: "Posyandu mau dihapus?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ya, hapus saja!",
+                closeOnConfirm: false
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: {_token: '{{ csrf_token() }}', id: id},
+                    url: "{{ route('posyandu.delete') }}",
+                    success: function (data) {
+                        if (data.status) {
+                            $.toast({
+                                    heading: 'Success',
+                                    text: data.message,
+                                    showHideTransition: 'slide',
+                                    icon: 'success'
+                                }),
+                            location.reload();
+                        } else {
+                            $.toast({
+                                heading: 'Error',
+                                text: "Posyandu tidak dapat dihapus",
+                                showHideTransition: 'plain',
+                                icon: 'error'
+                            })
+                        }
+                    },
+                    error: function (data) {
+                        $.toast({
+                            heading: 'Error',
+                            text: "Posyandu tidak ditemukan",
+                            showHideTransition: 'plain',
+                            icon: 'error'
+                        })
+                    }
+                });
+            });
+        }
     </script>
 @endsection

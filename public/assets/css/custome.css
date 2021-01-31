@@ -44,3 +44,16 @@
     border-top: 1px solid #484d52;
     border-radius: 0 0 3px 3px;
 }
+
+.modal-body{
+    height: 250px;
+    overflow-y: auto;
+}
+
+@media (min-height: 500px) {
+    .modal-body { height: 400px; }
+}
+
+@media (min-height: 800px) {
+    .modal-body { height: 600px; }
+}

@@ -40,6 +40,7 @@
   <script src="{{ asset('stisla/modules/nicescroll/jquery.nicescroll.min.js') }}"></script>
   <script src="{{ asset('stisla/modules/moment.min.js') }}"></script>
   <script src="{{ asset('stisla/js/stisla.js') }}"></script>
+  <script src="{{ asset('stisla/modules/sweetalert/sweetalert.min.js') }}"></script>
 
   <!-- Plugins -->
   @yield('plugin')

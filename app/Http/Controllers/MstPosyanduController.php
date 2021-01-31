@@ -34,12 +34,18 @@ class MstPosyanduController extends Controller
             ->addColumn('action', function($row){
                 return '<a href="javascript:void(0)" onclick="edit('.$row->id.')"
                     title="Edit '.$row->posyandu_nama.'" class="btn btn-info btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-edit">&nbsp;edit</i></a>
-                    <a href="javascript:void(0)" onclick="delete('.$row->id.')"
+                    <a href="javascript:void(0)" onclick="hapus('.$row->id.')"
                     title="Delete '.$row->posyandu_nama.'" class="btn btn-danger btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-trash">&nbsp;delete</i></a>
                              <meta name="csrf-token" content="{{ csrf_token() }}">';
             })
             ->rawColumns(['action'])
             ->make(true);
+    }
+
+    public function json_select()
+    {
+        $data = $this->posyanduRepo->getAll();
+        return response()->json($data);
     }
 
     public function store(PosyanduRequest $request)
@@ -99,7 +105,7 @@ class MstPosyanduController extends Controller
             DB::beginTransaction();
             $delete = $this->posyanduRepo->findFirst($request->id)->delete();
             if ($delete) {
-                $message = "update data posyandu berhasil disimpan";
+                $message = "Data posyandu berhasil dihapus";
                 $status  = True;
             }else{
                 $message = "Data posyandu tidak berhasil dihapus";

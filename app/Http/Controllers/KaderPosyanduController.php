@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\KaderRequest;
 use App\Models\KaderPosyandu;
 use App\Repositories\KaderRepository;
+use App\Repositories\PosyanduRepository;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class KaderPosyanduController extends Controller
 {
     protected $kaderRepository;
-    public function __construct(KaderRepository $kaderRepository)
+    protected $posyanduRepo;
+    public function __construct(KaderRepository $kaderRepository, PosyanduRepository $posyanduRepo)
     {
         $this->middleware('auth');
         $this->kaderRepository = $kaderRepository;
+        $this->posyanduRepo = $posyanduRepo;
     }
 
     public function json_list()
@@ -40,17 +47,8 @@ class KaderPosyanduController extends Controller
     public function index()
     {
         //
-        return view('kader.list');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $posyandus = $this->posyanduRepo->getAll();
+        return view('kader.list', compact('posyandus'));
     }
 
     /**
@@ -59,9 +57,24 @@ class KaderPosyanduController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(KaderRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $validatedData = $request->validated();
+            $data = $request->all();
+            $this->kaderRepository->create($data);
+            DB::commit();
+            $message = "Tambah data kader berhasil disimpan";
+            $status  = True;
+        }catch(Exception $ex) {
+            Log::debug($ex->getMessage());
+            DB::rollback();
+            $message = "Tambah data kader tidak berhasil disimpan";
+            $status  = False;
+        }
+
+        return response()->json(["status" => $status, "message" => $message]);
     }
 
     /**

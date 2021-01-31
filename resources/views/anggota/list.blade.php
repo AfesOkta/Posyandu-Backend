@@ -76,10 +76,14 @@
         function open_container()
         {
             // var size='standard';
-            var content = '<form role="form">'+
-                            '<div class="form-group">'+
+            var content = ' <div class="form-group">'+
                                 '<label for="form-input-posyandu">Kode Posyandu</label>'+
-                                '<input type="text" class="form-control" id="form-input-posyandu" placeholder="Kode Posyandu">'+
+                                '<select id="posyandu_id" name="posyandu_id" class="form-control posyandu_id">'+
+                                    '<option value="">Silahkan pilih Posyandu</option>'+
+                                    @foreach($posyandus as $posyandu)
+                                    '<option value="{{ $posyandu->id }}" data-name="{{$posyandu->posyandu_nama}}">{{ $posyandu->posyandu_nama }}</option>'+
+                                    @endforeach
+                                '</select>'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="form-input-kode">Kode Anggota</label>'+
@@ -104,8 +108,8 @@
                             '<div class="form-group">'+
                                 '<label for="form-input-no-telp">No. Telp</label>'+
                                 '<input type="text" class="form-control" id="form-input-no-telp" placeholder="No. Telp">'+
-                            '</div></form>';
-            var title   = 'New Kader Posyandu';
+                            '</div>';
+            var title   = 'New Anggota';
             // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
             setModalBox(content, title);
             $('#composemodal').modal('show');
@@ -114,25 +118,9 @@
         {
             document.getElementById('modal-body').innerHTML=content;
             document.getElementById('composemodalTitle').innerHTML=title;
-            //document.getElementById('modal-footer').innerHTML=footer;
-            // if($size == 'large')
-            // {
-            //     $('#composemodal').attr('class', 'modal fade bs-example-modal-lg')
-            //         .attr('aria-labelledby','myLargeModalLabel');
-            //     $('.modal-dialog').attr('class','modal-dialog modal-lg');
-            // }
-            // if($size == 'standart')
-            // {
-                $('#composemodal').attr('class', 'modal fade')
-                    .attr('aria-labelledby','myModalLabel');
-                $('.modal-dialog').attr('class','modal-dialog');
-            // }
-            // if($size == 'small')
-            // {
-            //     $('#composemodal').attr('class', 'modal fade bs-example-modal-sm')
-            //         .attr('aria-labelledby','mySmallModalLabel');
-            //     $('.modal-dialog').attr('class','modal-dialog modal-sm');
-            // }
+            $('#composemodal').attr('class', 'modal fade')
+                .attr('aria-labelledby','myModalLabel');
+            $('.modal-dialog').attr('class','modal-dialog');
         }
     </script>
 @endsection
