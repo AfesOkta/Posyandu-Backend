@@ -5,6 +5,7 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('stisla/modules/datatables/datatables.css') }}">
 <link rel="stylesheet" href="{{ asset('stisla/modules/select2/dist/css/select2.css') }}">
+<link rel="stylesheet" href="{{ asset('stisla/modules/jquery-toast/jquery.toast.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/custome.css') }}">
 @endsection
 
@@ -54,6 +55,7 @@
 @section('plugin')
     <script src="{{asset('stisla/modules/datatables/datatables.js')}}"></script>
     <script src="{{asset('stisla/modules/select2/dist/js/select2.js')}}"></script>
+    <script src="{{asset('stisla/modules/jquery-toast/jquery.toast.min.js')}}"></script>
 @endsection
 
 @section('js')
@@ -83,9 +85,9 @@
                 let kader_kk = $('.kader_kk').val();
                 let kader_nik = $('.kader_nik').val();
                 let kader_telp = $('.kader_telp').val();
-                let id = $('#form-input-id').val();
+                let kader_id = $('#form-input-id').val();
                 $('.save').attr("disabled","disabled");
-                if (kode == '' || kode == null || kode == undefined) {
+                if (kader_kode == '' || kader_kode == null || kader_kode == undefined) {
                     $.toast({
                         heading: 'Warning',
                         text: 'Kode kader harus diisi !!!',
@@ -93,20 +95,33 @@
                         icon: 'warning'
                     });
                     $('.save').removeAttr("disabled");
+                }else if (posyandu_id == '' || posyandu_id == null || posyandu_id == undefined) {
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Posyandu harus diisi !!!',
+                        showHideTransition: 'plain',
+                        icon: 'warning'
+                    });
+                    $('.save').removeAttr("disabled");
                 }else{
-                    if (id == null || id == "" || id == undefined) {
-                        url = "{{route('posyandu.store')}}";
+                    if (kader_id == null || kader_id == "" || kader_id == undefined) {
+                        url = "{{route('kader.store')}}";
                     }else{
-                        url = "{{route('posyandu.update')}}";
+                        url = "{{route('kader.update')}}";
                     }
                     $.ajax({
                         type: "POST",
                         dataType: "json",
                         data: {
                             _token: '{{ csrf_token() }}',
-                            posyandu_kode: kode,
-                            posyandu_nama: nama,
-                            posyandu_id  : id,
+                            posyandu_id: posyandu_id,
+                            kader_kode: kader_kode,
+                            kader_nama: kader_nama,
+                            kader_alamat: kader_alamat,
+                            kader_kk: kader_kk,
+                            kader_nik: kader_nik,
+                            kader_telp: kader_telp,
+                            kader_id  : kader_id,
                         },
                         url: url,
                         success: function (data) {
@@ -156,7 +171,7 @@
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="kader_kode">Kode Kader</label>'+
-                                '<input type="text" class="form-control kader_kode" id="kader_kode" placeholder="Kode Kader">'+
+                                '<input type="text" class="form-control kader_kode col-sm-4" id="kader_kode" maxlength="5" placeholder="Kode Kader">'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="kader_nama">Nama Kader</label>'+
@@ -192,5 +207,60 @@
             $('.modal-dialog').attr('class','modal-dialog');
         }
 
+        var edit = function(id){
+            $.ajax({
+                type: "get",
+                url: "{{ url('kader/get') }}/"+id,
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                    var content =   '<div class="form-group">'+
+                                        '<label for="form-input-posyandu">Kode Posyandu</label>'+
+                                        '<select id="posyandu_id" name="posyandu_id" class="form-control posyandu_id">'+
+                                            @foreach($posyandus as $posyandu)
+                                            '<option value="{{ $posyandu->id }}" {{ $posyandu->id == "'+data.posyandu_id+'" ? 'selected' : '' }}>{{ $posyandu->posyandu_nama }}</option>'+
+                                            @endforeach
+                                        '</select>'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_kode">Kode Kader</label>'+
+                                        '<input type="text" class="form-control kader_kode col-sm-4" id="kader_kode" value="'+data.kader_kode+'" maxlength="5" placeholder="Kode Kader" disabled="disabled">'+
+                                        '<input type="text" class="form-control id_kader" maxlength="5" id="form-input-id" placeholder="Id kader" value="'+data.id+'" style="display:none">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_nama">Nama Kader</label>'+
+                                        '<input type="text" class="form-control kader_nama" id="kader_nama" value="'+data.kader_nama+'" placeholder="Nama Kader">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_nik">NIK Kader</label>'+
+                                        '<input type="text" class="form-control kader_nik" id="kader_nik" value="'+data.kader_nik+'" placeholder="NIK Kader">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_kk">KK Kader</label>'+
+                                        '<input type="text" class="form-control kader_kk" id="kader_kk" value="'+data.kader_kk+'" placeholder="KK Kader">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_alamat">Alamat Kader</label>'+
+                                        '<input type="text" class="form-control kader_alamat" id="kader_alamat" value="'+data.kader_alamat+'" placeholder="Alamat Kader">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_telp">No. Telp</label>'+
+                                        '<input type="text" class="form-control kader_telp" id="kader_telp" value="'+data.kader_telp+'" placeholder="No. Telp">'+
+                                    '</div>';
+                    var title   = 'Edit Kader';
+                    // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
+                    setModalBox(content, title);
+                    $('#composemodal').modal('show');
+                },
+                error: function() {
+                    $.toast({
+                        heading: 'Error',
+                        text: "Posyandu tidak ditemukan",
+                        showHideTransition: 'plain',
+                        icon: 'error'
+                    })
+                }
+            })
+        };
     </script>
 @endsection

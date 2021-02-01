@@ -53,6 +53,11 @@ Route::group([
 
     Route::get('/', [App\Http\Controllers\KaderPosyanduController::class, 'index'])->name('kader');
     Route::get('/json', [App\Http\Controllers\KaderPosyanduController::class, 'json_list'])->name('kader.json');
+    Route::post('/store', [App\Http\Controllers\KaderPosyanduController::class, 'store'])->name('kader.store');
+    Route::post('/update', [App\Http\Controllers\KaderPosyanduController::class, 'update'])->name('kader.update');
+    Route::post('/delete', [App\Http\Controllers\KaderPosyanduController::class, 'destroy'])->name('kader.delete');
+
+    Route::get('/get/{id}', [App\Http\Controllers\KaderPosyanduController::class, 'show'])->name('kader.get');
 });
 
 Route::group([

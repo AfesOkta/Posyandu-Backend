@@ -33,11 +33,12 @@ class KaderPosyandu extends Model
         self::KADER_KK,
         self::KADER_ALAMAT,
         self::USER_ID,
-        self::KADER_NAMA
+        self::KADER_NAMA,
+        self::ID
     ];
 
     protected $hidden = [
-        self::CREATED_AT, self::UPDATED_AT, self::ID
+        self::CREATED_AT, self::UPDATED_AT
     ];
 
     public function posyanduId() {

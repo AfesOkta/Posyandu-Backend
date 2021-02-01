@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\KaderRequest;
 use App\Models\KaderPosyandu;
+use App\Models\MstPosyandu;
 use App\Repositories\KaderRepository;
 use App\Repositories\PosyanduRepository;
 use Exception;
@@ -28,6 +29,11 @@ class KaderPosyanduController extends Controller
         $data = $this->kaderRepository->getAll();
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('posyandu', function (MstPosyandu $posyandu) {
+                return $posyandu->id->map(function($kaderPosyandu) {
+                    return $kaderPosyandu->kader_name;
+                })->implode('<br>');
+            })
             ->addColumn('action', function($row){
                 return '<a href="javascript:void(0)" onclick="edit('.$row->id.')"
                     title="Edit '.$row->kader_nama.'" class="btn btn-info btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-edit">&nbsp;edit</i></a>
@@ -35,7 +41,7 @@ class KaderPosyanduController extends Controller
                     title="Delete '.$row->kader_nama.'" class="btn btn-danger btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-trash">&nbsp;delete</i></a>
                              <meta name="csrf-token" content="{{ csrf_token() }}">';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action','posyandu'])
             ->make(true);
     }
 
@@ -83,20 +89,11 @@ class KaderPosyanduController extends Controller
      * @param  \App\Models\KaderPosyandu  $kaderPosyandu
      * @return \Illuminate\Http\Response
      */
-    public function show(KaderPosyandu $kaderPosyandu)
+    public function show($id)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\KaderPosyandu  $kaderPosyandu
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(KaderPosyandu $kaderPosyandu)
-    {
-        //
+        $kader = $this->kaderRepository->findFirst($id);
+        return response()->json($kader);
     }
 
     /**
@@ -106,9 +103,24 @@ class KaderPosyanduController extends Controller
      * @param  \App\Models\KaderPosyandu  $kaderPosyandu
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, KaderPosyandu $kaderPosyandu)
+    public function update(KaderRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $validatedData = $request->validated();
+            $dataAll = $request->all();
+            $this->kaderRepository->update($dataAll);
+            DB::commit();
+            $message = "update data posyandu berhasil disimpan";
+            $status  = True;
+        }catch(Exception $ex) {
+            Log::debug($ex->getMessage());
+            DB::rollback();
+            $message = "Update data posyandu tidak berhasil disimpan";
+            $status  = False;
+        }
+
+        return response()->json(["status" => $status, "message" => $message]);
     }
 
     /**
@@ -117,8 +129,26 @@ class KaderPosyanduController extends Controller
      * @param  \App\Models\KaderPosyandu  $kaderPosyandu
      * @return \Illuminate\Http\Response
      */
-    public function destroy(KaderPosyandu $kaderPosyandu)
+    public function destroy(Request $request)
     {
         //
+        try{
+            DB::beginTransaction();
+            $delete = $this->kaderRepository->findFirst($request->id)->delete();
+            if ($delete) {
+                $message = "Data kader posyandu berhasil dihapus";
+                $status  = True;
+            }else{
+                $message = "Data kader posyandu tidak berhasil dihapus";
+                $status  = False;
+            }
+            DB::commit();
+        }catch(Exception $ex) {
+            DB::rollBack();
+            $message = "Data kader posyandu tidak ditemukan";
+            $status  = false;
+        }
+
+        return response()->json(["status" => $status, "message" => $message]);
     }
 }
