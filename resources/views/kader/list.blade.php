@@ -69,7 +69,7 @@
                 ajax: '{{route('kader.json')}}',
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: true, orderable: true},
-                    {data: 'posyandu_id', name: 'posyandu_id', searchable: true, orderable: true},
+                    {data: 'posyandu.posyandu_nama', name: 'posyandu.posyandu_nama', searchable: true, orderable: true},
                     {data: 'kader_kode', name: 'kader_kode', searchable: true, orderable: true},
                     {data: 'kader_nama', name: 'kader_nama', searchable: true, orderable: true},
                     {data: 'action', className: 'tdCenter', searchable: false, orderable: false}

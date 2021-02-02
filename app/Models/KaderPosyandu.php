@@ -41,11 +41,11 @@ class KaderPosyandu extends Model
         self::CREATED_AT, self::UPDATED_AT
     ];
 
-    public function posyanduId() {
-        return $this->belongsTo(MstPosyandu::class,'id','posyandu_id');
+    public function posyandu() {
+        return $this->belongsTo(MstPosyandu::class,'posyandu_id','id');
     }
 
-    public function userId()
+    public function user()
     {
         return $this->belongsTo(User::class, 'id', 'user_id');
     }

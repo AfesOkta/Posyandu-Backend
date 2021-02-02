@@ -70,6 +70,12 @@ Route::group([
 
     Route::get('/', [App\Http\Controllers\LansiaPosyanduController::class, 'index'])->name('anggota');
     Route::get('/json', [App\Http\Controllers\LansiaPosyanduController::class, 'json_list'])->name('anggota.json');
+    Route::post('/store', [App\Http\Controllers\LansiaPosyanduController::class, 'store'])->name('anggota.store');
+    Route::post('/update', [App\Http\Controllers\LansiaPosyanduController::class, 'update'])->name('anggota.update');
+    Route::post('/delete', [App\Http\Controllers\LansiaPosyanduController::class, 'destroy'])->name('anggota.delete');
+
+    Route::get('/get/{id}', [App\Http\Controllers\LansiaPosyanduController::class, 'show'])->name('anggota.get');
+
 });
 
 Route::group([

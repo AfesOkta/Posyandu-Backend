@@ -29,11 +29,6 @@ class KaderPosyanduController extends Controller
         $data = $this->kaderRepository->getAll();
         return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn('posyandu', function (MstPosyandu $posyandu) {
-                return $posyandu->id->map(function($kaderPosyandu) {
-                    return $kaderPosyandu->kader_name;
-                })->implode('<br>');
-            })
             ->addColumn('action', function($row){
                 return '<a href="javascript:void(0)" onclick="edit('.$row->id.')"
                     title="Edit '.$row->kader_nama.'" class="btn btn-info btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-edit">&nbsp;edit</i></a>
@@ -41,7 +36,7 @@ class KaderPosyanduController extends Controller
                     title="Delete '.$row->kader_nama.'" class="btn btn-danger btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-trash">&nbsp;delete</i></a>
                              <meta name="csrf-token" content="{{ csrf_token() }}">';
             })
-            ->rawColumns(['action','posyandu'])
+            ->rawColumns(['action'])
             ->make(true);
     }
 

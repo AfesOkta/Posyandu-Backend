@@ -4,6 +4,8 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('stisla/modules/datatables/datatables.css') }}">
+<link rel="stylesheet" href="{{ asset('stisla/modules/select2/dist/css/select2.css') }}">
+<link rel="stylesheet" href="{{ asset('stisla/modules/jquery-toast/jquery.toast.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/custome.css') }}">
 @endsection
 
@@ -52,6 +54,8 @@
 
 @section('plugin')
     <script src="{{asset('stisla/modules/datatables/datatables.js')}}"></script>
+    <script src="{{asset('stisla/modules/select2/dist/js/select2.js')}}"></script>
+    <script src="{{asset('stisla/modules/jquery-toast/jquery.toast.min.js')}}"></script>
 @endsection
 
 @section('js')
@@ -65,11 +69,91 @@
                 ajax: '{{route('anggota.json')}}',
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: true, orderable: true},
-                    {data: 'posyandu_id', name: 'posyandu_id', searchable: true, orderable: true},
+                    {data: 'posyandu.posyandu_name', name: 'posyandu.posyandu_name', searchable: true, orderable: true},
                     {data: 'anggota_kode', name: 'anggota_kode', searchable: true, orderable: true},
                     {data: 'anggota_nama', name: 'anggota_nama', searchable: true, orderable: true},
                     {data: 'action', className: 'tdCenter', searchable: false, orderable: false}
                 ],
+            });
+
+            $('body #composemodal').on('click','.save',function(e){
+                e.preventDefault();
+                let posyandu_id = $('.posyandu_id').val();
+                let lansia_kode = $('.lansia_kode').val();
+                let lansia_nama = $('.lansia_nama').val();
+                let lansia_alamat = $('.lansia_alamat').val();
+                let lansia_kk = $('.lansia_kk').val();
+                let lansia_nik = $('.lansia_nik').val();
+                let lansia_telp = $('.lansia_telp').val();
+                let lansia_id = $('#form-input-id').val();
+                $('.save').attr("disabled","disabled");
+                if (lansia_kode == '' || lansia_kode == null || lansia_kode == undefined) {
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Kode lansia harus diisi !!!',
+                        showHideTransition: 'plain',
+                        icon: 'warning'
+                    });
+                    $('.save').removeAttr("disabled");
+                }else if (posyandu_id == '' || posyandu_id == null || posyandu_id == undefined) {
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Posyandu harus diisi !!!',
+                        showHideTransition: 'plain',
+                        icon: 'warning'
+                    });
+                    $('.save').removeAttr("disabled");
+                }else{
+                    if (lansia_id == null || lansia_id == "" || lansia_id == undefined) {
+                        url = "{{route('anggota.store')}}";
+                    }else{
+                        url = "{{route('anggota.update')}}";
+                    }
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            posyandu_id: posyandu_id,
+                            lansia_kode: lansia_kode,
+                            lansia_nama: lansia_nama,
+                            lansia_alamat: lansia_alamat,
+                            lansia_kk: lansia_kk,
+                            lansia_nik: lansia_nik,
+                            lansia_telp: lansia_telp,
+                            lansia_id  : lansia_id,
+                        },
+                        url: url,
+                        success: function (data) {
+                            if (data.status) {
+                                $.toast({
+                                    heading: 'Success',
+                                    text: data.message,
+                                    showHideTransition: 'slide',
+                                    icon: 'success'
+                                }),
+                                location.reload();
+                            } else {
+                                $.toast({
+                                    heading: 'Error',
+                                    text: data.message,
+                                    showHideTransition: 'plain',
+                                    icon: 'error'
+                                });
+                                $('.save').removeAttr("disabled");
+                            }
+                        },
+                        error: function (data) {
+                            $.toast({
+                                heading: 'Error',
+                                text: data.message,
+                                showHideTransition: 'plain',
+                                icon: 'error'
+                            });
+                            $('.save').removeAttr("disabled");
+                        }
+                    });
+                }
             });
         });
 
@@ -87,33 +171,34 @@
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="form-input-kode">Kode Anggota</label>'+
-                                '<input type="text" class="form-control" id="form-input-kode" placeholder="Kode Kader">'+
+                                '<input type="text" class="form-control lansia_kode" id="form-input-kode" placeholder="Kode lansia">'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="form-input-nama">Nama Anggota</label>'+
-                                '<input type="text" class="form-control" id="form-input-nama" placeholder="Nama Anggota">'+
+                                '<input type="text" class="form-control lansia_nama" id="form-input-nama" placeholder="Nama Anggota">'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="form-input-nik">NIK Anggota</label>'+
-                                '<input type="text" class="form-control" id="form-input-nik" placeholder="NIK Anggota">'+
+                                '<input type="text" class="form-control lansia_nik" id="form-input-nik" placeholder="NIK Anggota">'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="form-input-kk">KK Anggota</label>'+
-                                '<input type="text" class="form-control" id="form-input-kk" placeholder="KK Anggota">'+
+                                '<input type="text" class="form-control lansia_kk" id="form-input-kk" placeholder="KK Anggota">'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="form-input-alamat">Alamat Anggota</label>'+
-                                '<input type="text" class="form-control" id="form-input-alamat" placeholder="Alamat Anggota">'+
+                                '<input type="text" class="form-control lansia_alamat" id="form-input-alamat" placeholder="Alamat Anggota">'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="form-input-no-telp">No. Telp</label>'+
-                                '<input type="text" class="form-control" id="form-input-no-telp" placeholder="No. Telp">'+
+                                '<input type="text" class="form-control lansia_telp" id="form-input-no-telp" placeholder="No. Telp">'+
                             '</div>';
             var title   = 'New Anggota';
             // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
             setModalBox(content, title);
             $('#composemodal').modal('show');
         }
+
         function setModalBox(content, title)
         {
             document.getElementById('modal-body').innerHTML=content;
@@ -122,5 +207,61 @@
                 .attr('aria-labelledby','myModalLabel');
             $('.modal-dialog').attr('class','modal-dialog');
         }
+
+        var edit = function(id){
+            $.ajax({
+                type: "get",
+                url: "{{ url('lansia/get') }}/"+id,
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                    var content =   '<div class="form-group">'+
+                                        '<label for="form-input-posyandu">Kode Posyandu</label>'+
+                                        '<select id="posyandu_id" name="posyandu_id" class="form-control posyandu_id">'+
+                                            @foreach($posyandus as $posyandu)
+                                            '<option value="{{ $posyandu->id }}" {{ $posyandu->id == "'+data.posyandu_id+'" ? 'selected' : '' }}>{{ $posyandu->posyandu_nama }}</option>'+
+                                            @endforeach
+                                        '</select>'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="lansia_kode">Kode lansia</label>'+
+                                        '<input type="text" class="form-control lansia_kode col-sm-4" id="lansia_kode" value="'+data.lansia_kode+'" maxlength="5" placeholder="Kode lansia" disabled="disabled">'+
+                                        '<input type="text" class="form-control id_lansia" maxlength="5" id="form-input-id" placeholder="Id lansia" value="'+data.id+'" style="display:none">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="lansia_nama">Nama lansia</label>'+
+                                        '<input type="text" class="form-control lansia_nama" id="lansia_nama" value="'+data.lansia_nama+'" placeholder="Nama lansia">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="lansia_nik">NIK lansia</label>'+
+                                        '<input type="text" class="form-control lansia_nik" id="lansia_nik" value="'+data.lansia_nik+'" placeholder="NIK lansia">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="lansia_kk">KK lansia</label>'+
+                                        '<input type="text" class="form-control lansia_kk" id="lansia_kk" value="'+data.lansia_kk+'" placeholder="KK lansia">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="lansia_alamat">Alamat lansia</label>'+
+                                        '<input type="text" class="form-control lansia_alamat" id="lansia_alamat" value="'+data.lansia_alamat+'" placeholder="Alamat lansia">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="lansia_telp">No. Telp</label>'+
+                                        '<input type="text" class="form-control lansia_telp" id="lansia_telp" value="'+data.lansia_telp+'" placeholder="No. Telp">'+
+                                    '</div>';
+                    var title   = 'Edit lansia';
+                    // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
+                    setModalBox(content, title);
+                    $('#composemodal').modal('show');
+                },
+                error: function() {
+                    $.toast({
+                        heading: 'Error',
+                        text: "Posyandu tidak ditemukan",
+                        showHideTransition: 'plain',
+                        icon: 'error'
+                    })
+                }
+            })
+        };
     </script>
 @endsection

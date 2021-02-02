@@ -13,7 +13,7 @@ class KaderRepository
     }
 
     public function getAll() {
-        return $this->kaderPosyandu->all();
+        return $this->kaderPosyandu->with('posyandu')->get();
     }
 
     public function findFirst($id)
