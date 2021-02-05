@@ -42,12 +42,12 @@
                         <span>Anggota Kader</span>
                     </a>
                 </li>
-                {{-- <li class="{{ Route::is('absensi') ? 'active' : '' }}">
-                    <a href="{{ route('absensi') }}">
-                        <i class="fas fa-documents"></i>
+                <li class="">
+                    <a href="#">
+                        <i class="fas fa-clock"></i>
                         <span>Absen Anggota</span>
                     </a>
-                </li> --}}
+                </li>
             </ul>
         </aside>
     </div>

@@ -32,15 +32,17 @@ class LansiaPosyandu extends Model
         self::LANSIA_TELP,
         self::LANSIA_KK,
         self::LANSIA_ALAMAT,
-        self::USER_ID
+        self::USER_ID,
+        self::LANSIA_NAMA,
+        self::ID
     ];
 
     protected $hidden = [
-        self::CREATED_AT, self::UPDATED_AT, self::ID
+        self::CREATED_AT, self::UPDATED_AT
     ];
 
-    public function posyanduId() {
-        return $this->belongsTo(MstPosyandu::class,'id','posyandu_id');
+    public function posyandu() {
+        return $this->belongsTo(MstPosyandu::class,'posyandu_id','id');
     }
 
     public function userId()

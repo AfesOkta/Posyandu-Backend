@@ -14,7 +14,7 @@ class AnggotaRepository
     }
 
     public function getAll() {
-        return $this->lansiaPosyandu->all();
+        return $this->lansiaPosyandu->with('posyandu')->get();
     }
 
     public function findFirst($id)
@@ -39,7 +39,7 @@ class AnggotaRepository
             LansiaPosyandu::LANSIA_KK => $validateData['lansia_kk'],
             LansiaPosyandu::USER_ID => Auth::user()->id
         ];
-        return $this->LansiaPosyandu->create($data);
+        return $this->lansiaPosyandu->create($data);
     }
 
     public function update($validateData)
@@ -55,7 +55,7 @@ class AnggotaRepository
             LansiaPosyandu::USER_ID => Auth::user()->id
         ];
 
-        return $this->LansiaPosyandu->find($validateData['lansia_id'])->update($data);
+        return $this->lansiaPosyandu->find($validateData['lansia_id'])->update($data);
     }
 
 }

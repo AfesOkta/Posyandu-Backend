@@ -42,6 +42,8 @@ class LansiaPosyanduController extends Controller
             ->addColumn('action', function($row){
                 return '<a href="javascript:void(0)" onclick="edit('.$row->id.')"
                     title="Edit '.$row->lansia_nama.'" class="btn btn-info btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-edit">&nbsp;edit</i></a>
+                    <a href="javascript:void(0)" onclick="generate_code('.$row->id.')"
+                    title="Generated QR-Code '.$row->lansia_nama.'" class="btn btn-primary btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-barcode">&nbsp;Qr-Code</i></a>
                     <a href="javascript:void(0)" onclick="delete('.$row->id.')"
                     title="Delete '.$row->lansia_nama.'" class="btn btn-danger btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-trash">&nbsp;delete</i></a>
                              <meta name="csrf-token" content="{{ csrf_token() }}">';

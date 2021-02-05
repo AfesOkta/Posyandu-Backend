@@ -69,9 +69,9 @@
                 ajax: '{{route('anggota.json')}}',
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: true, orderable: true},
-                    {data: 'posyandu.posyandu_name', name: 'posyandu.posyandu_name', searchable: true, orderable: true},
-                    {data: 'anggota_kode', name: 'anggota_kode', searchable: true, orderable: true},
-                    {data: 'anggota_nama', name: 'anggota_nama', searchable: true, orderable: true},
+                    {data: 'posyandu.posyandu_nama', name: 'posyandu.posyandu_nama', searchable: true, orderable: true},
+                    {data: 'lansia_kode', name: 'lansia_kode', searchable: true, orderable: true},
+                    {data: 'lansia_nama', name: 'lansia_nama', searchable: true, orderable: true},
                     {data: 'action', className: 'tdCenter', searchable: false, orderable: false}
                 ],
             });
@@ -211,7 +211,7 @@
         var edit = function(id){
             $.ajax({
                 type: "get",
-                url: "{{ url('lansia/get') }}/"+id,
+                url: "{{ url('anggota/get') }}/"+id,
                 dataType: "json",
                 success: function(data) {
                     console.log(data);
