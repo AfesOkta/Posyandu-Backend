@@ -76,6 +76,7 @@ Route::group([
 
     Route::get('/get/{id}', [App\Http\Controllers\LansiaPosyanduController::class, 'show'])->name('anggota.get');
 
+    Route::get('/generate/qr-code/{id}',[App\Http\Controllers\LansiaPosyanduController::class, 'qr_code'])->name('anggota.generate.qrcode');
 });
 
 Route::group([

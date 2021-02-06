@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class LansiaPosyanduController extends Controller
@@ -45,7 +46,7 @@ class LansiaPosyanduController extends Controller
                 return '<a href="javascript:void(0)" onclick="edit('.$row->id.')"
                     title="Edit '.$row->lansia_nama.'" class="btn btn-info btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-edit">&nbsp;edit</i></a>
                     <a href="javascript:void(0)" onclick="generate_code('.$row->id.')"
-                    title="Generated QR-Code '.$row->lansia_nama.'" class="btn btn-primary btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-barcode">&nbsp;Qr-Code</i></a>
+                    title="Generated QR-Code '.$row->lansia_nama.'" class="btn btn-primary btn-sm btn-icon"><i class="fas fa-barcode">&nbsp;Qr-Code</i></a>
                     <a href="javascript:void(0)" onclick="delete('.$row->id.')"
                     title="Delete '.$row->lansia_nama.'" class="btn btn-danger btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-trash">&nbsp;delete</i></a>
                              <meta name="csrf-token" content="{{ csrf_token() }}">';
@@ -156,4 +157,27 @@ class LansiaPosyanduController extends Controller
 
         return response()->json(["status" => $status, "message" => $message]);
     }
+
+    public function qr_code($id)
+    {
+        # code...
+        $lansia = $this->lansiaRepository->findFirst($id);
+        // $output_file = '/img/qr-code/img-' . time() . '.png';
+        // $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
+        //           ->generate("{{url('api/login?e=".$lansia->email."&p=password&po=".$lansia->posyandu_id.")}}",
+        //           storage_path('img/qr-code/img-'. time() . '.png'));
+        // Storage::disk('local')->put($output_file, $qrcode);
+        // return view("anggota.qrcode",compact('qrcode','output_file'));
+
+
+        $fileDest = 'img/qr-code/img-'.$lansia->id.'.png';
+        $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
+                  ->generate("{{url('api/login?e=".$lansia->email."&p=password&po=".$lansia->posyandu_id.")}}");
+
+        Storage::disk('local')->put($fileDest, \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
+        ->generate("{{url('api/login?e=".$lansia->email."&p=password&po=".$lansia->posyandu_id.")}}"));
+
+        return view("anggota.qrcode",compact('qrcode'));
+    }
+
 }

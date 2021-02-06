@@ -273,5 +273,9 @@
                 }
             })
         };
+
+        function generate_code(id) {
+            location.replace('{{url("anggota/generate/qr-code")}}/'+id);
+        }
     </script>
 @endsection
