@@ -37,7 +37,8 @@ class AnggotaRepository
             LansiaPosyandu::LANSIA_NIK => $validateData['lansia_nik'],
             LansiaPosyandu::LANSIA_TELP => $validateData['lansia_telp'],
             LansiaPosyandu::LANSIA_KK => $validateData['lansia_kk'],
-            LansiaPosyandu::USER_ID => Auth::user()->id
+            LansiaPosyandu::USER_ID => Auth::user()->id,
+            LansiaPosyandu::EMAIL   => $validateData['email'],
         ];
         return $this->lansiaPosyandu->create($data);
     }
@@ -52,7 +53,8 @@ class AnggotaRepository
             LansiaPosyandu::LANSIA_NIK => $validateData['lansia_nik'],
             LansiaPosyandu::LANSIA_TELP => $validateData['lansia_telp'],
             LansiaPosyandu::LANSIA_KK => $validateData['lansia_kk'],
-            LansiaPosyandu::USER_ID => Auth::user()->id
+            LansiaPosyandu::USER_ID => Auth::user()->id,
+            LansiaPosyandu::EMAIL   => $validateData['email'],
         ];
 
         return $this->lansiaPosyandu->find($validateData['lansia_id'])->update($data);

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LansiaRequest;
+use App\Models\User;
 use App\Repositories\AnggotaRepository;
 use App\Repositories\PosyanduRepository;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -65,6 +67,14 @@ class LansiaPosyanduController extends Controller
             $validatedData = $request->validated();
             $data = $request->all();
             $this->lansiaRepository->create($data);
+            //Insert Users
+            $data_user = [
+                'email'     => $data['email'],
+                'name'      => $data['lansia_nama'],
+                'password'  => Hash::make("password"),
+                'posyandu_id' => $data['posyandu_id'],
+            ];
+            $user   =   User::create($data_user);
             DB::commit();
             $message = "Tambah data anggota berhasil disimpan";
             $status  = True;

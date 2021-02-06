@@ -85,6 +85,7 @@
                 let lansia_kk = $('.lansia_kk').val();
                 let lansia_nik = $('.lansia_nik').val();
                 let lansia_telp = $('.lansia_telp').val();
+                let email = $('.email').val();
                 let lansia_id = $('#form-input-id').val();
                 $('.save').attr("disabled","disabled");
                 if (lansia_kode == '' || lansia_kode == null || lansia_kode == undefined) {
@@ -122,6 +123,7 @@
                             lansia_nik: lansia_nik,
                             lansia_telp: lansia_telp,
                             lansia_id  : lansia_id,
+                            email      : email,
                         },
                         url: url,
                         success: function (data) {
@@ -192,6 +194,10 @@
                             '<div class="form-group">'+
                                 '<label for="form-input-no-telp">No. Telp</label>'+
                                 '<input type="text" class="form-control lansia_telp" id="form-input-no-telp" placeholder="No. Telp">'+
+                            '</div>'+
+                            '<div class="form-group">'+
+                                '<label for="email">Email</label>'+
+                                '<input type="email" class="form-control email" id="email" placeholder="Email">'+
                             '</div>';
             var title   = 'New Anggota';
             // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
@@ -247,6 +253,10 @@
                                     '<div class="form-group">'+
                                         '<label for="lansia_telp">No. Telp</label>'+
                                         '<input type="text" class="form-control lansia_telp" id="lansia_telp" value="'+data.lansia_telp+'" placeholder="No. Telp">'+
+                                    '</div>'+
+                                    '<div class="form-group">'+
+                                        '<label for="email">Email</label>'+
+                                        '<input type="email" class="form-control email" id="email" value="'+data.email+'" placeholder="Email" disabled="disabled">'+
                                     '</div>';
                     var title   = 'Edit lansia';
                     // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';

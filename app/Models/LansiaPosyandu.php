@@ -19,6 +19,7 @@ class LansiaPosyandu extends Model
     const ID            = 'id';
     const CREATED_AT    = 'created_at';
     const UPDATED_AT    = 'updated_at';
+    const EMAIL         = 'email';
 
     protected $table = 'lansia_posyandu';
     protected $primarykey = 'id';
@@ -34,7 +35,8 @@ class LansiaPosyandu extends Model
         self::LANSIA_ALAMAT,
         self::USER_ID,
         self::LANSIA_NAMA,
-        self::ID
+        self::ID,
+        self::EMAIL
     ];
 
     protected $hidden = [
