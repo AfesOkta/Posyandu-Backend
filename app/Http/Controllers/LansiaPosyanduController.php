@@ -162,22 +162,27 @@ class LansiaPosyanduController extends Controller
     {
         # code...
         $lansia = $this->lansiaRepository->findFirst($id);
+        $fileDest = 'img/qr-code/img-'.$lansia->id.'.png';
         // $output_file = '/img/qr-code/img-' . time() . '.png';
-        // $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
-        //           ->generate("{{url('api/login?e=".$lansia->email."&p=password&po=".$lansia->posyandu_id.")}}",
-        //           storage_path('img/qr-code/img-'. time() . '.png'));
-        // Storage::disk('local')->put($output_file, $qrcode);
+        $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
+                  ->generate("{{url('api/login?e=".$lansia->email."&po=".$lansia->posyandu_id.")}}",
+                  storage_path('app/'.$fileDest));
+
+        Storage::disk('local')->put($fileDest, $qrcode);
+
         // return view("anggota.qrcode",compact('qrcode','output_file'));
 
 
-        $fileDest = 'img/qr-code/img-'.$lansia->id.'.png';
-        $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
-                  ->generate("{{url('api/login?e=".$lansia->email."&p=password&po=".$lansia->posyandu_id.")}}");
+        // $fileDest = 'img/qr-code/img-'.$lansia->id.'.png';
 
-        Storage::disk('local')->put($fileDest, \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
-        ->generate("{{url('api/login?e=".$lansia->email."&p=password&po=".$lansia->posyandu_id.")}}"));
+        // $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
+        //           ->generate("{{url('api/login?e=".$lansia->email."&p=".$lansia->posyandu_id.")}}");
 
-        return view("anggota.qrcode",compact('qrcode'));
+        $url = url("api/login?e='.$lansia->email.'&p='.$lansia->posyandu_id.");
+        $url_down = url(storage_path("app/'+.$fileDest+"));
+        // Storage::disk('local')->put($fileDest, $qrcode);
+
+        return view("anggota.qrcode",compact('url','url_down','fileDest'));
     }
 
 }

@@ -42,7 +42,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             "email" =>  "required|email",
-            "password" =>  "required",
+            //"password" =>  "required",
             'posyandu'  => "required",
         ]);
 
@@ -56,7 +56,7 @@ class UserController extends Controller
             return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
         }
 
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+        if(Auth::attempt(['email' => $request->email, 'posyandu' => $request->posyandu])){
             $user       =       Auth::user();
             $token      =       $user->createToken('token')->plainTextToken;
 

@@ -21,6 +21,8 @@ Route::post("login", [\App\Http\Controllers\UserController::class, "login"]);
 
 Route::get("posyandu", [\App\Http\Controllers\JsonController::class, "posyandu"]);
 
+Route::post("absensi", [\App\Http\Controllers\AbsensiController::class, "absensi"]);
+
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

@@ -23,7 +23,7 @@
 
             <h1>QR Code Generator</h1>
 
-            {!! $qrcode !!}
+            <a href="{!! base64_encode(QrCode::format('png')->size(250)->generate($url,storage_path('app/'.$fileDest))) !!}" download><img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(250)->generate($url)) !!} "></a>
 
             </div>
 
