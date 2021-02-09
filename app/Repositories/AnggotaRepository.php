@@ -17,6 +17,11 @@ class AnggotaRepository
         return $this->lansiaPosyandu->with('posyandu')->get();
     }
 
+    public function findAnggotaByEmail($email)
+    {
+        return $this->lansiaPosyandu->where('email','=',$email)->first();
+    }
+
     public function findFirst($id)
     {
         return $this->lansiaPosyandu->find($id);

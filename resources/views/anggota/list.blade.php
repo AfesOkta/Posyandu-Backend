@@ -277,5 +277,50 @@
         function generate_code(id) {
             location.replace('{{url("anggota/generate/qr-code")}}/'+id);
         }
+
+        var hapus = function(id){
+            swal({
+                title: "Yakin?",
+                text: "Data Anggota mau dihapus?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ya, hapus saja!",
+                closeOnConfirm: false
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: {_token: '{{ csrf_token() }}', id: id},
+                    url: "{{ route('anggota.delete') }}",
+                    success: function (data) {
+                        if (data.status) {
+                            $.toast({
+                                    heading: 'Success',
+                                    text: data.message,
+                                    showHideTransition: 'slide',
+                                    icon: 'success'
+                                }),
+                            location.reload();
+                        } else {
+                            $.toast({
+                                heading: 'Error',
+                                text: "Data anggota tidak dapat dihapus",
+                                showHideTransition: 'plain',
+                                icon: 'error'
+                            })
+                        }
+                    },
+                    error: function (data) {
+                        $.toast({
+                            heading: 'Error',
+                            text: "Data anggota tidak ditemukan",
+                            showHideTransition: 'plain',
+                            icon: 'error'
+                        })
+                    }
+                });
+            });
+        }
     </script>
 @endsection

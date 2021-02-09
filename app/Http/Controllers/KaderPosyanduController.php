@@ -32,7 +32,7 @@ class KaderPosyanduController extends Controller
             ->addColumn('action', function($row){
                 return '<a href="javascript:void(0)" onclick="edit('.$row->id.')"
                     title="Edit '.$row->kader_nama.'" class="btn btn-info btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-edit">&nbsp;edit</i></a>
-                    <a href="javascript:void(0)" onclick="delete('.$row->id.')"
+                    <a href="javascript:void(0)" onclick="hapus('.$row->id.')"
                     title="Delete '.$row->kader_nama.'" class="btn btn-danger btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-trash">&nbsp;delete</i></a>
                              <meta name="csrf-token" content="{{ csrf_token() }}">';
             })

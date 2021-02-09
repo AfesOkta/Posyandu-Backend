@@ -47,7 +47,7 @@ class LansiaPosyanduController extends Controller
                     title="Edit '.$row->lansia_nama.'" class="btn btn-info btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-edit">&nbsp;edit</i></a>
                     <a href="javascript:void(0)" onclick="generate_code('.$row->id.')"
                     title="Generated QR-Code '.$row->lansia_nama.'" class="btn btn-primary btn-sm btn-icon"><i class="fas fa-barcode">&nbsp;Qr-Code</i></a>
-                    <a href="javascript:void(0)" onclick="delete('.$row->id.')"
+                    <a href="javascript:void(0)" onclick="hapus('.$row->id.')"
                     title="Delete '.$row->lansia_nama.'" class="btn btn-danger btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-trash">&nbsp;delete</i></a>
                              <meta name="csrf-token" content="{{ csrf_token() }}">';
             })
