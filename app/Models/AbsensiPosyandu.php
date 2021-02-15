@@ -16,6 +16,7 @@ class AbsensiPosyandu extends Model
     const CREATED_AT    = 'created_at';
     const UPDATED_AT    = 'updated_at';
     const ID            = 'id';
+    const STATUS        = 'status';
 
     protected $table = 'absensi_posyandu';
     protected $timestamp = true;
@@ -26,7 +27,8 @@ class AbsensiPosyandu extends Model
         self::KADER_ID,
         self::MASUK,
         self::PULANG,
-        self::ID
+        self::ID,
+        self::STATUS
     ];
 
     protected $hidden = [
@@ -40,5 +42,9 @@ class AbsensiPosyandu extends Model
 
     public function anggota() {
         return $this->belongsTo(LansiaPosyandu::class,'lansia_id','id');
+    }
+
+    public function kader() {
+        return $this->belongsTo(KaderPosyandu::class,'kader_id','id');
     }
 }

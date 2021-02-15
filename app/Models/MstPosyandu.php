@@ -38,4 +38,9 @@ class MstPosyandu extends Model
     {
         return $this->hasMany('App\Models\LansiaPosyandu','id','posyandu_id');
     }
+
+    public function absensi()
+    {
+        return $this->hasMany('App\Models\AbsensiPosyandu','id','posyandu_id');
+    }
 }

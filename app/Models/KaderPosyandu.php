@@ -49,4 +49,9 @@ class KaderPosyandu extends Model
     {
         return $this->belongsTo(User::class, 'id', 'user_id');
     }
+
+    public function absensi()
+    {
+        return $this->hasMany('App\Models\AbsensiPosyandu','id','kader_id');
+    }
 }

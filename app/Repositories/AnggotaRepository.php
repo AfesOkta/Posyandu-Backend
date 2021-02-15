@@ -32,6 +32,11 @@ class AnggotaRepository
         return $this->lansiaPosyandu->where($column, $value)->get();
     }
 
+    public function findAnggotaByNikAndPosyandu($nik, $posyandu)
+    {
+        return $this->lansiaPosyandu->where('nik','=',$nik)->where('posyandu_id','=',$posyandu)->first();
+    }
+
     public function create($validateData)
     {
         $data = [

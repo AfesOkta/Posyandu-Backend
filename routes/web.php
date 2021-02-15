@@ -58,6 +58,8 @@ Route::group([
     Route::post('/delete', [App\Http\Controllers\KaderPosyanduController::class, 'destroy'])->name('kader.delete');
 
     Route::get('/get/{id}', [App\Http\Controllers\KaderPosyanduController::class, 'show'])->name('kader.get');
+
+    Route::get('/generate/qr-code/{id}',[App\Http\Controllers\KaderPosyanduController::class, 'qr_code'])->name('kader.generate.qrcode');
 });
 
 Route::group([
@@ -77,6 +79,20 @@ Route::group([
     Route::get('/get/{id}', [App\Http\Controllers\LansiaPosyanduController::class, 'show'])->name('anggota.get');
 
     Route::get('/generate/qr-code/{id}',[App\Http\Controllers\LansiaPosyanduController::class, 'qr_code'])->name('anggota.generate.qrcode');
+});
+
+Route::group([
+
+    'prefix' => 'absensi',
+
+    'middleware' => 'auth'
+
+    ], function () {
+
+    Route::get('/', [App\Http\Controllers\AbsensiController::class, 'index'])->name('absensi');
+    Route::get('/json', [App\Http\Controllers\AbsensiController::class, 'json'])->name('absensi.json');
+
+    Route::get('/get/{id}', [App\Http\Controllers\AbsensiController::class, 'show'])->name('absensi.get');
 });
 
 Route::group([

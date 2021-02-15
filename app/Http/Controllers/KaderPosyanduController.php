@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class KaderPosyanduController extends Controller
@@ -145,5 +146,21 @@ class KaderPosyanduController extends Controller
         }
 
         return response()->json(["status" => $status, "message" => $message]);
+    }
+
+    public function qr_code($id)
+    {
+        $kader = $this->kaderRepository->findFirst($id);
+        $fileDest = 'img/qr-code/img-'.$kader->id.'.png';
+        $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
+                  ->generate("{{url('api/login?n='.$kader->nik.'&p='.$kader->posyandu_id.')}}",
+                  storage_path('app/'.$fileDest));
+
+        Storage::disk('local')->put($fileDest, $qrcode);
+
+        $url = url("api/login?n='.$kader->email.'&p='.$kader->posyandu_id");
+        $url_down = url(storage_path("app/'+.$fileDest+"));
+
+        return view("kader.qrcode",compact('url','url_down','fileDest'));
     }
 }
