@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', 'Data Kader')
+@section('title', 'Data Absensi')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('stisla/modules/datatables/datatables.css') }}">
@@ -10,12 +10,12 @@
 @endsection
 
 @section('content')
-<x-section-header heading="Kader Posyandu" breadcrumb="Kader Posyandu" />
+<x-section-header heading="Absensi" breadcrumb="Absensi" />
 
 <div class="card">
     <div class="card-header">
         <div class="col-12 col-sm-12">
-            <b>Daftar Absensi Kader dan Anggota<b>
+            <b>Daftar Absensi<b>
             <button class="btn btn-primary dropdown-toggle float-right" type="button"
                     data-toggle="dropdown"><i class="fas fa-plus-square"></i>
                 <span class="caret"></span></button>
@@ -47,3 +47,11 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('plugin')
+    <script src="{{asset('stisla/modules/datatables/datatables.js')}}"></script>
+    <script src="{{asset('stisla/modules/select2/dist/js/select2.js')}}"></script>
+    <script src="{{asset('stisla/modules/jquery-toast/jquery.toast.min.js')}}"></script>
+@endsection

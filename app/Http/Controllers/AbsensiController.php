@@ -35,30 +35,35 @@ class AbsensiController extends Controller
             "nik" =>  "required",
             'posyandu'  => "required",
         ]);
-        if ($request->e =="" && $request->p=="") {
+        if ($request->e =="" && $request->p=="" && $request->ps == "") {
             return response()->json(["validation_errors" => $validator->errors()]);
         }
 
         // $existsUser = $this->userRepository->findUserByEmailAndPosyandu($request->e, $request->p);
         // if (!is_null($existsUser)) {
-        $anggota = $this->lansiaRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
-        if(!is_null($anggota)) {
-            $data = [
-                AbsensiPosyandu::POSYANDU_ID => $request->p,
-                AbsensiPosyandu::LANSIA_ID   => $anggota->id,
-                AbsensiPosyandu::MASUK       => date('Y-m-d h:i:s'),
-                AbsensiPosyandu::STATUS      => 0,
-            ];
-            $store = $this->absensiRepository->create($data);
-            if ($store) {
-                return response()->json(["status" => "success", "success" => true, "message" => "anggota berhasil absensi masuk"]);
-            }else{
-                return response()->json(["status" => "failed", "success" => false, "message" => "anggota tidak berhasil absensi masuk"]);
-            }
-
-        }else{
+        if ($request->p != $request->ps) {
             return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
+        } else {
+            $anggota = $this->lansiaRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
+            if(!is_null($anggota)) {
+                $data = [
+                    AbsensiPosyandu::POSYANDU_ID => $request->p,
+                    AbsensiPosyandu::LANSIA_ID   => $anggota->id,
+                    AbsensiPosyandu::MASUK       => date('Y-m-d h:i:s'),
+                    AbsensiPosyandu::STATUS      => 0,
+                ];
+                $store = $this->absensiRepository->create($data);
+                if ($store) {
+                    return response()->json(["status" => "success", "success" => true, "message" => "anggota berhasil absensi masuk"]);
+                }else{
+                    return response()->json(["status" => "failed", "success" => false, "message" => "anggota tidak berhasil absensi masuk"]);
+                }
+
+            }else{
+                return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
+            }
         }
+
     }
 
     public function absensi_anggota_pulang(Request $request)
@@ -67,31 +72,34 @@ class AbsensiController extends Controller
             "nik" =>  "required",
             'posyandu'  => "required",
         ]);
-        if ($request->e =="" && $request->p=="") {
+        if ($request->e =="" && $request->p=="" && $request->ps == "") {
             return response()->json(["validation_errors" => $validator->errors()]);
         }
-
-        $anggota = $this->lansiaRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
-        if(!is_null($anggota)) {
-            $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($anggota->id, $request->p, 0);
-            if (!is_null($existsAbsensi)) {
-                $data = [
-                    AbsensiPosyandu::POSYANDU_ID => $request->p,
-                    AbsensiPosyandu::LANSIA_ID   => $anggota->id,
-                    AbsensiPosyandu::PULANG       => date('Y-m-d h:i:s'),
-                    AbsensiPosyandu::STATUS         => 1,
-                ];
-                $store = $this->absensiRepository->update($data, $existsAbsensi->id);
-                if ($store) {
-                    return response()->json(["status" => "success", "success" => true, "message" => "anggota berhasil absensi pulang"]);
+        if ($request->p != $request->ps) {
+            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
+        } else {
+            $anggota = $this->lansiaRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
+            if(!is_null($anggota)) {
+                $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($anggota->id, $request->p, 0);
+                if (!is_null($existsAbsensi)) {
+                    $data = [
+                        AbsensiPosyandu::POSYANDU_ID => $request->p,
+                        AbsensiPosyandu::LANSIA_ID   => $anggota->id,
+                        AbsensiPosyandu::PULANG       => date('Y-m-d h:i:s'),
+                        AbsensiPosyandu::STATUS         => 1,
+                    ];
+                    $store = $this->absensiRepository->update($data, $existsAbsensi->id);
+                    if ($store) {
+                        return response()->json(["status" => "success", "success" => true, "message" => "anggota berhasil absensi pulang"]);
+                    }else{
+                        return response()->json(["status" => "failed", "success" => false, "message" => "anggota tidak berhasil absensi pulang"]);
+                    }
                 }else{
-                    return response()->json(["status" => "failed", "success" => false, "message" => "anggota tidak berhasil absensi pulang"]);
+                    return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
                 }
             }else{
                 return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
             }
-        }else{
-            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
         }
     }
 
@@ -102,25 +110,29 @@ class AbsensiController extends Controller
             "nik" =>  "required",
             'posyandu'  => "required",
         ]);
-        if ($request->e =="" && $request->p=="") {
+        if ($request->e =="" && $request->p=="" && $request->ps == "") {
             return response()->json(["validation_errors" => $validator->errors()]);
         }
-        $kader = $this->kaderRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
-        if(!is_null($kader)) {
-            $data = [
-                AbsensiPosyandu::POSYANDU_ID    => $request->p,
-                AbsensiPosyandu::KADER_ID       => $kader->id,
-                AbsensiPosyandu::MASUK          => date('Y-m-d h:i:s'),
-                AbsensiPosyandu::STATUS         => 0,
-            ];
-            $store = $this->absensiRepository->create($data);
-            if ($store) {
-                return response()->json(["status" => "success", "success" => true, "message" => "Kader berhasil absensi masuk"]);
+        if ($request->p != $request->ps) {
+            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
+        } else {
+            $kader = $this->kaderRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
+            if(!is_null($kader)) {
+                $data = [
+                    AbsensiPosyandu::POSYANDU_ID    => $request->p,
+                    AbsensiPosyandu::KADER_ID       => $kader->id,
+                    AbsensiPosyandu::MASUK          => date('Y-m-d h:i:s'),
+                    AbsensiPosyandu::STATUS         => 0,
+                ];
+                $store = $this->absensiRepository->create($data);
+                if ($store) {
+                    return response()->json(["status" => "success", "success" => true, "message" => "Kader berhasil absensi masuk"]);
+                }else{
+                    return response()->json(["status" => "failed", "success" => false, "message" => "Kader tidak berhasil absensi masuk"]);
+                }
             }else{
-                return response()->json(["status" => "failed", "success" => false, "message" => "Kader tidak berhasil absensi masuk"]);
+                return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! kader not found"]);
             }
-        }else{
-            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! kader not found"]);
         }
     }
 
@@ -131,30 +143,34 @@ class AbsensiController extends Controller
             "nik" =>  "required",
             'posyandu'  => "required",
         ]);
-        if ($request->e =="" && $request->p=="") {
+        if ($request->e =="" && $request->p=="" && $request->ps == "") {
             return response()->json(["validation_errors" => $validator->errors()]);
         }
-        $kader = $this->kaderRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
-        if(!is_null($kader)) {
-            $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($kader->id, $request->p, 0);
-            if (!is_null($existsAbsensi)) {
-                $data = [
-                    AbsensiPosyandu::POSYANDU_ID    => $request->p,
-                    AbsensiPosyandu::KADER_ID       => $kader->id,
-                    AbsensiPosyandu::PULANG         => date('Y-m-d h:i:s'),
-                    AbsensiPosyandu::STATUS         => 1,
-                ];
-                $store = $this->absensiRepository->update($data, $existsAbsensi->id);
-                if ($store) {
-                    return response()->json(["status" => "success", "success" => true, "message" => "Kader berhasil absensi pulang"]);
+        if ($request->p != $request->ps) {
+            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
+        } else {
+            $kader = $this->kaderRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
+            if(!is_null($kader)) {
+                $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($kader->id, $request->p, 0);
+                if (!is_null($existsAbsensi)) {
+                    $data = [
+                        AbsensiPosyandu::POSYANDU_ID    => $request->p,
+                        AbsensiPosyandu::KADER_ID       => $kader->id,
+                        AbsensiPosyandu::PULANG         => date('Y-m-d h:i:s'),
+                        AbsensiPosyandu::STATUS         => 1,
+                    ];
+                    $store = $this->absensiRepository->update($data, $existsAbsensi->id);
+                    if ($store) {
+                        return response()->json(["status" => "success", "success" => true, "message" => "Kader berhasil absensi pulang"]);
+                    }else{
+                        return response()->json(["status" => "failed", "success" => false, "message" => "Kader tidak berhasil absensi pulang"]);
+                    }
                 }else{
-                    return response()->json(["status" => "failed", "success" => false, "message" => "Kader tidak berhasil absensi pulang"]);
+                    return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! kader not found"]);
                 }
             }else{
                 return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! kader not found"]);
             }
-        }else{
-            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! kader not found"]);
         }
     }
 
