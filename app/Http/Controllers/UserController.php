@@ -56,7 +56,7 @@ class UserController extends Controller
             return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
         }
 
-        if(Auth::attempt(['email' => $request->email, 'posyandu' => $request->posyandu])){
+        if(Auth::attempt(['email' => $request->email, 'posyandu_id' => $request->posyandu])){
             $user       =       Auth::user();
             $token      =       $user->createToken('token')->plainTextToken;
 
