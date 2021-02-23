@@ -52,15 +52,20 @@ class UserController extends Controller
 
         $user = User::where("email", $request->email)->where("posyandu_id", $request->posyandu)->first();
 
-        if(is_null($user)) {
-            return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
-        }
+        // if(is_null($user)) {
+        //     return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
+        // }
 
-        if(Auth::attempt(['email' => $request->email, 'posyandu_id' => $request->posyandu])){
-            $user       =       Auth::user();
-            $token      =       $user->createToken('token')->plainTextToken;
+        if(!is_null($user)){
+            $userLogin  =  Auth::loginUsingId($user->id,false);
+            if ($userLogin) {
+                $user       =       Auth::user();
+                $token      =       $user->createToken('token')->plainTextToken;
 
-            return response()->json(["status" => "success", "login" => true, "token" => $token, "data" => $user]);
+                return response()->json(["status" => "success", "login" => true, "token" => $token, "data" => $user]);
+            }else{
+                return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
+            }
         }
         else {
             return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! invalid password"]);
