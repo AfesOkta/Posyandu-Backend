@@ -153,12 +153,12 @@ class KaderPosyanduController extends Controller
         $kader = $this->kaderRepository->findFirst($id);
         $fileDest = 'img/qr-code/img-'.$kader->id.'.png';
         $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
-                  ->generate("{{url('api/login?n='.$kader->nik.'&p='.$kader->posyandu_id.')}}",
+                  ->generate("{{url('api/login?n='.$kader->nik.'&p='.$kader->posyandu_kode.')}}",
                   storage_path('app/'.$fileDest));
 
         Storage::disk('local')->put($fileDest, $qrcode);
 
-        $url = url("api/login?n='.$kader->email.'&p='.$kader->posyandu_id");
+        $url = url("api/login?n='.$kader->email.'&p='.$kader->posyandu_kode");
         $url_down = url(storage_path("app/'+.$fileDest+"));
 
         return view("kader.qrcode",compact('url','url_down','fileDest'));

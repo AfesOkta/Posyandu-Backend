@@ -29,13 +29,13 @@ class AbsensiController extends Controller
         $this->absensiRepository    = $absensiRepository;
     }
 
-    public function absensi_anggota_masuk(Request $request)
+    public function absensi_masuk(Request $request)
     {
         $validator = Validator::make($request->all(), [
             "nik" =>  "required",
             'posyandu'  => "required",
         ]);
-        if ($request->e =="" && $request->p=="" && $request->ps == "") {
+        if ($request->n =="" && $request->p=="" && $request->ps == "") {
             return response()->json(["validation_errors" => $validator->errors()]);
         }
 
@@ -58,21 +58,38 @@ class AbsensiController extends Controller
                 }else{
                     return response()->json(["status" => "failed", "success" => false, "message" => "anggota tidak berhasil absensi masuk"]);
                 }
+            }
 
-            }else{
-                return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
+            $kader = $this->kaderRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
+            if(!is_null($kader)) {
+                $data = [
+                    AbsensiPosyandu::POSYANDU_ID    => $request->p,
+                    AbsensiPosyandu::KADER_ID       => $kader->id,
+                    AbsensiPosyandu::MASUK          => date('Y-m-d h:i:s'),
+                    AbsensiPosyandu::STATUS         => 0,
+                ];
+                $store = $this->absensiRepository->create($data);
+                if ($store) {
+                    return response()->json(["status" => "success", "success" => true, "message" => "Kader berhasil absensi masuk"]);
+                }else{
+                    return response()->json(["status" => "failed", "success" => false, "message" => "Kader tidak berhasil absensi masuk"]);
+                }
+            }
+
+            if (is_null($anggota) && is_null($kader)) {
+                return response()->json(["status" => "failed", "success" => false, "message" => "Tidak berhasil absensi masuk"]);
             }
         }
 
     }
 
-    public function absensi_anggota_pulang(Request $request)
+    public function absensi_pulang(Request $request)
     {
         $validator = Validator::make($request->all(), [
             "nik" =>  "required",
             'posyandu'  => "required",
         ]);
-        if ($request->e =="" && $request->p=="" && $request->ps == "") {
+        if ($request->n =="" && $request->p=="" && $request->ps == "") {
             return response()->json(["validation_errors" => $validator->errors()]);
         }
         if ($request->p != $request->ps) {
@@ -97,58 +114,8 @@ class AbsensiController extends Controller
                 }else{
                     return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
                 }
-            }else{
-                return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
             }
-        }
-    }
 
-    public function absensi_kader_masuk(Request $request)
-    {
-        # code...
-        $validator = Validator::make($request->all(), [
-            "nik" =>  "required",
-            'posyandu'  => "required",
-        ]);
-        if ($request->e =="" && $request->p=="" && $request->ps == "") {
-            return response()->json(["validation_errors" => $validator->errors()]);
-        }
-        if ($request->p != $request->ps) {
-            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
-        } else {
-            $kader = $this->kaderRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
-            if(!is_null($kader)) {
-                $data = [
-                    AbsensiPosyandu::POSYANDU_ID    => $request->p,
-                    AbsensiPosyandu::KADER_ID       => $kader->id,
-                    AbsensiPosyandu::MASUK          => date('Y-m-d h:i:s'),
-                    AbsensiPosyandu::STATUS         => 0,
-                ];
-                $store = $this->absensiRepository->create($data);
-                if ($store) {
-                    return response()->json(["status" => "success", "success" => true, "message" => "Kader berhasil absensi masuk"]);
-                }else{
-                    return response()->json(["status" => "failed", "success" => false, "message" => "Kader tidak berhasil absensi masuk"]);
-                }
-            }else{
-                return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! kader not found"]);
-            }
-        }
-    }
-
-    public function absensi_kader_pulang(Request $request)
-    {
-        # code...
-        $validator = Validator::make($request->all(), [
-            "nik" =>  "required",
-            'posyandu'  => "required",
-        ]);
-        if ($request->e =="" && $request->p=="" && $request->ps == "") {
-            return response()->json(["validation_errors" => $validator->errors()]);
-        }
-        if ($request->p != $request->ps) {
-            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
-        } else {
             $kader = $this->kaderRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
             if(!is_null($kader)) {
                 $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($kader->id, $request->p, 0);
@@ -168,8 +135,10 @@ class AbsensiController extends Controller
                 }else{
                     return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! kader not found"]);
                 }
-            }else{
-                return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! kader not found"]);
+            }
+
+            if (is_null($anggota) && is_null($kader)) {
+                return response()->json(["status" => "failed", "success" => false, "message" => "Tidak berhasil absensi pulang"]);
             }
         }
     }

@@ -9,7 +9,7 @@ class AbsensiPosyandu extends Model
 {
     use HasFactory;
     const LANSIA_ID     = 'lansia_id';
-    const POSYANDU_ID   = 'posyandu_id';
+    const POSYANDU_ID   = 'posyandu_kode';
     const KADER_ID      = 'kader_id';
     const MASUK         = 'masuk';
     const PULANG        = 'pulang';
@@ -37,7 +37,7 @@ class AbsensiPosyandu extends Model
     ];
 
     public function posyandu() {
-        return $this->belongsTo(MstPosyandu::class,'posyandu_id','id');
+        return $this->belongsTo(MstPosyandu::class,'posyandu_kode','posyandu_kode');
     }
 
     public function anggota() {

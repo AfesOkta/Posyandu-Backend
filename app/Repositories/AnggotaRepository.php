@@ -19,7 +19,7 @@ class AnggotaRepository
 
     public function findAnggotaByEmail($email)
     {
-        return $this->lansiaPosyandu->where('email','=',$email)->first();
+        return $this->lansiaPosyandu->where('email','=',"$email")->first();
     }
 
     public function findFirst($id)
@@ -34,13 +34,13 @@ class AnggotaRepository
 
     public function findAnggotaByNikAndPosyandu($nik, $posyandu)
     {
-        return $this->lansiaPosyandu->where('nik','=',$nik)->where('posyandu_id','=',$posyandu)->first();
+        return $this->lansiaPosyandu->where('nik','=',$nik)->where('posyandu_kode','=',"$posyandu")->first();
     }
 
     public function create($validateData)
     {
         $data = [
-            LansiaPosyandu::POSYANDU_ID => $validateData['posyandu_id'],
+            LansiaPosyandu::POSYANDU_KODE => $validateData['posyandu_kode'],
             LansiaPosyandu::LANSIA_KODE => $validateData['lansia_kode'],
             LansiaPosyandu::LANSIA_NAMA => $validateData['lansia_nama'],
             LansiaPosyandu::LANSIA_ALAMAT => $validateData['lansia_alamat'],
@@ -56,7 +56,7 @@ class AnggotaRepository
     public function update($validateData)
     {
         $data = [
-            LansiaPosyandu::POSYANDU_ID => $validateData['posyandu_id'],
+            LansiaPosyandu::POSYANDU_KODE => $validateData['posyandu_kode'],
             LansiaPosyandu::LANSIA_KODE => $validateData['lansia_kode'],
             LansiaPosyandu::LANSIA_NAMA => $validateData['lansia_nama'],
             LansiaPosyandu::LANSIA_ALAMAT => $validateData['lansia_alamat'],

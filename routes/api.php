@@ -33,9 +33,7 @@ Route::middleware('auth:api')->group(function() {
 
     //Route::resource('tasks', TaskController::class);
     Route::group(['prefix' => 'absensi'], function () {
-        Route::post("/anggota-masuk",[\App\Http\Controllers\AbsensiController::class, "absensi_anggota_masuk"]);
-        Route::post("/anggota-pulang",[\App\Http\Controllers\AbsensiController::class, "absensi_anggota_pulang"]);
-        Route::post("/kader-masuk",[\App\Http\Controllers\AbsensiController::class, "absensi_kader_masuk"]);
-        Route::post("/kader-pulang",[\App\Http\Controllers\AbsensiController::class, "absensi_kader_masuk"]);
+        Route::post("/masuk",[\App\Http\Controllers\AbsensiController::class, "absensi_masuk"]);
+        Route::post("/pulang",[\App\Http\Controllers\AbsensiController::class, "absensi_pulang"]);
     });
 });

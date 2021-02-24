@@ -62,7 +62,6 @@
     <script>
         $(function () {
             $('body .kode_posyandu').alphaNumericOnly();
-
             var table = $('#table-1').DataTable({
                 //dom: '<"col-md-6"l><"col-md-6"f>rt<"col-md-6"i><"col-md-6"p>',
                 processing: true,

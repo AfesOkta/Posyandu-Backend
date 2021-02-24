@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('logged_in', [\App\Http\Controllers\LoginController::class, 'authenticate'])->name('logged_in');
+
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'doLogin'])->name('doLogin');
     // Route::view('/', 'welcome')->name('welcome');

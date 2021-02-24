@@ -61,6 +61,7 @@
 @section('js')
     <script>
         $(function () {
+            var groupColumn = 1;
             var table = $('#table-1').DataTable({
                 //dom: '<"col-md-6"l><"col-md-6"f>rt<"col-md-6"i><"col-md-6"p>',
                 processing: true,
@@ -74,6 +75,25 @@
                     {data: 'kader_nama', name: 'kader_nama', searchable: true, orderable: true},
                     {data: 'action', className: 'tdCenter', searchable: false, orderable: false}
                 ],
+                "columnDefs": [
+                    { "visible": false, "targets": groupColumn }
+                ],
+                "order": [[ groupColumn, 'asc' ]],
+                "drawCallback": function ( settings ) {
+                    var api = this.api();
+                    var rows = api.rows( {page:'current'} ).nodes();
+                    var last=null;
+
+                    api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
+                        if ( last !== group ) {
+                            $(rows).eq( i ).before(
+                                '<tr class="group text-bold"><td colspan="4"> '+group+'</td></tr>'
+                            );
+
+                            last = group;
+                        }
+                    } );
+                },
             });
 
             $('body #composemodal').on('click','.save',function(e){

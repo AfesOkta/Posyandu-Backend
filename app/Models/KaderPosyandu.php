@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class KaderPosyandu extends Model
 {
     use HasFactory;
-    const POSYANDU_ID   = 'posyandu_id';
+    const POSYANDU_ID   = 'posyandu_kode';
     const KADER_KODE    = 'kader_kode';
     const KADER_NIK     = 'kader_nik';
     const KADER_KK      = 'kader_kk';
@@ -42,7 +42,7 @@ class KaderPosyandu extends Model
     ];
 
     public function posyandu() {
-        return $this->belongsTo(MstPosyandu::class,'posyandu_id','id');
+        return $this->belongsTo(MstPosyandu::class,'posyandu_kode','posyandu_kode');
     }
 
     public function user()

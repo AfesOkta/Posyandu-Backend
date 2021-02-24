@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class LansiaPosyandu extends Model
 {
     use HasFactory;
-    const POSYANDU_ID   = 'posyandu_id';
+    const POSYANDU_KODE = 'posyandu_kode';
     const LANSIA_KODE   = 'lansia_kode';
     const LANSIA_NIK    = 'lansia_nik';
     const LANSIA_KK     = 'lansia_kk';
@@ -27,7 +27,7 @@ class LansiaPosyandu extends Model
     protected $timestamp = false;
 
     protected $fillable = [
-        self::POSYANDU_ID,
+        self::POSYANDU_KODE,
         self::LANSIA_KODE,
         self::LANSIA_NIK,
         self::LANSIA_TELP,
@@ -44,7 +44,7 @@ class LansiaPosyandu extends Model
     ];
 
     public function posyandu() {
-        return $this->belongsTo(MstPosyandu::class,'posyandu_id','id');
+        return $this->belongsTo(MstPosyandu::class,'posyandu_kode','posyandu_kode');
     }
 
     public function userId()

@@ -73,7 +73,7 @@ class LansiaPosyanduController extends Controller
                 'email'     => $data['email'],
                 'name'      => $data['lansia_nama'],
                 'password'  => Hash::make("password"),
-                'posyandu_id' => $data['posyandu_id'],
+                'posyandu_kode' => $data['posyandu_kode'],
             ];
             $user   =   User::create($data_user);
             DB::commit();
@@ -164,12 +164,12 @@ class LansiaPosyanduController extends Controller
         $lansia = $this->lansiaRepository->findFirst($id);
         $fileDest = 'img/qr-code/img-'.$lansia->id.'.png';
         $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
-                  ->generate("{{url('api/login?n='.$lansia->nik.'&p='.$lansia->posyandu_id.')}}",
+                  ->generate("{{url('api/login?n='.$lansia->nik.'&p='.$lansia->posyandu_kode.')}}",
                   storage_path('app/'.$fileDest));
 
         Storage::disk('local')->put($fileDest, $qrcode);
 
-        $url = url("api/login?n='.$lansia->nik.'&p='.$lansia->posyandu_id.");
+        $url = url("api/login?n='.$lansia->nik.'&p='.$lansia->posyandu_kode.");
         $url_down = url(storage_path("app/'+.$fileDest+"));
 
         return view("anggota.qrcode",compact('url','url_down','fileDest'));

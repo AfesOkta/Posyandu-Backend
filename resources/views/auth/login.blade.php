@@ -28,13 +28,13 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('logged_in') }}">
                         @csrf
                         <div class="form-group">
-                            <label for="email">{{ __('Email') }}</label>
-                            <input type="email" id="email" class="form-control @error('email') is-invalid @enderror"
-                                name="email" value="{{ old('email') }}" autofocus />
-                            @error('email')
+                            <label for="name">{{ __('Username') }}</label>
+                            <input type="text" id="name" class="form-control @error('name') is-invalid @enderror"
+                                name="name" value="{{ old('name') }}" autofocus />
+                            @error('name')
                             <span class="invalid-feedback" role="alert">
                                 {{ $message }}
                             </span>
@@ -44,13 +44,13 @@
                         <div class="form-group">
                             <div class="d-block">
                                 <label for="password" class="control-label">{{ __('Password') }}</label>
-                                <div class="float-right">
+                                {{-- <div class="float-right">
                                     @if (Route::has('password.request'))
                                     <a href="{{ route('password.request') }}" class="text-small">
                                         Forgot Password?
                                     </a>
                                     @endif
-                                </div>
+                                </div> --}}
                             </div>
                             <input type="password" name="password"
                                 class="form-control @error('password') is-invalid @enderror"
@@ -62,13 +62,13 @@
                             @enderror
                         </div>
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" name="remember" class="custom-control-input" tabindex="3"
                                     id="remember-me" {{ old('remember') ? 'checked' : '' }}>
                                 <label class="custom-control-label" for="remember-me">Remember Me</label>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
@@ -79,11 +79,11 @@
 
                 </div>
             </div>
-            <div class="mt-3 text-muted text-center">
+            {{-- <div class="mt-3 text-muted text-center">
                 Don't have an account? <a href="{{ route('register') }}">Create One</a>
-            </div>
+            </div> --}}
             <div class="simple-footer">
-                Copyright © Stisla 2018
+                Copyright © Pemerintahan Desa Gelangkulon 2021
             </div>
         </div>
     </div>
