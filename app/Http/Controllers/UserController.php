@@ -88,4 +88,34 @@ class UserController extends Controller
             return response()->json(["status" => "failed", "message" => "Whoops! no user found"]);
         }
     }
+
+    public function logout(Request $request) {
+        $user = User::where("email", $request->email)->first();
+        if(!is_null($user)) {
+            $user_posyandu = DB::table('users_posyandu')->where('user_id',$user->id)->where('posyandu_kode',$request->posyandu)->first();
+            if(!is_null($user_posyandu)){
+                $user = $request->user();
+                $user->currentAccessToken()->delete();
+                $respon = [
+                    'status' => 'success',
+                    'msg' => 'Logout successfully',
+                    'errors' => null,
+                    'content' => null,
+                ];
+                return response()->json($respon, 200);
+            }
+        }
+    }
+
+    public function logoutall(Request $request) {
+        $user = $request->user();
+        $user->tokens()->delete();
+        $respon = [
+            'status' => 'success',
+            'msg' => 'Logout successfully',
+            'errors' => null,
+            'content' => null,
+        ];
+        return response()->json($respon, 200);
+    }
 }

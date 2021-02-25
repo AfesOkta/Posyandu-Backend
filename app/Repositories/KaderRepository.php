@@ -29,7 +29,7 @@ class KaderRepository
     public function findAnggotaByNikAndPosyandu($nik, $posyandu)
     {
         # code...
-        return $this->kaderPosyandu->where('nik','=', $nik)->where('posyandu_id','=', $posyandu)->first();
+        return $this->kaderPosyandu->where('kader_nik','=', $nik)->where('posyandu_kode','=', $posyandu)->first();
     }
     public function create($validateData)
     {

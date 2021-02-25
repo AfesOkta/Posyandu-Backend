@@ -26,7 +26,7 @@ class AbsensiRepository
         # code...
         return $this->absensiPosyandu->query()
             ->where('lansia_id','=', $lansiaId)
-            ->where('posyandu_id','=',$posyandu)
+            ->where('posyandu_kode','=',$posyandu)
             ->where('status','=',$status)->first();
     }
 

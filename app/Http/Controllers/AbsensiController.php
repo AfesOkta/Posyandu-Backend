@@ -46,17 +46,26 @@ class AbsensiController extends Controller
         } else {
             $anggota = $this->lansiaRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
             if(!is_null($anggota)) {
-                $data = [
-                    AbsensiPosyandu::POSYANDU_ID => $request->p,
-                    AbsensiPosyandu::LANSIA_ID   => $anggota->id,
-                    AbsensiPosyandu::MASUK       => date('Y-m-d h:i:s'),
-                    AbsensiPosyandu::STATUS      => 0,
-                ];
-                $store = $this->absensiRepository->create($data);
-                if ($store) {
-                    return response()->json(["status" => "success", "success" => true, "message" => "anggota berhasil absensi masuk"]);
-                }else{
-                    return response()->json(["status" => "failed", "success" => false, "message" => "anggota tidak berhasil absensi masuk"]);
+                $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($anggota->id, $request->p, 1);
+                if (!is_null($existsAbsensi)) {
+                    return response()->json(["status" => "failed", "success" => false, "message" => "error absensi, anggota sudah pernah absen"]);
+                }
+                    $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($anggota->id, $request->p, 0);
+                    if (!is_null($existsAbsensi)) {
+                        return response()->json(["status" => "failed", "success" => false, "message" => "error absensi, anggota sudah pernah absen"]);
+                    }
+                    $data = [
+                        AbsensiPosyandu::POSYANDU_ID => $request->p,
+                        AbsensiPosyandu::LANSIA_ID   => $anggota->id,
+                        AbsensiPosyandu::MASUK       => date('Y-m-d h:i:s'),
+                        AbsensiPosyandu::STATUS      => 0,
+                    ];
+                    $store = $this->absensiRepository->create($data);
+                    if ($store) {
+                        return response()->json(["status" => "success", "success" => true, "message" => "anggota berhasil absensi masuk"]);
+                    }else{
+                        return response()->json(["status" => "failed", "success" => false, "message" => "anggota tidak berhasil absensi masuk"]);
+                    }
                 }
             }
 
