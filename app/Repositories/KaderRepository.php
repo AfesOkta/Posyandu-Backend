@@ -61,4 +61,10 @@ class KaderRepository
 
         return $this->kaderPosyandu->find($validateData['kader_id'])->update($data);
     }
+
+    public function countPosyandu($posyandu_kode)
+    {
+        # code...
+        return $this->kaderPosyandu->where('posyandu_kode', $posyandu_kode)->count();
+    }
 }

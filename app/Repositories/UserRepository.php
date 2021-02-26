@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserRepository
 {
@@ -20,5 +21,12 @@ class UserRepository
     {
         # code...
         return User::where('email','=',$email)->where('posyandu_id','=',$posyandu)->first();
+    }
+
+    public function findAksesPosyandu($user)
+    {
+        # code...
+        return DB::table('users_posyandu')
+            ->where('user_id',$user)->get();
     }
 }

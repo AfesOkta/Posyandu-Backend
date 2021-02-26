@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('logged_in', [\App\Http\Controllers\LoginController::class, 'authenticate'])->name('logged_in');
 
 Route::group(['middleware' => 'auth'], function(){
-    Route::get('/', [\App\Http\Controllers\HomeController::class, 'doLogin'])->name('doLogin');
+    Route::get('/', [\App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
     // Route::view('/', 'welcome')->name('welcome');
 });
 
 Route::middleware('auth', 'verified')->group(function () {
-	Route::view('dashboard', 'dashboard')->name('dashboard');
+	// Route::view('dashboard', 'dashboard')->name('dashboard');
 	Route::view('profile', 'profile')->name('profile');
     Route::view('testing', 'testing')->name('testing');
 

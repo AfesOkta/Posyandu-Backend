@@ -70,4 +70,9 @@ class AnggotaRepository
         return $this->lansiaPosyandu->find($validateData['lansia_id'])->update($data);
     }
 
+    public function countPosyandu($posyandu_kode)
+    {
+        # code...
+        return $this->lansiaPosyandu->where('posyandu_kode', $posyandu_kode)->count();
+    }
 }

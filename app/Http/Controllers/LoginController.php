@@ -13,7 +13,7 @@ class LoginController extends Controller{
         if (Auth::attempt($credentials)) {
             // Jika berhasil login
 
-            return redirect('dashboard');
+            return redirect(route('dashboard'));
 
             //return redirect()->intended('/details');
         }
