@@ -31,6 +31,6 @@ class AbsensiRepository
     }
 
     public function findAll() {
-        return $this->absensiPosyandu->all();
+        return $this->absensiPosyandu->with('posyandu')->with('anggota')->get();
     }
 }

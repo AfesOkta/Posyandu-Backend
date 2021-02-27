@@ -53,8 +53,8 @@ class User extends Authenticatable
         endif;
     }
 
-    public function posyandu()
+    public function getUser()
     {
-        return $this->hasMany(KaderPosyandu::class);
+        return $this->hasMany('App\Models\UsersPosyandu','user_id','id');
     }
 }

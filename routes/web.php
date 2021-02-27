@@ -92,9 +92,23 @@ Route::group([
     ], function () {
 
     Route::get('/', [App\Http\Controllers\AbsensiController::class, 'index'])->name('absensi');
-    Route::get('/json', [App\Http\Controllers\AbsensiController::class, 'json'])->name('absensi.json');
+    Route::get('/json', [App\Http\Controllers\JsonController::class, 'json_absensi'])->name('absensi.json');
 
     Route::get('/get/{id}', [App\Http\Controllers\AbsensiController::class, 'show'])->name('absensi.get');
+});
+
+Route::group([
+
+    'prefix' => 'users',
+
+    'middleware' => 'auth'
+
+    ], function () {
+
+    Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('users');
+    Route::get('/json', [App\Http\Controllers\JsonController::class, 'json_users'])->name('users.json');
+
+    // Route::get('/get/{id}', [App\Http\Controllers\AbsensiController::class, 'show'])->name('absensi.get');
 });
 
 Route::group([

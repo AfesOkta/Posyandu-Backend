@@ -48,6 +48,13 @@
                         <span>Absen Anggota</span>
                     </a>
                 </li>
+
+                <li class="{{ Route::is('users') ? 'active' : '' }}">
+                    <a href="{{route('users')}}">
+                        <i class="fas fa-cogs"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
             </ul>
         </aside>
     </div>

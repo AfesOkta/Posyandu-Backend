@@ -29,4 +29,10 @@ class UserRepository
         return DB::table('users_posyandu')
             ->where('user_id',$user)->get();
     }
+
+    public function findAll()
+    {
+        # code...
+        return $this->user->with('getUser')->get();
+    }
 }

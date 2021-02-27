@@ -31,16 +31,22 @@ class MstPosyandu extends Model
 
     public function kader()
     {
-        return $this->hasMany('App\Models\KaderPosyandu','id','posyandu_id');
+        return $this->hasMany('App\Models\KaderPosyandu','posyandu_kode','posyandu_kode');
     }
 
     public function lansia()
     {
-        return $this->hasMany('App\Models\LansiaPosyandu','id','posyandu_id');
+        return $this->hasMany('App\Models\LansiaPosyandu','posyandu_kode','posyandu_kode');
     }
 
     public function absensi()
     {
-        return $this->hasMany('App\Models\AbsensiPosyandu','id','posyandu_id');
+        return $this->hasMany('App\Models\AbsensiPosyandu','posyandu_kode','posyandu_kode');
+    }
+
+    public function user()
+    {
+        # code...
+        return $this->hasMany('App\Models\UsersPosyandu','posyandu_kode','posyandu_kode');
     }
 }

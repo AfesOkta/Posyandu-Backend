@@ -21,7 +21,7 @@
                 <span class="caret"></span></button>
             <div class="dropdown-menu dropdown-menu-puskesmas dropdown-menu-right" role="menu">
                 <a class="dropdown-item" role="presentation"
-                    href="javascript:void(0)" onClick="open_container();" title="Tambah Kader">Add</a>
+                    href="javascript:void(0)" onClick="open_container();" title="Cetak Absensi">Cetak</a>
             </div>
         </div>
     </div>
@@ -34,8 +34,7 @@
                         #
                         </th>
                         <th class="tdLeft thColor">Kode Posyandu</th>
-                        <th class="tdLeft thColor">Nama Kader</th>
-                        <th class="tdLeft thColor">Nama Anggota</th>
+                        <th class="tdLeft thColor">Nama Anggota/Kader</th>
                         <th class="tdLeft thColor">Masuk</th>
                         <th class="tdLeft thColor">Pulang</th>
                         <th class="tdCenter thColor">Action</th>
@@ -54,4 +53,46 @@
     <script src="{{asset('stisla/modules/datatables/datatables.js')}}"></script>
     <script src="{{asset('stisla/modules/select2/dist/js/select2.js')}}"></script>
     <script src="{{asset('stisla/modules/jquery-toast/jquery.toast.min.js')}}"></script>
+@endsection
+
+@section('js')
+<script>
+    $(function () {
+        let groupColumn = 1;
+        var table = $('#table-1').DataTable({
+            //dom: '<"col-md-6"l><"col-md-6"f>rt<"col-md-6"i><"col-md-6"p>',
+            processing: true,
+            serverSide: true,
+            method: 'get',
+            ajax: '{{route('absensi.json')}}',
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: true, orderable: true},
+                {data: 'posyandu.posyandu_nama', name: 'posyandu.posyandu_nama', searchable: true, orderable: true},
+                {data: 'anggota', name: 'anggota', searchable: true, orderable: true},
+                {data: 'masuk', name: 'masuk', searchable: true, orderable: true},
+                {data: 'pulang', name: 'pulang', searchable: true, orderable: true},
+                {data: 'action', className: 'tdCenter', searchable: false, orderable: false}
+            ],
+            "columnDefs": [
+                { "visible": false, "targets": groupColumn }
+            ],
+            "order": [[ groupColumn, 'asc' ]],
+            "drawCallback": function ( settings ) {
+                var api = this.api();
+                var rows = api.rows( {page:'current'} ).nodes();
+                var last=null;
+
+                api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
+                    if ( last !== group ) {
+                        $(rows).eq( i ).before(
+                            '<tr class="group text-bold"><td colspan="5"> '+group+'</td></tr>'
+                        );
+
+                        last = group;
+                    }
+                } );
+            },
+        });
+    });
+</script>
 @endsection

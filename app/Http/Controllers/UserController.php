@@ -118,4 +118,10 @@ class UserController extends Controller
         ];
         return response()->json($respon, 200);
     }
+
+    public function index()
+    {
+        # code...
+        return view('users.list');
+    }
 }

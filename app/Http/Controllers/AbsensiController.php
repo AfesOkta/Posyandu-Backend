@@ -86,6 +86,7 @@ class AbsensiController extends Controller
                         AbsensiPosyandu::LANSIA_ID   => $existsAnggota->id,
                         AbsensiPosyandu::MASUK       => date('Y-m-d h:i:s'),
                         AbsensiPosyandu::STATUS      => 0,
+                        AbsensiPosyandu::STATUS2     => 0,
                     ];
                     $store = $this->absensiRepository->create($data);
                     if ($store) {
@@ -126,6 +127,7 @@ class AbsensiController extends Controller
                         AbsensiPosyandu::KADER_ID       => $existsKader->id,
                         AbsensiPosyandu::MASUK          => date('Y-m-d h:i:s'),
                         AbsensiPosyandu::STATUS         => 0,
+                        AbsensiPosyandu::STATUS2        => 1,
                     ];
                     $store = $this->absensiRepository->create($data);
                     if ($store) {
@@ -137,5 +139,11 @@ class AbsensiController extends Controller
             }
         }
         return $kader;
+    }
+
+    public function index()
+    {
+        # code...
+        return view('absensi.list');
     }
 }
