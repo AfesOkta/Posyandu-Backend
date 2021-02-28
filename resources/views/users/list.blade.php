@@ -35,7 +35,7 @@
                         <th class="text-center thColor">
                         #
                         </th>
-                        <th class="tdLeft thColor">Posyandu</th>
+                        {{-- <th class="tdLeft thColor">Posyandu</th> --}}
                         <th class="tdLeft thColor">Username</th>
                         <th class="tdLeft thColor">Email</th>
                         <th class="tdCenter thColor">Action</th>
@@ -61,7 +61,7 @@
 @section('js')
      <script>
         $(function () {
-            let groupColumn = 1;
+            // let groupColumn = 1;
             var table = $('#table-1').DataTable({
                 //dom: '<"col-md-6"l><"col-md-6"f>rt<"col-md-6"i><"col-md-6"p>',
                 processing: true,
@@ -70,30 +70,30 @@
                 ajax: '{{route('users.json')}}',
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: true, orderable: true},
-                    {data: 'get_user.posyandu.posyandu_nama', name: 'get_user.posyandu..posyandu_nama', searchable: true, orderable: true},
+                    // {data: 'user_posyandu.posyandu_kode', name: 'user_posyandu.posyandu_kode', searchable: true, orderable: true},
                     {data: 'name', name: 'name', searchable: true, orderable: true},
                     {data: 'email', name: 'email', searchable: true, orderable: true},
                     {data: 'action', className: 'tdCenter', searchable: false, orderable: false}
                 ],
-                "columnDefs": [
-                    { "visible": false, "targets": groupColumn }
-                ],
-                "order": [[ groupColumn, 'asc' ]],
-                "drawCallback": function ( settings ) {
-                    var api = this.api();
-                    var rows = api.rows( {page:'current'} ).nodes();
-                    var last=null;
+                // "columnDefs": [
+                //     { "visible": false, "targets": groupColumn }
+                // ],
+                // "order": [[ groupColumn, 'asc' ]],
+                // "drawCallback": function ( settings ) {
+                //     var api = this.api();
+                //     var rows = api.rows( {page:'current'} ).nodes();
+                //     var last=null;
 
-                    api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
-                        if ( last !== group ) {
-                            $(rows).eq( i ).before(
-                                '<tr class="group text-bold"><td colspan="4"> '+group+'</td></tr>'
-                            );
+                //     api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
+                //         if ( last !== group ) {
+                //             $(rows).eq( i ).before(
+                //                 '<tr class="group text-bold"><td colspan="4"> '+group+'</td></tr>'
+                //             );
 
-                            last = group;
-                        }
-                    } );
-                },
+                //             last = group;
+                //         }
+                //     } );
+                // },
             });
 
             $('body #composemodal').on('click','.save',function(e){

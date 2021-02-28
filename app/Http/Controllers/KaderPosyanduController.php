@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KaderExportController;
 use App\Http\Requests\KaderRequest;
 use App\Models\KaderPosyandu;
 use App\Models\MstPosyandu;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class KaderPosyanduController extends Controller
@@ -162,5 +164,11 @@ class KaderPosyanduController extends Controller
         $url_down = url(storage_path("app/'+.$fileDest+"));
 
         return view("kader.qrcode",compact('url','url_down','fileDest'));
+    }
+
+    public function download()
+    {
+        # code...
+        return Excel::download(new KaderExportController(), 'kader.xlsx');
     }
 }

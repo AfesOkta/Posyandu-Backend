@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AnggotaExportController;
 use App\Http\Requests\LansiaRequest;
 use App\Models\User;
 use App\Repositories\AnggotaRepository;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class LansiaPosyanduController extends Controller
@@ -173,6 +175,12 @@ class LansiaPosyanduController extends Controller
         $url_down = url(storage_path("app/'+.$fileDest+"));
 
         return view("anggota.qrcode",compact('url','url_down','fileDest'));
+    }
+
+    public function download()
+    {
+        # code...
+        return Excel::download(new AnggotaExportController(), 'anggota.xlsx');
     }
 
 }

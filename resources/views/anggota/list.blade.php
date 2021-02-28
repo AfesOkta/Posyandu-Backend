@@ -22,8 +22,8 @@
             <div class="dropdown-menu dropdown-menu-puskesmas dropdown-menu-right" role="menu">
                 <a class="dropdown-item" role="presentation"
                     href="javascript:void(0)" onClick="open_container();" title="Tambah Anggota">Add</a>
-                <a class="dropdown-item" role="presentation" href="javascript:void(0)" data-toggle="modal"
-                    data-target="#anggota-import" title="Import Anggota">Import</a>
+                <a class="dropdown-item" role="presentation"
+                    href="javascript:void(0)" onClick="open_container_import();" title="Import Anggota">Import</a>
             </div>
         </div>
     </div>
@@ -50,6 +50,7 @@
 
     @include('components.modal')
 
+    @include('components.modal_import')
 @endsection
 
 @section('plugin')
@@ -179,6 +180,29 @@
             });
         });
 
+        function open_container_import()
+        {
+            var content = '<form id="import-form" enctype="multipart/form-data" action="{{route('posyandu.import')}}" method="POST">'+
+                                '{{ csrf_field() }}'+
+                                '<div class="modal-body">'+
+                                    '<div class="row clearfix">'+
+                                        '<div class="form-group">'+
+                                            '<div class="col-sm-12">'+
+                                                '<input type="file" id="file" name="file" class="form-control">'+
+                                            '</div>'+
+                                            '<br/>'+
+                                            '<div class="col-sm-4">'+
+                                                '<button type="submit" class="btn btn-primary process">Process <i class="fab fa-upload ml-1"></i></button>'+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</form>';
+            var title   = 'Import Anggota';
+            setModalBoxImport(content, title);
+            $('#importmodal').modal('show');
+        }
+
         function open_container()
         {
             // var size='standard';
@@ -232,6 +256,16 @@
             $('#composemodal').attr('class', 'modal fade')
                 .attr('aria-labelledby','myModalLabel');
             $('.modal-dialog').attr('class','modal-dialog');
+        }
+
+        function setModalBoxImport(content, title)
+        {
+            document.getElementById('modal-body-import').innerHTML=content;
+            document.getElementById('importmodalTitle').innerHTML=title;
+            $('#importmodal').attr('class', 'modal fade')
+                .attr('aria-labelledby','myModalLabel');
+            $('.modal-dialog').attr('class','modal-dialog');
+            $('.download').attr('href','{{route('anggota.download')}}');
         }
 
         var edit = function(id){

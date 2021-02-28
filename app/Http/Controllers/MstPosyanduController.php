@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PosyanduExportController;
 use App\Http\Requests\PosyanduRequest;
+use App\Imports\PosyanduImportController;
 use App\Models\MstPosyandu;
 use App\Repositories\PosyanduRepository;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class MstPosyanduController extends Controller
@@ -119,5 +123,48 @@ class MstPosyanduController extends Controller
         }
 
         return response()->json(["status" => $status, "message" => $message]);
+    }
+
+    public function download()
+    {
+        # code...
+        return Excel::download(new PosyanduExportController(), 'posyandu.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        # code...
+        // validasi
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+        $err_msg_array = array();
+
+        // menangkap file excel
+        $file = $request->file('file');
+
+        // membuat nama file unik
+        $nama_file = rand().$file->getClientOriginalName();
+
+        // upload ke folder file_siswa di dalam folder public
+        $file->move('uploads/file',$nama_file);
+
+        // import data
+        try {
+            $import = Excel::import(new PosyanduImportController(), public_path('/uploads/file/'.$nama_file));
+            //unlink(public_path('uploads/bku/' . $nama_file)); //MENGHAPUS FILE EXCEL YANG TELAH DI-UPLOAD
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+
+            foreach ($failures as $failure) {
+                $message = $failure->values(); // The values of the row that has failed.
+            }
+        }
+        // dd($import);
+        // notifikasi dengan session
+        Session::flash('succses','Posyandu success import data!');
+
+        // alihkan halaman kembali
+        return redirect(route('posyandu'))->with('Success','Import posyandu berhasil!');
     }
 }

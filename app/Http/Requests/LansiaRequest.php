@@ -25,6 +25,10 @@ class LansiaRequest extends FormRequest
     {
         return [
             //
+            'email'         => 'required|unique',
+            'posyandu_kode' => 'required',
+            'lansia_kode'   => 'required',
+            'lansia_nik'    => 'required',
         ];
     }
 }

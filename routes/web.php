@@ -43,6 +43,9 @@ Route::group([
     Route::post('/delete', [App\Http\Controllers\MstPosyanduController::class, 'destroy'])->name('posyandu.delete');
 
     Route::get('/get/{id}', [App\Http\Controllers\MstPosyanduController::class, 'getPosyandu'])->name('posyandu.get');
+
+    Route::get('/download', [App\Http\Controllers\MstPosyanduController::class, 'download'])->name('posyandu.download');
+    Route::post('/import', [App\Http\Controllers\MstPosyanduController::class, 'import'])->name('posyandu.import');
 });
 
 Route::group([
@@ -62,6 +65,9 @@ Route::group([
     Route::get('/get/{id}', [App\Http\Controllers\KaderPosyanduController::class, 'show'])->name('kader.get');
 
     Route::get('/generate/qr-code/{id}',[App\Http\Controllers\KaderPosyanduController::class, 'qr_code'])->name('kader.generate.qrcode');
+
+    Route::get('/download', [App\Http\Controllers\KaderPosyanduController::class, 'download'])->name('kader.download');
+    Route::post('/import', [App\Http\Controllers\KaderPosyanduController::class, 'import'])->name('kader.import');
 });
 
 Route::group([
@@ -81,6 +87,9 @@ Route::group([
     Route::get('/get/{id}', [App\Http\Controllers\LansiaPosyanduController::class, 'show'])->name('anggota.get');
 
     Route::get('/generate/qr-code/{id}',[App\Http\Controllers\LansiaPosyanduController::class, 'qr_code'])->name('anggota.generate.qrcode');
+
+    Route::get('/download', [App\Http\Controllers\LansiaPosyanduController::class, 'download'])->name('anggota.download');
+    Route::post('/import', [App\Http\Controllers\LansiaPosyanduController::class, 'import'])->name('anggot.import');
 });
 
 Route::group([

@@ -7,6 +7,12 @@
 <link rel="stylesheet" href="{{ asset('stisla/modules/jquery-toast/jquery.toast.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/custome.css') }}">
 <link rel="stylesheet" href="{{ asset('stisla/modules/sweetalert/sweetalert.css') }}">
+<style>
+    /* .import {
+        max-height: calc(37vh - 143px);
+        overflow-y: auto;
+    } */
+</style>
 @endsection
 
 @section('content')
@@ -22,8 +28,8 @@
             <div class="dropdown-menu dropdown-menu-puskesmas dropdown-menu-right" role="menu">
                 <a class="dropdown-item" role="presentation"
                     href="javascript:void(0)" onClick="open_container();" title="Tambah Posyandu">Add</a>
-                <a class="dropdown-item" role="presentation" href="javascript:void(0)" data-toggle="modal"
-                    data-target="#Posyandu-import" title="Import Posyandu">Import</a>
+                <a class="dropdown-item" role="presentation"
+                    href="javascript:void(0)" onClick="open_container_import();" title="Import Posyandu">Import</a>
             </div>
         </div>
     </div>
@@ -48,6 +54,8 @@
 </div>
 
     @include('components.modal')
+
+    @include('components.modal_import')
 
 @endsection
 
@@ -137,6 +145,45 @@
                     });
                 }
             });
+
+            // $('body #importmodal').on('click','.process',function(e){
+            //     e.preventDefault();
+            //     $.ajax({
+            //         type: "POST",
+            //         data: {
+            //                 _token: '{{ csrf_token() }}'
+            //         },
+            //         url: "{{route('posyandu.import')}}",
+            //         success: function (data) {
+            //                 if (data.status) {
+            //                     $.toast({
+            //                         heading: 'Success',
+            //                         text: data.message,
+            //                         showHideTransition: 'slide',
+            //                         icon: 'success'
+            //                     }),
+            //                     location.reload();
+            //                 } else {
+            //                     $.toast({
+            //                         heading: 'Error',
+            //                         text: data.message,
+            //                         showHideTransition: 'plain',
+            //                         icon: 'error'
+            //                     });
+            //                     $('.save').removeAttr("disabled");
+            //                 }
+            //             },
+            //             error: function (data) {
+            //                 $.toast({
+            //                     heading: 'Error',
+            //                     text: data.message,
+            //                     showHideTransition: 'plain',
+            //                     icon: 'error'
+            //                 });
+            //                 $('.save').removeAttr("disabled");
+            //             }
+            //     });
+            // })
         });
 
         function open_container()
@@ -158,6 +205,30 @@
             setModalBox(content, title);
             $('#composemodal').modal('show');
         }
+
+        function open_container_import()
+        {
+            var content = '<form id="import-form" enctype="multipart/form-data" action="{{route('posyandu.import')}}" method="POST">'+
+                                '{{ csrf_field() }}'+
+                                '<div class="modal-body">'+
+                                    '<div class="row clearfix">'+
+                                        '<div class="form-group">'+
+                                            '<div class="col-sm-12">'+
+                                                '<input type="file" id="file" name="file" class="form-control">'+
+                                            '</div>'+
+                                            '<br/>'+
+                                            '<div class="col-sm-4">'+
+                                                '<button type="submit" class="btn btn-primary process">Process <i class="fab fa-upload ml-1"></i></button>'+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</form>';
+            var title   = 'Import Posyandu';
+            setModalBoxImport(content, title);
+            $('#importmodal').modal('show');
+        }
+
         function setModalBox(content, title)
         {
             document.getElementById('modal-body').innerHTML=content;
@@ -165,6 +236,16 @@
             $('#composemodal').attr('class', 'modal fade')
                 .attr('aria-labelledby','myModalLabel');
             $('.modal-dialog').attr('class','modal-dialog');
+        }
+
+        function setModalBoxImport(content, title)
+        {
+            document.getElementById('modal-body-import').innerHTML=content;
+            document.getElementById('importmodalTitle').innerHTML=title;
+            $('#importmodal').attr('class', 'modal fade')
+                .attr('aria-labelledby','myModalLabel');
+            $('.modal-dialog').attr('class','modal-dialog');
+            $('.download').attr('href','{{route('posyandu.download')}}');
         }
 
         var edit = function(id){

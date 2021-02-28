@@ -27,7 +27,7 @@ class UsersPosyandu extends Model
         self::CREATED_AT, self::UPDATED_AT
     ];
 
-    public function get_user()
+    public function User()
     {
         # code...
         return $this->belongsTo(User::class,'user_id','id');
@@ -36,6 +36,6 @@ class UsersPosyandu extends Model
     public function posyandu()
     {
         # code...
-        return $this->belongsTo(MstPosyandu::class,'posyandu_kode','posyandu_kode');
+        return $this->hasMany('App\Models\MstPosyandu','posyandu_kode','posyandu_kode');
     }
 }

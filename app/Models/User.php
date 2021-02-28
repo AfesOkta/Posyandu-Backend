@@ -53,7 +53,7 @@ class User extends Authenticatable
         endif;
     }
 
-    public function getUser()
+    public function userposyandu()
     {
         return $this->hasMany('App\Models\UsersPosyandu','user_id','id');
     }

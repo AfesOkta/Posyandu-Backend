@@ -33,6 +33,6 @@ class UserRepository
     public function findAll()
     {
         # code...
-        return $this->user->with('getUser')->get();
+        return $this->user->with('userposyandu')->get();
     }
 }
