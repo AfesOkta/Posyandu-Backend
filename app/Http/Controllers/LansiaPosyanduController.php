@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -167,18 +168,20 @@ class LansiaPosyanduController extends Controller
     {
         # code...
         $lansia = $this->lansiaRepository->findFirst($id);
-        $fileDest = 'img/qr-code/img-'.$lansia->id.'.png';
-        $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
-                  ->generate("{{url('api/login?n='.$lansia->nik.'&p='.$lansia->posyandu_kode.')}}",
-                  storage_path('app/'.$fileDest));
-
-        Storage::disk('local')->put($fileDest, $qrcode);
-
         $url = base64_encode("{'n':".$lansia->nik.",'p':".$lansia->posyandu_kode."}");
+        $dir = url('uploads/img/qr-code/qr-code.png');
+        $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                  ->merge($dir, 0.1, true)
+                  ->size(250)
+                  ->generate($url);
 
-        $url_down = url(storage_path("app/'+.$fileDest+"));
-//pemdes-gelangkulon.com/api/v1/absensi?n,p,ps,0
-        return view("anggota.qrcode",compact('url','url_down','fileDest'));
+        $output_file = 'public/img/qr-code/anggota/img-'.$lansia->id.'.png';
+
+        Storage::disk('local')->put($output_file, $qrcode);
+
+        $filename = 'img-'.$lansia->id.'.png';
+
+        return view("anggota.qrcode",compact('url','filename'));
     }
 
     public function download()
@@ -224,4 +227,23 @@ class LansiaPosyanduController extends Controller
         return redirect(route('anggota'))->with('Success','Import Anggota berhasil!');
     }
 
+    public function download_qrcode($filename)
+    {
+        // Check if file exists in app/storage/file folder
+        $file_path = storage_path() .'/app/public/img/qr-code/anggota/'. $filename;
+        if (file_exists($file_path))
+        {
+            // Send Download
+            return Response::download($file_path, $filename, [
+                'Content-Length: '. filesize($file_path)
+            ]);
+        }
+        else
+        {
+
+            Session::flash('error','Requested file does not exist on our server!');
+            // Error
+            return back();
+        }
+    }
 }

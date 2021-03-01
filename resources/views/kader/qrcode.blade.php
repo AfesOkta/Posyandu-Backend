@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', 'Data Anggota')
+@section('title', 'Data Kader')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('stisla/modules/datatables/datatables.css') }}">
@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-<x-section-header heading="Generate QR Code Anggota" breadcrumb="Generate QrCode"  />
+<x-section-header heading="Generate QR Code Kader" breadcrumb="Generate QrCode" />
 
 @include('common.status')
 @include('common.errors')
@@ -31,7 +31,7 @@
             </div>
             <br/>
             <div class="text-center">
-                <a href="{{url('anggota/download/qr-code/'.$filename)}}" class="btn btn-primary"><i class="fas fa-download"> Download QRCode</i></a>
+                <a href="{{url('kader/download/qr-code/'.$filename)}}" class="btn btn-primary"><i class="fas fa-download"> Download QRCode</i></a>
             </div>
         </div>
     </div>

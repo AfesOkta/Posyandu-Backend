@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,6 +66,7 @@ Route::group([
     Route::get('/get/{id}', [App\Http\Controllers\KaderPosyanduController::class, 'show'])->name('kader.get');
 
     Route::get('/generate/qr-code/{id}',[App\Http\Controllers\KaderPosyanduController::class, 'qr_code'])->name('kader.generate.qrcode');
+    Route::get('download/qr-code/{filename}', [App\Http\Controllers\KaderPosyanduController::class, 'download_qrcode'])->name('kader.download.qrcode');
 
     Route::get('/download', [App\Http\Controllers\KaderPosyanduController::class, 'download'])->name('kader.download');
     Route::post('/import', [App\Http\Controllers\KaderPosyanduController::class, 'import'])->name('kader.import');
@@ -87,6 +89,7 @@ Route::group([
     Route::get('/get/{id}', [App\Http\Controllers\LansiaPosyanduController::class, 'show'])->name('anggota.get');
 
     Route::get('/generate/qr-code/{id}',[App\Http\Controllers\LansiaPosyanduController::class, 'qr_code'])->name('anggota.generate.qrcode');
+    Route::get('download/qr-code/{filename}', [App\Http\Controllers\LansiaPosyanduController::class, 'download_qrcode'])->name('anggota.download.qrcode');
 
     Route::get('/download', [App\Http\Controllers\LansiaPosyanduController::class, 'download'])->name('anggota.download');
     Route::post('/import', [App\Http\Controllers\LansiaPosyanduController::class, 'import'])->name('anggot.import');

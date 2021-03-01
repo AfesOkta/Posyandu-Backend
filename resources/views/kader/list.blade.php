@@ -362,5 +362,9 @@
                 });
             });
         }
+
+        function generate_code(id) {
+            location.replace('{{url("kader/generate/qr-code")}}/'+id);
+        }
     </script>
 @endsection

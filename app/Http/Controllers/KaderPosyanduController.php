@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -38,6 +39,8 @@ class KaderPosyanduController extends Controller
             ->addColumn('action', function($row){
                 return '<a href="javascript:void(0)" onclick="edit('.$row->id.')"
                     title="Edit '.$row->kader_nama.'" class="btn btn-info btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-edit">&nbsp;edit</i></a>
+                    <a href="javascript:void(0)" onclick="generate_code('.$row->id.')"
+                    title="Generated QR-Code '.$row->kader_nama.'" class="btn btn-primary btn-sm btn-icon"><i class="fas fa-barcode">&nbsp;Qr-Code</i></a>
                     <a href="javascript:void(0)" onclick="hapus('.$row->id.')"
                     title="Delete '.$row->kader_nama.'" class="btn btn-danger btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-trash">&nbsp;delete</i></a>
                              <meta name="csrf-token" content="{{ csrf_token() }}">';
@@ -156,20 +159,20 @@ class KaderPosyanduController extends Controller
     public function qr_code($id)
     {
         $kader = $this->kaderRepository->findFirst($id);
-        $fileDest = 'img/qr-code/img-'.$kader->id.'.png';
-
-        $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
-                  ->generate("{{url('api/login?n='.$kader->kader_nik.'&p='.$kader->posyandu_kode.')}}",
-                  storage_path('app/'.$fileDest));
-
-        Storage::disk('local')->put($fileDest, $qrcode);
-
         $url = base64_encode("{'n':".$kader->kader_nik.",'p':".$kader->posyandu_kode."}");
+        $dir = url('uploads/img/qr-code/qr-code.png');
+        $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                  ->merge($dir, 0.1, true)
+                  ->size(250)
+                  ->generate($url);
 
-        // $url = url("api/login?n='.$kader->email.'&p='.$kader->posyandu_kode");
-        $url_down = url(storage_path("app/'+.$fileDest+"));
+        $output_file = 'public/img/qr-code/kader/img-'.$kader->id.'.png';
 
-        return view("kader.qrcode",compact('url','url_down','fileDest'));
+        Storage::disk('local')->put($output_file, $qrcode);
+
+        $filename = 'img-'.$kader->id.'.png';
+
+        return view("kader.qrcode",compact('url','filename'));
     }
 
     public function download()
@@ -213,5 +216,24 @@ class KaderPosyanduController extends Controller
 
         // alihkan halaman kembali
         return redirect(route('kader'))->with('Success','Import posyandu berhasil!');
+    }
+
+    public function download_qrcode($filename)
+    {
+        // Check if file exists in app/storage/file folder
+        $file_path = storage_path() .'/app/public/img/qr-code/kader/'. $filename;
+        if (file_exists($file_path))
+        {
+            // Send Download
+            return Response::download($file_path, $filename, [
+                'Content-Length: '. filesize($file_path)
+            ]);
+        }
+        else
+        {
+            Session::flash('error','Requested file does not exist on our server!');
+            // Error
+            return back();
+        }
     }
 }

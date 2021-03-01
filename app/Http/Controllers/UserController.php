@@ -42,8 +42,8 @@ class UserController extends Controller
     public function login(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            "email" =>  "required|email",
-            //"password" =>  "required",
+            "username" =>  "required",
+            "password" =>  "required",
             'posyandu'  => "required",
         ]);
 
@@ -51,33 +51,32 @@ class UserController extends Controller
             return response()->json(["validation_errors" => $validator->errors()]);
         }
 
-        $user = User::where("email", $request->email)->first();
+        $user = User::where("name", $request->username)->first();
         if(!is_null($user)) {
-            $user_posyandu = DB::table('users_posyandu')->where('user_id',$user->id)->where('posyandu_kode',$request->posyandu)->first();
+            if(Hash::check($request->password, $user->password)) {
+                $user_posyandu = DB::table('users_posyandu')->where('user_id',$user->id)->where('posyandu_kode',$request->posyandu)->first();
 
-            // if(is_null($user)) {
-            //     return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
-            // }
+                if(!is_null($user_posyandu)){
+                    $userLogin  =  Auth::loginUsingId($user->id,false);
+                    if ($userLogin) {
+                        $user       =       Auth::user();
+                        $token      =       $user->createToken('token')->plainTextToken;
 
-            if(!is_null($user_posyandu)){
-                $userLogin  =  Auth::loginUsingId($user->id,false);
-                if ($userLogin) {
-                    $user       =       Auth::user();
-                    $token      =       $user->createToken('token')->plainTextToken;
-
-                    return response()->json(["status" => "success", "login" => true, "token" => $token, "data" => $user]);
-                }else{
-                    return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
+                        return response()->json(["status" => "success", "login" => true, "token" => $token, "data" => $user]);
+                    }else{
+                        return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
+                    }
                 }
-            }
-            else {
-                return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! invalid password"]);
+                else {
+                    return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! invalid password"]);
+                }
+            }else{
+                return response()->json(["status" => "failed", "message" => "Failed! password not found"]);
             }
         }else{
             return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
         }
     }
-
 
     // User Detail
     public function user() {
