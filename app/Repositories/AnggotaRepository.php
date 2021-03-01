@@ -29,8 +29,35 @@ class AnggotaRepository
 
     public function findByColumn($column, $value)
     {
-        return $this->lansiaPosyandu->where($column, $value)->get();
+        // return $this->lansiaPosyandu->where($column, $value)->get();
+        // return $this->lansiaPosyandu->where([
+        //     ['lansia', '=', 'aaaa'],
+        //     ['lansia', '=', 'aaaa'],
+        //     ['lansia', '=', 'aaaa'],
+        // ])->get();
+        // $column = ['lansia', 'nama'];
+        // $value = ['aaa', 'bbb'];
+        $count = is_array($column) ? count($column) : 0;
+        $lansia = $this->lansiaPosyandu;
+        if ($count != 0) {
+            for ($i=0; $i < $count; $i++) {
+                $lansia->where($column[$i], $value[$i]);
+            }
+        } else {
+            $lansia->where($column, $value);
+        }
+        return $lansia->get();
     }
+
+    // public function findByColumnArray($column[])
+    // {
+    //     return $this->lansiaPosyandu->where($column, $value)->get();
+    //     // return $this->lansiaPosyandu->where([
+    //     //     ['lansia', '=', 'aaaa'],
+    //     //     ['lansia', '=', 'aaaa'],
+    //     //     ['lansia', '=', 'aaaa'],
+    //     // ])->get();
+    // }
 
     public function findAnggotaByNikAndPosyandu($nik, $posyandu)
     {

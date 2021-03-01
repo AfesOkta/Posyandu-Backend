@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\KaderExportController;
 use App\Http\Requests\KaderRequest;
+use App\Imports\KaderImportController;
 use App\Models\KaderPosyandu;
 use App\Models\MstPosyandu;
 use App\Repositories\KaderRepository;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+
+use Illuminate\Support\Facades\Session;
 
 class KaderPosyanduController extends Controller
 {
@@ -154,13 +157,16 @@ class KaderPosyanduController extends Controller
     {
         $kader = $this->kaderRepository->findFirst($id);
         $fileDest = 'img/qr-code/img-'.$kader->id.'.png';
+
         $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(250)
-                  ->generate("{{url('api/login?n='.$kader->nik.'&p='.$kader->posyandu_kode.')}}",
+                  ->generate("{{url('api/login?n='.$kader->kader_nik.'&p='.$kader->posyandu_kode.')}}",
                   storage_path('app/'.$fileDest));
 
         Storage::disk('local')->put($fileDest, $qrcode);
 
-        $url = url("api/login?n='.$kader->email.'&p='.$kader->posyandu_kode");
+        $url = base64_encode("{'n':".$kader->kader_nik.",'p':".$kader->posyandu_kode."}");
+
+        // $url = url("api/login?n='.$kader->email.'&p='.$kader->posyandu_kode");
         $url_down = url(storage_path("app/'+.$fileDest+"));
 
         return view("kader.qrcode",compact('url','url_down','fileDest'));
@@ -170,5 +176,42 @@ class KaderPosyanduController extends Controller
     {
         # code...
         return Excel::download(new KaderExportController(), 'kader.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        # code...
+        // validasi
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+        $err_msg_array = array();
+
+        // menangkap file excel
+        $file = $request->file('file');
+
+        // membuat nama file unik
+        $nama_file = rand().$file->getClientOriginalName();
+
+        // upload ke folder file_siswa di dalam folder public
+        $file->move('uploads/file',$nama_file);
+
+        // import data
+        try {
+            $import = Excel::import(new KaderImportController(), public_path('/uploads/file/'.$nama_file));
+            //unlink(public_path('uploads/bku/' . $nama_file)); //MENGHAPUS FILE EXCEL YANG TELAH DI-UPLOAD
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+
+            foreach ($failures as $failure) {
+                $message = $failure->values(); // The values of the row that has failed.
+            }
+        }
+        // dd($import);
+        // notifikasi dengan session
+        Session::flash('succses','Posyandu success import data!');
+
+        // alihkan halaman kembali
+        return redirect(route('kader'))->with('Success','Import posyandu berhasil!');
     }
 }

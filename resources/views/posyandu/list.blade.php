@@ -8,15 +8,17 @@
 <link rel="stylesheet" href="{{ asset('assets/css/custome.css') }}">
 <link rel="stylesheet" href="{{ asset('stisla/modules/sweetalert/sweetalert.css') }}">
 <style>
-    /* .import {
-        max-height: calc(37vh - 143px);
-        overflow-y: auto;
-    } */
+    .bg-red {
+        background-color: red;
+    }
 </style>
 @endsection
 
 @section('content')
 <x-section-header heading="Posyandu" breadcrumb="posyandu" />
+
+@include('common.status')
+@include('common.errors')
 
 <div class="card">
     <div class="card-header">

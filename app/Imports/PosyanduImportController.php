@@ -23,29 +23,31 @@ class PosyanduImportController implements ToModel, WithValidation, SkipsOnFailur
     public function model(array $row)
     {
         $posyanduRepo = new PosyanduRepository(new MstPosyandu());
-        $existsKode = $posyanduRepo->findByColumn('posyandu_kode',$row['posyandu_kode']);
+        $existsKode = $posyanduRepo->findByColumn('posyandu_kode',$row['kode']);
         if ($existsKode->count() == 0) {
             $data = [
-                MstPosyandu::POSYANDU_KODE => $row['posyandu_kode'],
-                MstPosyandu::POSYANDU_NAMA => $row['posyandu_kode'],
+                MstPosyandu::POSYANDU_KODE => $row['kode'],
+                MstPosyandu::POSYANDU_NAMA => $row['nama'],
             ];
             $posyanduRepo->create($data);
+        }else{
+            return session()->flash('error', 'Posyandu Data unsuccessfully added, posyandu already exists.');
         }
     }
 
     public function rules(): array
     {
         return [
-            'posyandu_kode' => 'required',
-            'posyandu_nama' => 'required',
+            'kode' => 'required',
+            'nama' => 'required',
         ];
     }
 
     public function customValidationMessages()
     {
         return [
-            '0.required' => 'Kode Posyandu tidak boleh kosong',
-            '1.required' => 'Nama Posyandu tidak boleh kosong',
+            'kode.required' => 'Kode Posyandu tidak boleh kosong',
+            'nama.required' => 'Nama Posyandu tidak boleh kosong',
         ];
     }
 

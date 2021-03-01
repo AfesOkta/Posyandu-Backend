@@ -53,7 +53,6 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function() {
     Route::get("posyandu", [\App\Http\Controllers\JsonController::class, "posyandu"]);
 
     Route::group(['prefix' => 'absensi'], function () {
-        Route::post("/masuk",[\App\Http\Controllers\AbsensiController::class, "absensi_masuk"]);
-        Route::post("/pulang",[\App\Http\Controllers\AbsensiController::class, "absensi_pulang"]);
+        Route::post("/",[\App\Http\Controllers\AbsensiController::class, "absensi_masuk"]);
     });
 });
