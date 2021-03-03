@@ -108,6 +108,8 @@
                 let lansia_telp = $('.lansia_telp').val();
                 let email = $('.email').val();
                 let lansia_id = $('#form-input-id').val();
+                let ibu       = $('#form-input-ibu').val();
+                let bapak       = $('#form-input-bapak').val()
                 $('.save').attr("disabled","disabled");
                 if (lansia_kode == '' || lansia_kode == null || lansia_kode == undefined) {
                     $.toast({
@@ -145,6 +147,8 @@
                             lansia_telp: lansia_telp,
                             lansia_id  : lansia_id,
                             email      : email,
+                            ibu        : ibu,
+                            bapak        : bapak,
                         },
                         url: url,
                         success: function (data) {
@@ -211,37 +215,69 @@
                                 '<select id="posyandu_id" name="posyandu_id" class="form-control posyandu_id">'+
                                     '<option value="">Silahkan pilih Posyandu</option>'+
                                     @foreach($posyandus as $posyandu)
-                                    '<option value="{{ $posyandu->id }}" data-name="{{$posyandu->posyandu_nama}}">{{ $posyandu->posyandu_nama }}</option>'+
+                                    '<option value="{{ $posyandu->posyandu_kode }}" data-name="{{$posyandu->posyandu_nama}}">{{ $posyandu->posyandu_nama }}</option>'+
                                     @endforeach
                                 '</select>'+
                             '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="form-input-kode">Kode Anggota</label>'+
-                                '<input type="text" class="form-control lansia_kode" id="form-input-kode" placeholder="Kode lansia">'+
+                            '<div class="row">'+
+                                '<div class="col-lg-4 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="form-input-kode">Kode Anggota</label>'+
+                                        '<input type="text" class="form-control lansia_kode" id="form-input-kode" placeholder="Kode lansia">'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-lg-8 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="form-input-nama">Nama Anggota</label>'+
+                                        '<input type="text" class="form-control lansia_nama" id="form-input-nama" placeholder="Nama Anggota">'+
+                                    '</div>'+
+                                '</div>'+
                             '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="form-input-nama">Nama Anggota</label>'+
-                                '<input type="text" class="form-control lansia_nama" id="form-input-nama" placeholder="Nama Anggota">'+
+                            '<div class="row">'+
+                                '<div class="col-lg-6 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="form-input-ibu">Nama Ibu</label>'+
+                                        '<input type="text" class="form-control nama_ibu" id="form-input-ibu" placeholder="Nama Ibu">'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-lg-6 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="form-input-bapak">Nama Bapak</label>'+
+                                        '<input type="text" class="form-control nama_bapak" id="form-input-bapak" placeholder="Nama Bapak">'+
+                                    '</div>'+
+                                '</div>'+
                             '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="form-input-nik">NIK Anggota</label>'+
-                                '<input type="text" class="form-control lansia_nik" id="form-input-nik" placeholder="NIK Anggota">'+
-                            '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="form-input-kk">KK Anggota</label>'+
-                                '<input type="text" class="form-control lansia_kk" id="form-input-kk" placeholder="KK Anggota">'+
+                            '<div class="row">'+
+                                '<div class="col-lg-6 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="form-input-nik">NIK Anggota</label>'+
+                                        '<input type="text" class="form-control lansia_nik" id="form-input-nik" placeholder="NIK Anggota">'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-lg-6 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="form-input-kk">KK Anggota</label>'+
+                                        '<input type="text" class="form-control lansia_kk" id="form-input-kk" placeholder="KK Anggota">'+
+                                    '</div>'+
+                                '</div>'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label for="form-input-alamat">Alamat Anggota</label>'+
                                 '<input type="text" class="form-control lansia_alamat" id="form-input-alamat" placeholder="Alamat Anggota">'+
                             '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="form-input-no-telp">No. Telp</label>'+
-                                '<input type="text" class="form-control lansia_telp" id="form-input-no-telp" placeholder="No. Telp">'+
-                            '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="email">Email</label>'+
-                                '<input type="email" class="form-control email" id="email" placeholder="Email">'+
+                            '<div class="row">'+
+                                '<div class="col-lg-6 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="form-input-no-telp">No. Telp</label>'+
+                                        '<input type="text" class="form-control lansia_telp" id="form-input-no-telp" placeholder="No. Telp">'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-lg-6 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="email">Email</label>'+
+                                        '<input type="email" class="form-control email" id="email" placeholder="Email">'+
+                                    '</div>'+
+                                '</div>'+
                             '</div>';
             var title   = 'New Anggota';
             // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
@@ -255,7 +291,7 @@
             document.getElementById('composemodalTitle').innerHTML=title;
             $('#composemodal').attr('class', 'modal fade')
                 .attr('aria-labelledby','myModalLabel');
-            $('.modal-dialog').attr('class','modal-dialog');
+            $('.modal-dialog').attr('class','modal-dialog modal-lg');
         }
 
         function setModalBoxImport(content, title)
@@ -275,43 +311,77 @@
                 dataType: "json",
                 success: function(data) {
                     console.log(data);
-                    var content =   '<div class="form-group">'+
-                                        '<label for="form-input-posyandu">Kode Posyandu</label>'+
-                                        '<select id="posyandu_id" name="posyandu_id" class="form-control posyandu_id">'+
-                                            @foreach($posyandus as $posyandu)
-                                            '<option value="{{ $posyandu->id }}" {{ $posyandu->id == "'+data.posyandu_id+'" ? 'selected' : '' }}>{{ $posyandu->posyandu_nama }}</option>'+
-                                            @endforeach
-                                        '</select>'+
+                    var content =  ' <div class="form-group">'+
+                                '<label for="form-input-posyandu">Kode Posyandu</label>'+
+                                '<select id="posyandu_id" name="posyandu_id" class="form-control posyandu_id">'+
+                                    '<option value="">Silahkan pilih Posyandu</option>'+
+                                    @foreach($posyandus as $posyandu)
+                                    '<option value="{{ $posyandu->posyandu_kode }}" {{ $posyandu->posyandu_kode == "'+data.posyandu_kode+'" ? 'selected' : '' }}>{{ $posyandu->posyandu_nama }}</option>'+
+                                    @endforeach
+                                '</select>'+
+                                '</div>'+
+                                '<div class="row">'+
+                                    '<div class="col-lg-4 col-sm-12">'+
+                                        '<div class="form-group">'+
+                                            '<label for="form-input-kode">Kode Anggota</label>'+
+                                            '<input type="text" class="form-control lansia_kode" id="lansia_kode" value="'+data.lansia_kode+'" maxlength="6" placeholder="Kode lansia" disabled="disabled">'+
+                                            '<input type="text" class="form-control id_lansia" maxlength="5" id="form-input-id" placeholder="Id lansia" value="'+data.id+'" style="display:none">'+
+                                        '</div>'+
                                     '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="lansia_kode">Kode lansia</label>'+
-                                        '<input type="text" class="form-control lansia_kode col-sm-4" id="lansia_kode" value="'+data.lansia_kode+'" maxlength="5" placeholder="Kode lansia" disabled="disabled">'+
-                                        '<input type="text" class="form-control id_lansia" maxlength="5" id="form-input-id" placeholder="Id lansia" value="'+data.id+'" style="display:none">'+
+                                    '<div class="col-lg-8 col-sm-12">'+
+                                        '<div class="form-group">'+
+                                            '<label for="form-input-nama">Nama Anggota</label>'+
+                                            '<input type="text" class="form-control lansia_nama" id="lansia_nama" value="'+data.lansia_nama+'" placeholder="Nama lansia">'+
+                                        '</div>'+
                                     '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="lansia_nama">Nama lansia</label>'+
-                                        '<input type="text" class="form-control lansia_nama" id="lansia_nama" value="'+data.lansia_nama+'" placeholder="Nama lansia">'+
+                                '</div>'+
+                                '<div class="row">'+
+                                    '<div class="col-lg-6 col-sm-12">'+
+                                        '<div class="form-group">'+
+                                            '<label for="form-input-ibu">Nama Ibu</label>'+
+                                            '<input type="text" class="form-control nama_ibu" id="form-input-ibu" value="'+data.nama_ibu+'" placeholder="Nama Ibu">'+
+                                        '</div>'+
                                     '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="lansia_nik">NIK lansia</label>'+
-                                        '<input type="text" class="form-control lansia_nik" id="lansia_nik" value="'+data.lansia_nik+'" placeholder="NIK lansia">'+
+                                    '<div class="col-lg-6 col-sm-12">'+
+                                        '<div class="form-group">'+
+                                            '<label for="form-input-bapak">Nama Bapak</label>'+
+                                            '<input type="text" class="form-control nama_bapak" id="form-input-bapak" value="'+data.nama_bapak+'" placeholder="Nama Bapak">'+
+                                        '</div>'+
                                     '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="lansia_kk">KK lansia</label>'+
-                                        '<input type="text" class="form-control lansia_kk" id="lansia_kk" value="'+data.lansia_kk+'" placeholder="KK lansia">'+
+                                '</div>'+
+                                '<div class="row">'+
+                                    '<div class="col-lg-6 col-sm-12">'+
+                                        '<div class="form-group">'+
+                                            '<label for="form-input-nik">NIK Anggota</label>'+
+                                            '<input type="text" class="form-control lansia_nik" id="lansia_nik" value="'+data.lansia_nik+'" placeholder="NIK lansia">'+
+                                        '</div>'+
                                     '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="lansia_alamat">Alamat lansia</label>'+
-                                        '<input type="text" class="form-control lansia_alamat" id="lansia_alamat" value="'+data.lansia_alamat+'" placeholder="Alamat lansia">'+
+                                    '<div class="col-lg-6 col-sm-12">'+
+                                        '<div class="form-group">'+
+                                            '<label for="form-input-kk">KK Anggota</label>'+
+                                            '<input type="text" class="form-control lansia_kk" id="lansia_kk" value="'+data.lansia_kk+'" placeholder="KK lansia">'+
+                                        '</div>'+
                                     '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="lansia_telp">No. Telp</label>'+
-                                        '<input type="text" class="form-control lansia_telp" id="lansia_telp" value="'+data.lansia_telp+'" placeholder="No. Telp">'+
+                                '</div>'+
+                                '<div class="form-group">'+
+                                    '<label for="form-input-alamat">Alamat Anggota</label>'+
+                                    '<input type="text" class="form-control lansia_alamat" id="lansia_alamat" value="'+data.lansia_alamat+'" placeholder="Alamat lansia">'+
+                                '</div>'+
+                                '<div class="row">'+
+                                    '<div class="col-lg-6 col-sm-12">'+
+                                        '<div class="form-group">'+
+                                            '<label for="form-input-no-telp">No. Telp</label>'+
+                                            '<input type="text" class="form-control lansia_telp" id="lansia_telp" value="'+data.lansia_telp+'" placeholder="No. Telp">'+
+                                        '</div>'+
                                     '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="email">Email</label>'+
-                                        '<input type="email" class="form-control email" id="email" value="'+data.email+'" placeholder="Email" disabled="disabled">'+
-                                    '</div>';
+                                    '<div class="col-lg-6 col-sm-12">'+
+                                        '<div class="form-group">'+
+                                            '<label for="email">Email</label>'+
+                                            '<input type="email" class="form-control email" id="email" value="'+data.email+'" placeholder="Email" disabled="disabled">'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>';
+
                     var title   = 'Edit lansia';
                     // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
                     setModalBox(content, title);

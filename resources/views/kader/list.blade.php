@@ -209,33 +209,51 @@
                                 '<select id="posyandu_id" name="posyandu_id" class="form-control posyandu_id">'+
                                     '<option value="">Silahkan pilih Posyandu</option>'+
                                     @foreach($posyandus as $posyandu)
-                                    '<option value="{{ $posyandu->id }}" data-name="{{$posyandu->posyandu_nama}}">{{ $posyandu->posyandu_nama }}</option>'+
+                                    '<option value="{{ $posyandu->posyandu_kode }}" data-name="{{$posyandu->posyandu_nama}}">{{ $posyandu->posyandu_nama }}</option>'+
                                     @endforeach
                                 '</select>'+
                             '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="kader_kode">Kode Kader</label>'+
-                                '<input type="text" class="form-control kader_kode col-sm-4" id="kader_kode" maxlength="5" placeholder="Kode Kader">'+
+                            '<div class="row">'+
+                                '<div class="col-lg-4 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_kode">Kode Kader</label>'+
+                                        '<input type="text" class="form-control kader_kode" id="kader_kode" maxlength="5" placeholder="Kode Kader">'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-lg-8 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_nama">Nama Kader</label>'+
+                                        '<input type="text" class="form-control kader_nama" id="kader_nama" placeholder="Nama Kader">'+
+                                    '</div>'+
+                                '</div>'+
                             '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="kader_nama">Nama Kader</label>'+
-                                '<input type="text" class="form-control kader_nama" id="kader_nama" placeholder="Nama Kader">'+
+                            '<div class="row">'+
+                                '<div class="col-lg-6 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_nik">NIK Kader</label>'+
+                                        '<input type="text" class="form-control kader_nik" id="kader_nik" placeholder="NIK Kader">'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-lg-6 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_kk">KK Kader</label>'+
+                                        '<input type="text" class="form-control kader_kk" id="kader_kk" placeholder="KK Kader">'+
+                                    '</div>'+
+                                '</div>'+
                             '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="kader_nik">NIK Kader</label>'+
-                                '<input type="text" class="form-control kader_nik" id="kader_nik" placeholder="NIK Kader">'+
-                            '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="kader_kk">KK Kader</label>'+
-                                '<input type="text" class="form-control kader_kk" id="kader_kk" placeholder="KK Kader">'+
-                            '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="kader_alamat">Alamat Kader</label>'+
-                                '<input type="text" class="form-control kader_alamat" id="kader_alamat" placeholder="Alamat Kader">'+
-                            '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="kader_telp">No. Telp</label>'+
-                                '<input type="text" class="form-control kader_telp" id="kader_telp" placeholder="No. Telp">'+
+                            '<div class="row">'+
+                                '<div class="col-lg-8 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_alamat">Alamat Kader</label>'+
+                                        '<input type="text" class="form-control kader_alamat" id="kader_alamat" placeholder="Alamat Kader">'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-lg-4 col-sm-12">'+
+                                    '<div class="form-group">'+
+                                        '<label for="kader_telp">No. Telp</label>'+
+                                        '<input type="text" class="form-control kader_telp" id="kader_telp" placeholder="No. Telp">'+
+                                    '</div>'+
+                                '</div>'+
                             '</div>';
             var title   = 'New Kader Posyandu';
             // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
@@ -259,7 +277,7 @@
             document.getElementById('composemodalTitle').innerHTML=title;
             $('#composemodal').attr('class', 'modal fade')
                 .attr('aria-labelledby','myModalLabel');
-            $('.modal-dialog').attr('class','modal-dialog');
+            $('.modal-dialog').attr('class','modal-dialog  modal-lg');
         }
 
         var edit = function(id){
@@ -277,30 +295,48 @@
                                             @endforeach
                                         '</select>'+
                                     '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="kader_kode">Kode Kader</label>'+
-                                        '<input type="text" class="form-control kader_kode col-sm-4" id="kader_kode" value="'+data.kader_kode+'" maxlength="5" placeholder="Kode Kader" disabled="disabled">'+
-                                        '<input type="text" class="form-control id_kader" maxlength="5" id="form-input-id" placeholder="Id kader" value="'+data.id+'" style="display:none">'+
+                                    '<div class="row">'+
+                                        '<div class="col-lg-4 col-sm-12">'+
+                                            '<div class="form-group">'+
+                                                '<label for="kader_kode">Kode Kader</label>'+
+                                                '<input type="text" class="form-control kader_kode col-sm-4" id="kader_kode" value="'+data.kader_kode+'" maxlength="5" placeholder="Kode Kader" disabled="disabled">'+
+                                                '<input type="text" class="form-control id_kader" maxlength="5" id="form-input-id" placeholder="Id kader" value="'+data.id+'" style="display:none">'+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<div class="col-lg-8 col-sm-12">'+
+                                            '<div class="form-group">'+
+                                                '<label for="kader_nama">Nama Kader</label>'+
+                                                '<input type="text" class="form-control kader_nama" id="kader_nama" value="'+data.kader_nama+'" placeholder="Nama Kader">'+
+                                            '</div>'+
+                                        '</div>'+
                                     '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="kader_nama">Nama Kader</label>'+
-                                        '<input type="text" class="form-control kader_nama" id="kader_nama" value="'+data.kader_nama+'" placeholder="Nama Kader">'+
+                                    '<div class="row">'+
+                                        '<div class="col-lg-6 col-sm-12">'+
+                                            '<div class="form-group">'+
+                                                '<label for="kader_nik">NIK Kader</label>'+
+                                                '<input type="text" class="form-control kader_nik" id="kader_nik" value="'+data.kader_nik+'" placeholder="NIK Kader">'+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<div class="col-lg-6 col-sm-12">'+
+                                            '<div class="form-group">'+
+                                                '<label for="kader_kk">KK Kader</label>'+
+                                                '<input type="text" class="form-control kader_kk" id="kader_kk" value="'+data.kader_kk+'" placeholder="KK Kader">'+
+                                            '</div>'+
+                                        '</div>'+
                                     '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="kader_nik">NIK Kader</label>'+
-                                        '<input type="text" class="form-control kader_nik" id="kader_nik" value="'+data.kader_nik+'" placeholder="NIK Kader">'+
-                                    '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="kader_kk">KK Kader</label>'+
-                                        '<input type="text" class="form-control kader_kk" id="kader_kk" value="'+data.kader_kk+'" placeholder="KK Kader">'+
-                                    '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="kader_alamat">Alamat Kader</label>'+
-                                        '<input type="text" class="form-control kader_alamat" id="kader_alamat" value="'+data.kader_alamat+'" placeholder="Alamat Kader">'+
-                                    '</div>'+
-                                    '<div class="form-group">'+
-                                        '<label for="kader_telp">No. Telp</label>'+
-                                        '<input type="text" class="form-control kader_telp" id="kader_telp" value="'+data.kader_telp+'" placeholder="No. Telp">'+
+                                    '<div class="row">'+
+                                        '<div class="col-lg-8 col-sm-12">'+
+                                            '<div class="form-group">'+
+                                                '<label for="kader_alamat">Alamat Kader</label>'+
+                                                '<input type="text" class="form-control kader_alamat" id="kader_alamat" value="'+data.kader_alamat+'" placeholder="Alamat Kader">'+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<div class="col-lg-4 col-sm-12">'+
+                                            '<div class="form-group">'+
+                                                '<label for="kader_telp">No. Telp</label>'+
+                                                '<input type="text" class="form-control kader_telp" id="kader_telp" value="'+data.kader_telp+'" placeholder="No. Telp">'+
+                                            '</div>'
+                                        '</div>'+
                                     '</div>';
                     var title   = 'Edit Kader';
                     // var footer  = '<button type="button" class="btn btn-primary">Save changes</button>';
