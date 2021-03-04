@@ -168,7 +168,7 @@ class LansiaPosyanduController extends Controller
     {
         # code...
         $lansia = $this->lansiaRepository->findFirst($id);
-        $url = base64_encode("{'n':".$lansia->nik.",'p':".$lansia->posyandu_kode."}");
+        $url = base64_encode('{"n":"'.$lansia->lansia_nik.'","p":"'.$lansia->posyandu_kode.'"}');
         $dir = url('uploads/img/qr-code/qr-code.png');
         $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                   ->merge($dir, 0.1, true)

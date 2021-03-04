@@ -159,7 +159,7 @@ class KaderPosyanduController extends Controller
     public function qr_code($id)
     {
         $kader = $this->kaderRepository->findFirst($id);
-        $url = base64_encode("{'n':".$kader->kader_nik.",'p':".$kader->posyandu_kode."}");
+        $url = base64_encode('{"n":"'.$kader->kader_nik.'","p":"'.$kader->posyandu_kode.'"}');
         $dir = url('uploads/img/qr-code/qr-code.png');
         $qrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                   ->merge($dir, 0.1, true)

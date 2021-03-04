@@ -19,6 +19,8 @@ Route::post("register", [\App\Http\Controllers\UserController::class, "register"
 
 Route::post("login", [\App\Http\Controllers\UserController::class, "login"]);
 
+Route::get("v1/posyandu", [\App\Http\Controllers\JsonController::class, "posyandu"]);
+
 // Route::post("absensi", [\App\Http\Controllers\AbsensiController::class, "absensi"]);
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -49,8 +51,6 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function() {
     Route::post('logout', [\App\Http\Controllers\UserController::class, 'logout']);
     // manggil controller dengan mengubah namespace di RouteServiceProvider.php biar bisa kayak versi2 sebelumnya
     Route::post('logoutall', [\App\Http\Controllers\UserController::class, 'logoutall']);
-
-    Route::get("posyandu", [\App\Http\Controllers\JsonController::class, "posyandu"]);
 
     Route::group(['prefix' => 'absensi'], function () {
         Route::post("/",[\App\Http\Controllers\AbsensiController::class, "absensi_masuk"]);
