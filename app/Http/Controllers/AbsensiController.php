@@ -64,15 +64,16 @@ class AbsensiController extends Controller
         $anggota = false;
         $existsAnggota = $this->lansiaRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
         if(!is_null($existsAnggota)) {
-            $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($existsAnggota->id, $request->p, 1);
-            if (!is_null($existsAbsensi)) {
-                $anggota = false;
-            }else {
+            if ($request->s == 0) { //Masuk
+                // $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($existsAnggota->id, $request->p, 0);
+                // if (!is_null($existsAbsensi)) {
+                //     $anggota = false;
+                // } else {
                 $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($existsAnggota->id, $request->p, 0);
                 if (!is_null($existsAbsensi)) {
                     $data = [
-                        AbsensiPosyandu::PULANG       => date('Y-m-d h:i:s'),
-                        AbsensiPosyandu::STATUS      => 1,
+                        AbsensiPosyandu::MASUK       => date('Y-m-d h:i:s'),
+                        AbsensiPosyandu::STATUS      => 0,
                     ];
                     $store = $this->absensiRepository->update($data, $existsAbsensi->id);
                     if ($store) {
@@ -80,7 +81,7 @@ class AbsensiController extends Controller
                     }else{
                         $anggota = false;
                     }
-                }else {
+                } else {
                     $data = [
                         AbsensiPosyandu::POSYANDU_ID => $request->p,
                         AbsensiPosyandu::LANSIA_ID   => $existsAnggota->id,
@@ -95,6 +96,23 @@ class AbsensiController extends Controller
                         $anggota = false;
                     }
                 }
+                // }
+            }else{
+                $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($existsAnggota->id, $request->p, 0);
+                if (!is_null($existsAbsensi)) {
+                    $data = [
+                        AbsensiPosyandu::PULANG       => date('Y-m-d h:i:s'),
+                        AbsensiPosyandu::STATUS      => 1,
+                    ];
+                    $store = $this->absensiRepository->update($data, $existsAbsensi->id);
+                    if ($store) {
+                        $anggota = true;
+                    }else{
+                        $anggota = false;
+                    }
+                } else {
+                    $anggota = false;
+                }
             }
         }
         return $anggota;
@@ -104,7 +122,7 @@ class AbsensiController extends Controller
     {
         $kader = false;
         $existsKader = $this->kaderRepository->findAnggotaByNikAndPosyandu($request->n,$request->p);
-        if(!is_null($kader)) {
+        if(!is_null($existsKader)) {
             $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($existsKader->id, $request->p, 1);
             if (!is_null($existsAbsensi)) {
                 $kader = false;

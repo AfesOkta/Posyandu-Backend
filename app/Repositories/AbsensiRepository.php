@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\AbsensiPosyandu;
+use Illuminate\Support\Facades\DB;
 
 class AbsensiRepository
 {
@@ -24,10 +25,12 @@ class AbsensiRepository
     public function findAbsensiMasukAnggota($lansiaId, $posyandu, $status)
     {
         # code...
-        return $this->absensiPosyandu->query()
+        $data =  $this->absensiPosyandu->query()
             ->where('lansia_id','=', $lansiaId)
             ->where('posyandu_kode','=',$posyandu)
-            ->where('status','=',$status)->first();
+            ->where('status','=',$status)
+            ->where(DB::raw('date_format(masuk,"%Y-%m-%d")'), DB::raw('date_format(now(),"%Y-%m-%d")'))->first();
+            return $data;
     }
 
     public function findAll() {
