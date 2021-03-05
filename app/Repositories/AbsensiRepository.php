@@ -33,6 +33,16 @@ class AbsensiRepository
             return $data;
     }
 
+    public function findAbsensiAnggota($lansiaId, $posyandu)
+    {
+        # code...
+        $data =  $this->absensiPosyandu->query()
+            ->where('lansia_id','=', $lansiaId)
+            ->where('posyandu_kode','=',$posyandu)
+            ->where(DB::raw('date_format(masuk,"%Y-%m-%d")'), DB::raw('date_format(Date_Sub(now(), INTERVAL 1 DAY),"%Y-%m-%d")'))->first();
+            return $data;
+    }
+
     public function findAll() {
         return $this->absensiPosyandu->with('posyandu')->with('anggota')->get();
     }

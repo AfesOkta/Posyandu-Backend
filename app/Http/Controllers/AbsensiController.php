@@ -69,18 +69,19 @@ class AbsensiController extends Controller
                 // if (!is_null($existsAbsensi)) {
                 //     $anggota = false;
                 // } else {
-                $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($existsAnggota->id, $request->p, 0);
+                $existsAbsensi = $this->absensiRepository->findAbsensiAnggota($existsAnggota->id, $request->p);
                 if (!is_null($existsAbsensi)) {
-                    $data = [
-                        AbsensiPosyandu::MASUK       => date('Y-m-d h:i:s'),
-                        AbsensiPosyandu::STATUS      => 0,
-                    ];
-                    $store = $this->absensiRepository->update($data, $existsAbsensi->id);
-                    if ($store) {
-                        $anggota = true;
-                    }else{
-                        $anggota = false;
-                    }
+                    // $data = [
+                    //     AbsensiPosyandu::MASUK       => date('Y-m-d h:i:s'),
+                    //     AbsensiPosyandu::STATUS      => 0,
+                    // ];
+                    // $store = $this->absensiRepository->update($data, $existsAbsensi->id);
+                    // if ($store) {
+                    //     $anggota = true;
+                    // }else{
+                    //     $anggota = false;
+                    // }
+                    $anggota = false;
                 } else {
                     $data = [
                         AbsensiPosyandu::POSYANDU_ID => $request->p,
@@ -127,7 +128,7 @@ class AbsensiController extends Controller
             if (!is_null($existsAbsensi)) {
                 $kader = false;
             }else {
-                $existsAbsensi = $this->absensiRepository->findAbsensiMasukAnggota($existsKader->id, $request->p, 0);
+                $existsAbsensi = $this->absensiRepository->findAbsensiAnggota($existsKader->id, $request->p);
                 if (!is_null($existsAbsensi)) {
                     $data = [
                         AbsensiPosyandu::PULANG         => date('Y-m-d h:i:s'),
