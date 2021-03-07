@@ -45,7 +45,11 @@ class AbsensiPosyandu extends Model
     public function anggota() {
         if(self::STATUS2 == 0) {
             return $this->belongsTo(LansiaPosyandu::class,'lansia_id','id');
-        }else{
+        }
+    }
+
+    public function kader() {
+        if(self::STATUS2 == 1) {
             return $this->belongsTo(KaderPosyandu::class,'lansia_id','id');
         }
     }

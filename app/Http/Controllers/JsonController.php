@@ -32,20 +32,12 @@ class JsonController extends Controller
         $data = $this->absenRepo->findAll();
         return DataTables::of($data)
         ->addIndexColumn()
-        ->addColumn('anggota', function($row){
-            if($row->status2 == 0) {
-                $content = $row->anggota->lansia_nama;
-            }else{
-                $content = $row->kader->kader_nama;
-            }
-            return $content;
-        })
         ->addColumn('action', function($row){
             return '<a href="javascript:void(0)" onclick="view('.$row->id.')"
                 title="View '.$row->posyandu_nama.'" class="btn btn-info btn-sm btn-icon" data-dismiss="modal"><i class="fas fa-search">&nbsp;View</i></a>
                 <meta name="csrf-token" content="{{ csrf_token() }}">';
         })
-        ->rawColumns(['anggota','action'])
+        ->rawColumns(['action'])
         ->make(true);
     }
 

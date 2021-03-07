@@ -52,6 +52,6 @@ class KaderPosyandu extends Model
 
     public function absensi()
     {
-        return $this->hasMany('App\Models\AbsensiPosyandu','id','kader_id');
+        return $this->hasMany('App\Models\AbsensiPosyandu','id','lansia_id');
     }
 }
