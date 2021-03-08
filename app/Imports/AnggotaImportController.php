@@ -25,19 +25,19 @@ class AnggotaImportController implements ToModel, WithValidation, SkipsOnFailure
     public function model(array $row)
     {
         $anggotaRepo = new AnggotaRepository(new LansiaPosyandu());
-        $existsKode = $anggotaRepo->findByColumn(['lansia_kode','posyandu_kode'],[$row['kode'],$row['kode']]);
+        $existsKode = $anggotaRepo->findByColumn(['lansia_kode','posyandu_kode'],[$row['anggota_kode'],$row['posyandu_kode']]);
         if ($existsKode->count() == 0) {
             $data = [
-                LansiaPosyandu::POSYANDU_KODE   => $row['POSYANDU KODE'],
-                LansiaPosyandu::LANSIA_KODE     => $row['ANGGOTA KODE'],
-                LansiaPosyandu::LANSIA_NAMA     => $row['ANGGOTA NAMA'],
-                LansiaPosyandu::NAMA_IBU        => $row['NAMA IBU'],
-                LansiaPosyandu::NAMA_BAPAK      => $row['NAMA BAPAK'],
-                LansiaPosyandu::LANSIA_NIK      => $row['ANGGOTA NIK'],
-                LansiaPosyandu::LANSIA_KK       => $row['ANGGOTA KK'],
-                LansiaPosyandu::LANSIA_ALAMAT   => $row['ANGGOTA ALAMAT'],
-                LansiaPosyandu::LANSIA_TELP     => $row['ANGGOTA TELP'],
-                LansiaPosyandu::EMAIL           => $row['EMAIL'],
+                LansiaPosyandu::POSYANDU_KODE   => $row['posyandu_kode'],
+                LansiaPosyandu::LANSIA_KODE     => $row['anggota_kode'],
+                LansiaPosyandu::LANSIA_NAMA     => $row['anggota_nama'],
+                LansiaPosyandu::NAMA_IBU        => $row['nama_ibu'],
+                LansiaPosyandu::NAMA_BAPAK      => $row['nama_bapak'],
+                LansiaPosyandu::LANSIA_NIK      => $row['anggota_nik'],
+                LansiaPosyandu::LANSIA_KK       => $row['anggota_kk'],
+                LansiaPosyandu::LANSIA_ALAMAT   => $row['anggota_alamat'],
+                LansiaPosyandu::LANSIA_TELP     => $row['anggota_telp'],
+                LansiaPosyandu::EMAIL           => $row['email'],
             ];
             $anggotaRepo->create($data);
         }else{
@@ -48,17 +48,18 @@ class AnggotaImportController implements ToModel, WithValidation, SkipsOnFailure
     public function rules(): array
     {
         return [
-            'POSYANDU KODE' => 'required',
-            'ANGGOTA KODE' => 'required',
-            'ANGGOTA NAMA' => 'required',
+            'posyandu_kode' => 'required',
+            'anggota_kode' => 'required',
+            'anggota_nama' => 'required',
         ];
     }
 
     public function customValidationMessages()
     {
         return [
-            '0.required' => 'Kode Posyandu tidak boleh kosong',
-            '1.required' => 'Kode Anggota tidak boleh kosong',
+            'posyandu_kode.required' => 'Kode Posyandu tidak boleh kosong',
+            'anggota_kode.required' => 'Kode Anggota tidak boleh kosong',
+            'anggota_nama.required' => 'Nama Anggota tidak boleh kosong',
         ];
     }
 

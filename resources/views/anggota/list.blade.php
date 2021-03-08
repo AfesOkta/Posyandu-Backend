@@ -186,7 +186,7 @@
 
         function open_container_import()
         {
-            var content = '<form id="import-form" enctype="multipart/form-data" action="{{route('posyandu.import')}}" method="POST">'+
+            var content = '<form id="import-form" enctype="multipart/form-data" action="{{route('anggota.import')}}" method="POST">'+
                                 '{{ csrf_field() }}'+
                                 '<div class="modal-body">'+
                                     '<div class="row clearfix">'+

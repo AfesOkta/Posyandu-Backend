@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class KaderPosyandu extends Model
 {
     use HasFactory;
-    const POSYANDU_ID   = 'posyandu_kode';
+    const POSYANDU_KODE   = 'posyandu_kode';
     const KADER_KODE    = 'kader_kode';
     const KADER_NIK     = 'kader_nik';
     const KADER_KK      = 'kader_kk';
@@ -26,7 +26,7 @@ class KaderPosyandu extends Model
     protected $timestamp = false;
 
     protected $fillable = [
-        self::POSYANDU_ID,
+        self::POSYANDU_KODE,
         self::KADER_KODE,
         self::KADER_NIK,
         self::KADER_TELP,

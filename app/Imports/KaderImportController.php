@@ -27,16 +27,16 @@ class KaderImportController implements ToModel, WithValidation, SkipsOnFailure, 
     public function model(array $row)
     {
         $kaderRepo = new KaderRepository(new KaderPosyandu());
-        $existsKode = $kaderRepo->findByColumn(['lansia_kode','posyandu_kode'],[$row['kode'],$row['kode']]);
+        $existsKode = $kaderRepo->findByColumn(['kader_kode','posyandu_kode'],[$row['kader_kode'],$row['posyandu_kode']]);
         if ($existsKode->count() == 0) {
             $data = [
-                KaderPosyandu::POSYANDU_ID    => $row['POSYANDU KODE'],
-                KaderPosyandu::KADER_KODE     => $row['KADER KODE'],
-                KaderPosyandu::KADER_NAMA     => $row['KADER NAMA'],
-                KaderPosyandu::KADER_NIK      => $row['KADER NIK'],
-                KaderPosyandu::KADER_KK       => $row['KADER KK'],
-                KaderPosyandu::KADER_ALAMAT   => $row['KADER ALAMAT'],
-                KaderPosyandu::KADER_TELP     => $row['KADER TELP'],
+                KaderPosyandu::POSYANDU_KODE  => $row['posyandu_kode'],
+                KaderPosyandu::KADER_KODE     => $row['kader_kode'],
+                KaderPosyandu::KADER_NAMA     => $row['kader_nama'],
+                KaderPosyandu::KADER_NIK      => $row['kader_nik'],
+                KaderPosyandu::KADER_KK       => $row['kader_kk'],
+                KaderPosyandu::KADER_ALAMAT   => $row['kader_alamat'],
+                KaderPosyandu::KADER_TELP     => $row['kader_telp'],
             ];
             $kaderRepo->create($data);
         }else{
@@ -47,17 +47,18 @@ class KaderImportController implements ToModel, WithValidation, SkipsOnFailure, 
     public function rules(): array
     {
         return [
-            'POSYANDU KODE' => 'required',
-            'ANGGOTA KODE' => 'required',
-            'ANGGOTA NAMA' => 'required',
+            'posyandu_kode' => 'required',
+            'kader_kode' => 'required',
+            'kader_nama' => 'required',
         ];
     }
 
     public function customValidationMessages()
     {
         return [
-            '0.required' => 'Kode Posyandu tidak boleh kosong',
-            '1.required' => 'Kode Anggota tidak boleh kosong',
+            'posyandu_kode.required' => 'Kode Posyandu tidak boleh kosong',
+            'kader_kode.required' => 'Kode Kader tidak boleh kosong',
+            'kader_kode.required' => 'Kode Nama tidak boleh kosong',
         ];
     }
 
