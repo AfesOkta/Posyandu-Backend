@@ -92,7 +92,7 @@ Route::group([
     Route::get('download/qr-code/{filename}', [App\Http\Controllers\LansiaPosyanduController::class, 'download_qrcode'])->name('anggota.download.qrcode');
 
     Route::get('/download', [App\Http\Controllers\LansiaPosyanduController::class, 'download'])->name('anggota.download');
-    Route::post('/import', [App\Http\Controllers\LansiaPosyanduController::class, 'import'])->name('anggot.import');
+    Route::post('/import', [App\Http\Controllers\LansiaPosyanduController::class, 'import'])->name('anggota.import');
 });
 
 Route::group([
