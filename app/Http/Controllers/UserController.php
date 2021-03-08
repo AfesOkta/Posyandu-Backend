@@ -54,7 +54,7 @@ class UserController extends Controller
         $user = User::where("name", $request->username)->first();
         if(!is_null($user)) {
             if(Hash::check($request->password, $user->password)) {
-                $user_posyandu = DB::table('users_posyandu')->where('user_id',$user->id)->where('posyandu_kode',$request->posyandu)->first();
+                $user_posyandu = DB::table('users_posyandu')->where('user_id',$user->name)->where('posyandu_kode',$request->posyandu)->first();
 
                 if(!is_null($user_posyandu)){
                     $userLogin  =  Auth::loginUsingId($user->id,false);

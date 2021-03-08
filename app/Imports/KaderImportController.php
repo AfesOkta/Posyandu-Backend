@@ -4,9 +4,12 @@
 use App\Models\KaderPosyandu;
 use App\Models\LansiaPosyandu;
 use App\Models\MstPosyandu;
+use App\Models\User;
+use App\Models\UsersPosyandu;
 use App\Repositories\AnggotaRepository;
 use App\Repositories\KaderRepository;
 use App\Repositories\PosyanduRepository;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
@@ -39,6 +42,23 @@ class KaderImportController implements ToModel, WithValidation, SkipsOnFailure, 
                 KaderPosyandu::KADER_TELP     => $row['kader_telp'],
             ];
             $kaderRepo->create($data);
+
+            $dataUser = [
+                "name"      =>  $row['kader_kode'],
+                "email"     =>  $row['kader_kode'].'@pemdes-gelangkulon.com',
+                "phone"     =>  $row['kader_telp'],
+                "password"  =>  Hash::make("Sa123456"),
+            ];
+
+            $user   =   User::create($dataUser);
+
+            $dataUserAkses = [
+                "user_id"  => $row['kader_kode'],
+                "posyandu_kode" => $row['posyandu_kode'],
+            ];
+
+            $userAkses = UsersPosyandu::create($dataUserAkses);
+
         }else{
             return session()->flash('error', 'Kader Data unsuccessfully added, kader already exists.');
         }
