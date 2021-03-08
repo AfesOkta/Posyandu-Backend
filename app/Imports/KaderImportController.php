@@ -27,8 +27,8 @@ class KaderImportController implements ToModel, WithValidation, SkipsOnFailure, 
     public function model(array $row)
     {
         $kaderRepo = new KaderRepository(new KaderPosyandu());
-        $existsKode = $kaderRepo->findByColumn(['kader_kode','posyandu_kode'],[$row['kader_kode'],$row['posyandu_kode']]);
-        if ($existsKode->count() == 0) {
+        $existsKode = $kaderRepo->findByKaderAndPosyandu($row['kader_kode'],$row['posyandu_kode']);
+        if ($existsKode == null) {
             $data = [
                 KaderPosyandu::POSYANDU_KODE  => $row['posyandu_kode'],
                 KaderPosyandu::KADER_KODE     => $row['kader_kode'],

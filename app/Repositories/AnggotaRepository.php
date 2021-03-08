@@ -49,6 +49,12 @@ class AnggotaRepository
         return $lansia->get();
     }
 
+    public function findByAnggotaAndPosyandu($anggota, $posyandu)
+    {
+        # code...
+        return $this->lansiaPosyandu->where('lansia_kode','=', $anggota)->where('posyandu_kode','=', $posyandu)->first();
+    }
+
     // public function findByColumnArray($column[])
     // {
     //     return $this->lansiaPosyandu->where($column, $value)->get();

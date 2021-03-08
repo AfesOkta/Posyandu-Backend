@@ -33,7 +33,13 @@ class KaderRepository
         } else {
             $kader->where($column, $value);
         }
-        return $kader->get();
+        return $kader->first();
+    }
+
+    public function findByKaderAndPosyandu($kader, $posyandu)
+    {
+        # code...
+        return $this->kaderPosyandu->where('kader_kode','=', $kader)->where('posyandu_kode','=', $posyandu)->first();
     }
 
     public function findAnggotaByNikAndPosyandu($nik, $posyandu)
@@ -59,7 +65,7 @@ class KaderRepository
     public function update($validateData)
     {
         $data = [
-            KaderPosyandu::POSYANDU_ID => $validateData['posyandu_kode'],
+            KaderPosyandu::POSYANDU_KODE => $validateData['posyandu_kode'],
             KaderPosyandu::KADER_KODE => $validateData['kader_kode'],
             KaderPosyandu::KADER_NAMA => $validateData['kader_nama'],
             KaderPosyandu::KADER_ALAMAT => $validateData['kader_alamat'],

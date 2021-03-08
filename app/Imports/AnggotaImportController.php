@@ -25,8 +25,8 @@ class AnggotaImportController implements ToModel, WithValidation, SkipsOnFailure
     public function model(array $row)
     {
         $anggotaRepo = new AnggotaRepository(new LansiaPosyandu());
-        $existsKode = $anggotaRepo->findByColumn(['lansia_kode','posyandu_kode'],[$row['anggota_kode'],$row['posyandu_kode']]);
-        if ($existsKode->count() == 0) {
+        $existsKode = $anggotaRepo->findByAnggotaAndPosyandu($row['anggota_kode'], $row['posyandu_kode']);
+        if ($existsKode == null) {
             $data = [
                 LansiaPosyandu::POSYANDU_KODE   => $row['posyandu_kode'],
                 LansiaPosyandu::LANSIA_KODE     => $row['anggota_kode'],
