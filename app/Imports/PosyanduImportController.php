@@ -24,7 +24,7 @@ class PosyanduImportController implements ToModel, WithValidation, SkipsOnFailur
     {
         $posyanduRepo = new PosyanduRepository(new MstPosyandu());
         $existsKode = $posyanduRepo->findByColumn('posyandu_kode',$row['kode']);
-        if ($existsKode->count() == 0) {
+        if ($existsKode == null ) {
             $data = [
                 MstPosyandu::POSYANDU_KODE => $row['kode'],
                 MstPosyandu::POSYANDU_NAMA => $row['nama'],
