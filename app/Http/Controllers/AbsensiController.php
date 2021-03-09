@@ -52,7 +52,7 @@ class AbsensiController extends Controller
             }else if($kader){
                 return response()->json(["status" => "success", "success" => true, "message" => "Kader berhasil absen"]);
             }else if (!$anggota && !$kader) {
-                return response()->json(["status" => "failed", "success" => false, "message" => "Tidak berhasil absen"]);
+                return response()->json(["status" => "failed", "success" => false, "message" => "Anda sudah melakukan absensi"]);
             }
         }
 

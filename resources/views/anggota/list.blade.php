@@ -4,6 +4,9 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('stisla/modules/datatables/datatables.css') }}">
+{{-- <script src="http://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"></script> --}}
+<link rel="stylesheet" href="http://cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
+
 <link rel="stylesheet" href="{{ asset('stisla/modules/select2/dist/css/select2.css') }}">
 <link rel="stylesheet" href="{{ asset('stisla/modules/jquery-toast/jquery.toast.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/custome.css') }}">
@@ -55,6 +58,8 @@
 
 @section('plugin')
     <script src="{{asset('stisla/modules/datatables/datatables.js')}}"></script>
+    {{-- <script src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script> --}}
+    <script src="http://cdn.datatables.net/plug-ins/1.10.7/pagination/input.js"></script>
     <script src="{{asset('stisla/modules/select2/dist/js/select2.js')}}"></script>
     <script src="{{asset('stisla/modules/jquery-toast/jquery.toast.min.js')}}"></script>
 @endsection
@@ -95,6 +100,8 @@
                         }
                     } );
                 },
+                // "pagingType": "full_numbers",
+                //paginationType: "input",
             });
 
             $('body #composemodal').on('click','.save',function(e){
