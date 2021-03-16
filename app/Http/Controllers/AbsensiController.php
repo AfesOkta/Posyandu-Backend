@@ -10,6 +10,7 @@ use App\Repositories\KaderRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Repositories\PosyanduRepository;
 use Yajra\DataTables\Facades\DataTables;
 
 class AbsensiController extends Controller
@@ -19,14 +20,16 @@ class AbsensiController extends Controller
     protected $lansiaRepository;
     protected $absensiRepository;
     protected $kaderRepository;
+    protected $posyanduRepo;
 
     public function __construct(UserRepository $userRepository, AnggotaRepository $anggotaRepository, KaderRepository $kaderRepository,
-        AbsensiRepository $absensiRepository) {
+        AbsensiRepository $absensiRepository,  PosyanduRepository $posyanduRepo) {
         $this->middleware('auth');
         $this->userRepository       = $userRepository;
         $this->lansiaRepository     = $anggotaRepository;
         $this->kaderRepository      = $kaderRepository;
         $this->absensiRepository    = $absensiRepository;
+        $this->posyanduRepo         = $posyanduRepo;
     }
 
     public function absensi_masuk(Request $request)
@@ -163,6 +166,7 @@ class AbsensiController extends Controller
     public function index()
     {
         # code...
-        return view('absensi.list');
+        $posyandus = $this->posyanduRepo->getAll();
+        return view('absensi.list', compact('posyandus'));
     }
 }
