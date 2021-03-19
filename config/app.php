@@ -167,7 +167,8 @@ return [
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
-        Elibyy\TCPDF\ServiceProvider::class,
+        // Elibyy\TCPDF\ServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -217,7 +218,8 @@ return [
         'Mail' => Illuminate\Support\Facades\Mail::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password' => Illuminate\Support\Facades\Password::class,
-        'PDF' => Elibyy\TCPDF\Facades\TCPDF::class,
+        // 'PDF' => Elibyy\TCPDF\Facades\TCPDF::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
         'Queue' => Illuminate\Support\Facades\Queue::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'Redirect' => Illuminate\Support\Facades\Redirect::class,

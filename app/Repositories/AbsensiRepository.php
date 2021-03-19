@@ -51,10 +51,9 @@ class AbsensiRepository
     public function getCetakAbsen($posyandu, $tgl1, $tgl2)
     {
         # code...
-        $data =  $this->absensiPosyandu
-            ->with('anggota')->query()
+        $data = DB::table('v_absensi')
             ->where('posyandu_kode','=',$posyandu)
-            ->whereBetween(DB::raw('date_format(created_at,"%Y-%m-%d")'), ["$tgl1", "$tgl2"])->get();
-            return $data;
+            ->whereBetween(DB::raw('date_format(tanggal,"%Y-%m-%d")'), ["$tgl1", "$tgl2"])->get();
+        return $data;
     }
 }

@@ -172,9 +172,10 @@
                     icon: 'warning'
                 });
             }else{
-                $.ajax({
-
-                });
+                encode = btoa(startDate+'&'+endDate+'&'+posyanduKode);
+                url = "/absensi/cetak/"+encode;
+                var win = window.open(url, '_blank');
+                win.focus();
             }
         });
 

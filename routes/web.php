@@ -107,6 +107,7 @@ Route::group([
     Route::get('/json', [App\Http\Controllers\JsonController::class, 'json_absensi'])->name('absensi.json');
 
     Route::get('/get/{id}', [App\Http\Controllers\AbsensiController::class, 'show'])->name('absensi.get');
+    Route::get('/cetak/{url}', [App\Http\Controllers\AbsensiController::class, 'cetak'])->name('absensi.cetak');
 });
 
 Route::group([

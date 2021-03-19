@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Repositories\PosyanduRepository;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class AbsensiController extends Controller
 {
@@ -168,5 +169,16 @@ class AbsensiController extends Controller
         # code...
         $posyandus = $this->posyanduRepo->getAll();
         return view('absensi.list', compact('posyandus'));
+    }
+
+    public function cetak($url){
+        $urlDecode = explode('&',base64_decode($url));
+        $tglAwal   = date("Y-m-d", strtotime($urlDecode[0]));
+        $tglAkhir  = date("Y-m-d", strtotime($urlDecode[1]));
+        $posyandu  = $urlDecode[2];
+        $data = $this->absensiRepository->getCetakAbsen($posyandu, $tglAwal, $tglAkhir);
+        $data_posyandu = $this->posyanduRepo->findByColumn('posyandu_kode', $posyandu);
+        $pdf = PDF::loadview('absensi.cetak',['datas'=>$data, 'data_posyandu' => $data_posyandu, 'tglAwal' => date("d-m-Y", strtotime($urlDecode[0])), 'tglAkhir' => date("d-m-Y", strtotime($urlDecode[1]))]);
+        return $pdf->stream('absensi.pdf');
     }
 }
