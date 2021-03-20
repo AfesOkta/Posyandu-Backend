@@ -104,10 +104,15 @@ Route::group([
     ], function () {
 
     Route::get('/', [App\Http\Controllers\AbsensiController::class, 'index'])->name('absensi');
-    Route::get('/json', [App\Http\Controllers\JsonController::class, 'json_absensi'])->name('absensi.json');
+    Route::get('/json-anggota', [App\Http\Controllers\JsonController::class, 'json_absensi_anggota'])->name('absensi.json.anggota');
+    Route::get('/json-kader', [App\Http\Controllers\JsonController::class, 'json_absensi_kader'])->name('absensi.json.kader');
 
     Route::get('/get/{id}', [App\Http\Controllers\AbsensiController::class, 'show'])->name('absensi.get');
-    Route::get('/cetak/{url}', [App\Http\Controllers\AbsensiController::class, 'cetak'])->name('absensi.cetak');
+    Route::get('/cetak-anggota/{url}', [App\Http\Controllers\AbsensiController::class, 'cetak_anggota'])->name('absensi.cetak.anggota');
+    Route::get('/cetak-kader/{url}', [App\Http\Controllers\AbsensiController::class, 'cetak_kader'])->name('absensi.cetak.kader');
+
+    Route::get('/view-anggota/{url}', [App\Http\Controllers\AbsensiController::class, 'view_anggota'])->name('absensi.view.anggota');
+    Route::get('/view-kader/{url}', [App\Http\Controllers\AbsensiController::class, 'view_kader'])->name('absensi.view.kader');
 });
 
 Route::group([

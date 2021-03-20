@@ -147,7 +147,7 @@ class AbsensiController extends Controller
                 }else{
                     $data = [
                         AbsensiPosyandu::POSYANDU_ID    => $request->p,
-                        AbsensiPosyandu::KADER_ID       => $existsKader->id,
+                        AbsensiPosyandu::LANSIA_ID      => $existsKader->id,
                         AbsensiPosyandu::MASUK          => date('Y-m-d h:i:s'),
                         AbsensiPosyandu::STATUS         => 0,
                         AbsensiPosyandu::STATUS2        => 1,
@@ -171,14 +171,58 @@ class AbsensiController extends Controller
         return view('absensi.list', compact('posyandus'));
     }
 
-    public function cetak($url){
+    private function cetak($tglAwal, $tglAkhir, $posyandu, $status, $fTglAwal, $fTglAkhir){
+        $data = $this->absensiRepository->getCetakAbsen($posyandu, $tglAwal, $tglAkhir, $status);
+        $data_posyandu = $this->posyanduRepo->findByColumn('posyandu_kode', $posyandu);
+        $pdf = PDF::loadview('absensi.cetak',['datas'=>$data, 'data_posyandu' => $data_posyandu, 'tglAwal' => $fTglAwal, 'tglAkhir' => $fTglAkhir]);
+        return $pdf->stream('absensi.pdf');
+    }
+
+    public function cetak_anggota($url){
         $urlDecode = explode('&',base64_decode($url));
         $tglAwal   = date("Y-m-d", strtotime($urlDecode[0]));
         $tglAkhir  = date("Y-m-d", strtotime($urlDecode[1]));
+        $fTglAwal   = date("d-m-Y", strtotime($urlDecode[0]));
+        $fTglAkhir  = date("d-m-Y", strtotime($urlDecode[1]));
         $posyandu  = $urlDecode[2];
-        $data = $this->absensiRepository->getCetakAbsen($posyandu, $tglAwal, $tglAkhir);
-        $data_posyandu = $this->posyanduRepo->findByColumn('posyandu_kode', $posyandu);
-        $pdf = PDF::loadview('absensi.cetak',['datas'=>$data, 'data_posyandu' => $data_posyandu, 'tglAwal' => date("d-m-Y", strtotime($urlDecode[0])), 'tglAkhir' => date("d-m-Y", strtotime($urlDecode[1]))]);
-        return $pdf->stream('absensi.pdf');
+        return $this->cetak($tglAwal, $tglAkhir, $posyandu, 0, $fTglAwal, $fTglAkhir);
+    }
+
+    public function cetak_kader($url){
+        $urlDecode = explode('&',base64_decode($url));
+        $tglAwal   = date("Y-m-d", strtotime($urlDecode[0]));
+        $tglAkhir  = date("Y-m-d", strtotime($urlDecode[1]));
+        $fTglAwal   = date("d-m-Y", strtotime($urlDecode[0]));
+        $fTglAkhir  = date("d-m-Y", strtotime($urlDecode[1]));
+        $posyandu  = $urlDecode[2];
+        return $this->cetak($tglAwal, $tglAkhir, $posyandu, 1, $fTglAwal, $fTglAkhir);
+    }
+
+    public function view_anggota($url)
+    {
+        # code...
+        $urlDecode = explode('&',base64_decode($url));
+        $posyandu_kode = $urlDecode[0];
+        $lansia_kode = $urlDecode[1];
+
+        $posyandu = $this->posyanduRepo->findByColumn('posyandu_kode',$posyandu_kode);
+        $lansia = $this->lansiaRepository->findByAnggotaAndPosyandu($lansia_kode, $posyandu_kode);
+
+        $data = $this->absensiRepository->getViewAbsen($posyandu_kode, $lansia_kode);
+        return view('absensi.view',['datas' => $data, 'posyandu' => $posyandu, 'lansia' => $lansia, 'status' => 0]);
+    }
+
+    public function view_kader($url)
+    {
+        # code...
+        $urlDecode = explode('&',base64_decode($url));
+        $posyandu_kode = $urlDecode[0];
+        $kader_kode = $urlDecode[1];
+
+        $posyandu = $this->posyanduRepo->findByColumn('posyandu_kode',$posyandu_kode);
+        $kader = $this->kaderRepository->findByKaderAndPosyandu($kader_kode,$posyandu_kode);
+
+        $data = $this->absensiRepository->getViewAbsen($posyandu_kode, $kader_kode);
+        return view('absensi.view',['datas' => $data, 'posyandu' => $posyandu, 'kader' => $kader , 'status' => 1]);
     }
 }

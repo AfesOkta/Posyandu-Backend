@@ -26,10 +26,10 @@ class JsonController extends Controller
         return response()->json($this->posyanduRepo->getAll());
     }
 
-    public function json_absensi(Request $request)
+    private function json_absensi($status)
     {
         # code...
-        $data = $this->absenRepo->findAll();
+        $data = $this->absenRepo->findByStatus2($status);
         return DataTables::of($data)
         ->addIndexColumn()
         ->addColumn('action', function($row){
@@ -39,6 +39,18 @@ class JsonController extends Controller
         })
         ->rawColumns(['action'])
         ->make(true);
+    }
+
+    public function json_absensi_kader(Request $request)
+    {
+        # code...
+        return $this->json_absensi(1);
+    }
+
+    public function json_absensi_anggota(Request $request)
+    {
+        # code...
+        return $this->json_absensi(0);
     }
 
     public function json_users(Request $request)

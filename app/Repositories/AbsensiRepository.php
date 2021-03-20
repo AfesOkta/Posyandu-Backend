@@ -48,12 +48,34 @@ class AbsensiRepository
         return $data;//$this->absensiPosyandu->with('posyandu')->with('anggota')->get();
     }
 
-    public function getCetakAbsen($posyandu, $tgl1, $tgl2)
+    public function findByStatus2($status) {
+        $data = DB::table('v_absensi')->where('status2',$status)->orderBy('posyandu_kode','asc')
+        ->orderBy('kode','asc')->orderBy('tanggal','desc');
+        return $data;//$this->absensiPosyandu->with('posyandu')->with('anggota')->get();
+    }
+
+    public function getCetakAbsen($posyandu, $tgl1, $tgl2, $status)
     {
         # code...
         $data = DB::table('v_absensi')
             ->where('posyandu_kode','=',$posyandu)
-            ->whereBetween(DB::raw('date_format(tanggal,"%Y-%m-%d")'), ["$tgl1", "$tgl2"])->get();
+            ->whereBetween(DB::raw('date_format(tanggal,"%Y-%m-%d")'), ["$tgl1", "$tgl2"])
+            ->where('status2',$status)
+            ->groupBy('nama')
+            ->groupBy('tanggal')
+            ->orderBy('posyandu_kode','asc')
+            ->orderBy('kode','asc')->orderBy('tanggal','desc')->get();
         return $data;
     }
+
+    public function getViewAbsen($posyandu, $kode)
+    {
+        # code...
+        $data = DB::table('v_absensi')
+            ->where('posyandu_kode','=',$posyandu)
+            ->where('kode',$kode)
+            ->orderBy('tanggal')->get();
+        return $data;
+    }
+
 }
