@@ -48,6 +48,7 @@ class AbsensiController extends Controller
         if ($request->p != $request->ps) {
             return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! anggota not found"]);
         } else {
+date_default_timezone_set("Asia/Jakarta");
             $anggota = $this->absensi_anggota($request);
 
             $kader   = $this->absensi_kader($request);
